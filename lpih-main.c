@@ -23,7 +23,12 @@ activate (GtkApplication *app,
    gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
   /* Here we construct the container that is going pack our buttons */
   grid = gtk_grid_new ();
-
+  gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height
+    gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE); // Make columns of equal width
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 10); // Add spacing between rows
+    gtk_grid_set_column_spacing(GTK_GRID(grid), 10); // Add spacing between columns
+    //gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
   /* Pack the container in the window */
   gtk_window_set_child (GTK_WINDOW (window), grid);
 
