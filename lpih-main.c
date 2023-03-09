@@ -15,10 +15,12 @@ activate (GtkApplication *app,
   GtkWidget *grid;
   GtkWidget *button;
 
+
   /* create a new window, and set its title */
   window = gtk_application_window_new (app);
-  gtk_window_set_title (GTK_WINDOW (window), "Window");
-
+  gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper");
+  gtk_widget_set_size_request(window, 888, 888);
+   gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
   /* Here we construct the container that is going pack our buttons */
   grid = gtk_grid_new ();
 
@@ -26,6 +28,7 @@ activate (GtkApplication *app,
   gtk_window_set_child (GTK_WINDOW (window), grid);
 
   button = gtk_button_new_with_label ("Button 1");
+  
   g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
 
   /* Place the first button in the grid cell (0, 0), and make it fill
@@ -48,6 +51,8 @@ activate (GtkApplication *app,
    * span 2 columns.
    */
   gtk_grid_attach (GTK_GRID (grid), button, 0, 1, 2, 1);
+  gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
 
   gtk_widget_show (window);
 
