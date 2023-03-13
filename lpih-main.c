@@ -20,12 +20,11 @@ debian_window (GtkWidget *widget,
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
   gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 800);
+  ///
+  GtkWidget *view;
+  GtkTextBuffer *buffer;
   
-  
-  gtk_widget_show(deb_window);
-  
-  
-    deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+  deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
   
   // CHECKBOXES //////////
@@ -39,6 +38,16 @@ debian_window (GtkWidget *widget,
     check3 = gtk_check_button_new_with_label("Checkbox 3");
     gtk_box_append(GTK_BOX(deb_box), check3);
   
+  view = gtk_text_view_new ();
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+  gtk_text_buffer_set_text (buffer, "sudo apt update && sudo apt upgrade; sudo apt update && sudo apt full-upgrade; ", -1);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_box_append(GTK_BOX(deb_box), view);
+  
+  
+  
+gtk_widget_show(deb_window);
   
   // checkbox logic
   
@@ -57,13 +66,15 @@ static void
 fedora_window (GtkWidget *widget,
 	       gpointer data)
 {
-GtkWidget *fed_window;
-GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
+  GtkWidget *fed_window;
+  GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
   fed_window = gtk_window_new();
-   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
-    gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 800);
-     gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
-    gtk_widget_show(fed_window);  
+  gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
+  gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 800);
+  gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
+  GtkWidget *view;
+  GtkTextBuffer *buffer;
+  
   fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (fed_window), fed_box);
   
@@ -76,6 +87,14 @@ GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
     check3 = gtk_check_button_new_with_label("Checkbox 3");
     gtk_box_append(GTK_BOX(fed_box), check3);
   
+  view = gtk_text_view_new ();
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+  gtk_text_buffer_set_text (buffer, "sudo dnf update && sudo dnf upgrade; sudo dnf update && sudo dnf full-upgrade; ", -1);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_box_append(GTK_BOX(fed_box), view);
+  
+gtk_widget_show(fed_window);  
   
 g_print ("fedora_window engaged\n");
 
@@ -128,24 +147,20 @@ activate (GtkApplication *app,
    * just 1 cell horizontally and vertically (ie no spanning)
    */
   gtk_grid_attach (GTK_GRID (grid), deb_button, 0, 0, 1, 1);
-
   fed_button = gtk_button_new_with_label ("FEDORA");
- 
-    gtk_widget_set_size_request(fed_button, 100, 50);
-
-g_signal_connect (fed_button, "clicked", G_CALLBACK (fedora_window), NULL);
+  gtk_widget_set_size_request(fed_button, 100, 50);
+  g_signal_connect (fed_button, "clicked", G_CALLBACK (fedora_window), NULL);
 
   /* Place the second button in the grid cell (1, 0), and make it fill
    * just 1 cell horizontally and vertically (ie no spanning)
    */
   gtk_grid_attach (GTK_GRID (grid), fed_button, 1, 0, 1, 1);
-  
   quit_button = gtk_button_new_with_label ("QUIT");
   
- gtk_widget_set_name (quit_button, "quit");
-
-      gtk_widget_set_size_request(quit_button, 100, 50);
-
+  /////////////////////////////////////////
+  
+  gtk_widget_set_name (quit_button, "quit");
+  gtk_widget_set_size_request(quit_button, 100, 50);
   g_signal_connect_swapped (quit_button, "clicked", G_CALLBACK (gtk_window_destroy), window);
 
   /* Place the Quit button in the grid cell (0, 1), and make it
