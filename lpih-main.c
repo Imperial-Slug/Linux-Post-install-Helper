@@ -5,12 +5,17 @@
 
 
 
+
+
+
+
+
 static void
 debian_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *deb_window;
-  GtkWidget *deb_box, *check1, *check2, *check3;
+  GtkWidget *deb_box, *deb_nvidia_check, *check2, *check3;
   deb_window = gtk_window_new();
    gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
      gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
@@ -21,14 +26,29 @@ debian_window (GtkWidget *widget,
   deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
   
-  check1 = gtk_check_button_new_with_label("Checkbox 1");
-    gtk_box_append(GTK_BOX(deb_box), check1);
+  // CHECKBOXES //////////
+  
+  deb_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
 
     check2 = gtk_check_button_new_with_label("Checkbox 2");
     gtk_box_append(GTK_BOX(deb_box), check2);
 
     check3 = gtk_check_button_new_with_label("Checkbox 3");
     gtk_box_append(GTK_BOX(deb_box), check3);
+  
+  
+  // checkbox logic
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   g_print ("debian_window engaged\n");
@@ -40,7 +60,7 @@ fedora_window (GtkWidget *widget,
 	       gpointer data)
 {
 GtkWidget *fed_window;
-GtkWidget *fed_box, *check1, *check2, *check3;
+GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
   fed_window = gtk_window_new();
    gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
     gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 800);
@@ -49,8 +69,8 @@ GtkWidget *fed_box, *check1, *check2, *check3;
   fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (fed_window), fed_box);
   
-  check1 = gtk_check_button_new_with_label("Checkbox 1");
-    gtk_box_append(GTK_BOX(fed_box), check1);
+  fed_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
 
     check2 = gtk_check_button_new_with_label("Checkbox 2");
     gtk_box_append(GTK_BOX(fed_box), check2);
