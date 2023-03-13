@@ -1,14 +1,25 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
+
+
+
+
+
+
+
 static void
 debian_window (GtkWidget *widget,
              gpointer   data)
 {
+  GtkWidget *window;
+  window = gtk_window_new();
+   gtk_window_set_title(GTK_WINDOW(window), "New Window");
+    gtk_window_set_default_size(GTK_WINDOW(window), 800, 800);
+    gtk_widget_show(window);
+  
+  
   g_print ("debian_window engaged\n");
-
-
-
 }
 
 
@@ -28,6 +39,7 @@ activate (GtkApplication *app,
   GtkWidget *window;
   GtkWidget *grid;
   GtkWidget *button;
+  
  ///////////////////////////////////////////////////////////////////////////
 
   /* create a new window, and set its title */
@@ -108,3 +120,4 @@ main (int    argc,
   
   return status;
 }
+
