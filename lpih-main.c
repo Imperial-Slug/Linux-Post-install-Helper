@@ -17,18 +17,20 @@ debian_window (GtkWidget *widget,
   GtkWidget *deb_window;
   GtkWidget *deb_box, *deb_nvidia_check, *check2, *check3;
   deb_window = gtk_window_new();
-   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
-     gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
-    gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 800);
-    gtk_widget_show(deb_window);
+  gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
+  gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
+  gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 800);
   
   
-  deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+  gtk_widget_show(deb_window);
+  
+  
+    deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
   
   // CHECKBOXES //////////
   
-  deb_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    deb_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
     gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
 
     check2 = gtk_check_button_new_with_label("Checkbox 2");
@@ -40,15 +42,11 @@ debian_window (GtkWidget *widget,
   
   // checkbox logic
   
+   
   
   
   
-  
-  
-  
-  
-  
-  
+
   
   
   g_print ("debian_window engaged\n");
