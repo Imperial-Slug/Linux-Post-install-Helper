@@ -12,11 +12,11 @@ static void
 debian_window (GtkWidget *widget,
              gpointer   data)
 {
-  GtkWidget *window;
-  window = gtk_window_new();
-   gtk_window_set_title(GTK_WINDOW(window), "New Window");
-    gtk_window_set_default_size(GTK_WINDOW(window), 800, 800);
-    gtk_widget_show(window);
+  GtkWidget *deb_window;
+  deb_window = gtk_window_new();
+   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
+    gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 800);
+    gtk_widget_show(deb_window);
   
   
   g_print ("debian_window engaged\n");
@@ -27,8 +27,13 @@ static void
 fedora_window (GtkWidget *widget,
 	       gpointer data)
 {
+GtkWidget *fed_window;
+  fed_window = gtk_window_new();
+   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
+    gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 800);
+    gtk_widget_show(fed_window);  
+  
 g_print ("fedora_window engaged\n");
-
 
 }
 
@@ -38,7 +43,10 @@ activate (GtkApplication *app,
 {
   GtkWidget *window;
   GtkWidget *grid;
-  GtkWidget *button;
+  GtkWidget *deb_button;
+  GtkWidget *fed_button;
+  GtkWidget *quit_button;
+  
   
  ///////////////////////////////////////////////////////////////////////////
 
@@ -64,40 +72,40 @@ activate (GtkApplication *app,
 
 
 
-  button = gtk_button_new_with_label ("DEBIAN");
+  deb_button = gtk_button_new_with_label ("DEBIAN");
     
-  gtk_widget_set_size_request(button, 100, 50);
+  gtk_widget_set_size_request(deb_button, 100, 50);
 
-  g_signal_connect (button, "clicked", G_CALLBACK (debian_window), NULL);
+  g_signal_connect (deb_button, "clicked", G_CALLBACK (debian_window), NULL);
     
   /* Place the first button in the grid cell (0, 0), and make it fill
    * just 1 cell horizontally and vertically (ie no spanning)
    */
-  gtk_grid_attach (GTK_GRID (grid), button, 0, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), deb_button, 0, 0, 1, 1);
 
-  button = gtk_button_new_with_label ("FEDORA");
+  fed_button = gtk_button_new_with_label ("FEDORA");
  
-    gtk_widget_set_size_request(button, 100, 50);
+    gtk_widget_set_size_request(fed_button, 100, 50);
 
-g_signal_connect (button, "clicked", G_CALLBACK (fedora_window), NULL);
+g_signal_connect (fed_button, "clicked", G_CALLBACK (fedora_window), NULL);
 
   /* Place the second button in the grid cell (1, 0), and make it fill
    * just 1 cell horizontally and vertically (ie no spanning)
    */
-  gtk_grid_attach (GTK_GRID (grid), button, 1, 0, 1, 1);
+  gtk_grid_attach (GTK_GRID (grid), fed_button, 1, 0, 1, 1);
   
-  button = gtk_button_new_with_label ("QUIT");
+  quit_button = gtk_button_new_with_label ("QUIT");
   
- gtk_widget_set_name (button, "quit");
+ gtk_widget_set_name (quit_button, "quit");
 
-      gtk_widget_set_size_request(button, 100, 50);
+      gtk_widget_set_size_request(quit_button, 100, 50);
 
-  g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_window_destroy), window);
+  g_signal_connect_swapped (quit_button, "clicked", G_CALLBACK (gtk_window_destroy), window);
 
   /* Place the Quit button in the grid cell (0, 1), and make it
    * span 2 columns.
    */
-  gtk_grid_attach (GTK_GRID (grid), button, 0, 1, 2, 1);
+  gtk_grid_attach (GTK_GRID (grid), quit_button, 0, 1, 2, 1);
   gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
 
