@@ -53,10 +53,26 @@ debian_window (GtkWidget *widget,
 }
 
 static void nvidia_toggled(GtkWidget *widget, gpointer data) {
+  
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
-    gtk_text_buffer_insert_at_cursor(buffer, "This is the string you want to append\n", -1);
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "\nsudo apt install nvidia-driver; \n", -1);
+  } else {
+    gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
+    GtkTextIter end_iter;
+gtk_text_buffer_get_end_iter(buffer, &end_iter);
+gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
+    gchar *substring = "\nsudo apt install nvidia-driver; \n";
+    gchar *p = strstr(text, substring);
+    if (p) {
+      GtkTextIter start;
+      gtk_text_iter_set_offset(&start, p - text);
+      gtk_text_buffer_delete(buffer, &start, &iter); // Delete the substring
+    }
+    g_free(text);
   }
 }
 
