@@ -19,7 +19,7 @@ debian_window (GtkWidget *widget,
   deb_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
-  gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 800);
+  gtk_window_set_default_size(GTK_WINDOW(deb_window), 700, 700);
   ///
   GtkWidget *view;
   GtkTextBuffer *buffer;
@@ -53,12 +53,6 @@ gtk_widget_show(deb_window);
   
    
   
-  
-  
-
-  
-  
-  g_print ("debian_window engaged\n");
 }
 
 
@@ -70,7 +64,7 @@ fedora_window (GtkWidget *widget,
   GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
   fed_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
-  gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 800);
+  gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
   gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
   GtkWidget *view;
   GtkTextBuffer *buffer;
@@ -95,8 +89,6 @@ fedora_window (GtkWidget *widget,
   gtk_box_append(GTK_BOX(fed_box), view);
   
 gtk_widget_show(fed_window);  
-  
-g_print ("fedora_window engaged\n");
 
 }
 
@@ -125,22 +117,18 @@ activate (GtkApplication *app,
 
 
   
-  /* Here we construct the container that is going pack our buttons */
+
   grid = gtk_grid_new ();
-  gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height
+    gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE); // Make columns of equal width
     gtk_grid_set_row_spacing(GTK_GRID(grid), 50); // Add spacing between rows
     gtk_grid_set_column_spacing(GTK_GRID(grid), 100); // Add spacing between columns
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
-  /* Pack the container in the window */
+
   gtk_window_set_child (GTK_WINDOW (window), grid);
 
-
-
   deb_button = gtk_button_new_with_label ("DEBIAN");
-    
   gtk_widget_set_size_request(deb_button, 100, 50);
-  
   g_signal_connect (deb_button, "clicked", G_CALLBACK (debian_window), NULL);
     
   /* Place the first button in the grid cell (0, 0), and make it fill
