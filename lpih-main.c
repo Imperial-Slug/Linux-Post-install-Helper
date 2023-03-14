@@ -6,6 +6,9 @@
 static void deb_nvidia_toggled(GtkWidget *widget, gpointer data);
 static void deb_steam_toggled(GtkWidget *widget, gpointer data);
 static void deb_game_toggled(GtkWidget *widget, gpointer data);
+static void deb_flatpak_toggled(GtkWidget *widget, gpointer data);
+static void deb_microcode_toggled(GtkWidget *widget, gpointer data);
+static void deb_fonts_toggled(GtkWidget *widget, gpointer data);
 
 
 
@@ -14,7 +17,7 @@ debian_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *deb_window;
-  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check;
+  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check;
   deb_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
@@ -34,8 +37,19 @@ debian_window (GtkWidget *widget,
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
     gtk_box_append(GTK_BOX(deb_box), deb_steam_check);
 
-   deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
+    deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
     gtk_box_append(GTK_BOX(deb_box),deb_game_check );
+    ////////////////////////////////////////////////
+    
+    deb_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
+    gtk_box_append(GTK_BOX(deb_box), deb_flatpak_check);
+
+    deb_microcode_check = gtk_check_button_new_with_label("  Install your processor's latest microcode?");
+    gtk_box_append(GTK_BOX(deb_box), deb_microcode_check);
+
+    deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products?");
+    gtk_box_append(GTK_BOX(deb_box),deb_fonts_check );
+    
   
   view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
@@ -49,6 +63,10 @@ debian_window (GtkWidget *widget,
   g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(deb_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_steam_check), "toggled", G_CALLBACK(deb_steam_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_game_check), "toggled", G_CALLBACK(deb_game_toggled), buffer);
+  
+  g_signal_connect(G_OBJECT(deb_flatpak_check), "toggled", G_CALLBACK(deb_flatpak_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_microcode_check), "toggled", G_CALLBACK(deb_microcode_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_fonts_check), "toggled", G_CALLBACK(deb_fonts_toggled), buffer);
   
   gtk_widget_show(deb_window);
   
@@ -144,6 +162,116 @@ static void deb_game_toggled(GtkWidget *widget, gpointer data) {
 
 
 //////////////////////////////////////////
+/////////////////////////////////////////
+
+////////// DEBIAN FLATPAK CHECKBOX ///////////////
+
+static void deb_flatpak_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak; sudo apt install gnome-software-plugin-flatpak; sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install flatpak; sudo apt install gnome-software-plugin-flatpak; sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// DEBIAN MICROCODE CHECKBOX ///////
+
+
+static void deb_microcode_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install amd64-microcode; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install amd64-microcode;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+//// DEBIAN FONTS CHECKBOX ///////
+
+
+static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
