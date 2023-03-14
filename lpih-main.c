@@ -1,7 +1,6 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
-
-
+#include <stdlib.h>
 
 
 
@@ -72,7 +71,7 @@ fedora_window (GtkWidget *widget,
   fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (fed_window), fed_box);
   
-  fed_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    fed_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
     gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
 
     check2 = gtk_check_button_new_with_label("Checkbox 2");
@@ -85,7 +84,7 @@ fedora_window (GtkWidget *widget,
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "sudo dnf update && sudo dnf upgrade; sudo dnf update && sudo dnf full-upgrade; ", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE); //stops cursor from showing in textview when clicked. 
   gtk_box_append(GTK_BOX(fed_box), view);
   
 gtk_widget_show(fed_window);  
@@ -109,9 +108,8 @@ activate (GtkApplication *app,
   window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper");
   gtk_widget_set_size_request(window, 444, 444);
-   gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
-  
-  
+  gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
+    
 /////////////////////////////////////////////////////////////////////////
 
 
