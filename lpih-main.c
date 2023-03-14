@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-
+static void nvidia_toggled(GtkWidget *widget, gpointer data);
 
 
 
@@ -19,12 +19,12 @@ debian_window (GtkWidget *widget,
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
   gtk_window_set_default_size(GTK_WINDOW(deb_window), 700, 700);
-  ///
+
   GtkWidget *view;
   GtkTextBuffer *buffer;
   
   deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
+  gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
   
   // CHECKBOXES //////////
   
@@ -44,14 +44,20 @@ debian_window (GtkWidget *widget,
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_box_append(GTK_BOX(deb_box), view);
   
-  
-  
-gtk_widget_show(deb_window);
-  
   // checkbox logic
   
-   
+  g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(nvidia_toggled), buffer);
   
+  gtk_widget_show(deb_window);
+  
+}
+
+static void nvidia_toggled(GtkWidget *widget, gpointer data) {
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  if (state) {
+    gtk_text_buffer_insert_at_cursor(buffer, "This is the string you want to append\n", -1);
+  }
 }
 
 
