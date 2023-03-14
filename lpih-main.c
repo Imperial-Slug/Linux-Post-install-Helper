@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-static void nvidia_toggled(GtkWidget *widget, gpointer data);
-
-
+// TODO // USE A VARIABLE TO HOLD THE PROPER COMMAND DEPENDING ON THE GPU CHOSEN ///////////////////
+static void deb_nvidia_toggled(GtkWidget *widget, gpointer data);
+static void deb_steam_toggled(GtkWidget *widget, gpointer data);
+static void deb_game_toggled(GtkWidget *widget, gpointer data);
 
 
 
@@ -14,7 +14,7 @@ debian_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *deb_window;
-  GtkWidget *deb_box, *deb_nvidia_check, *check2, *check3;
+  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check;
   deb_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
@@ -28,44 +28,77 @@ debian_window (GtkWidget *widget,
   
   // CHECKBOXES //////////
   
-    deb_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    deb_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
     gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
 
-    check2 = gtk_check_button_new_with_label("Checkbox 2");
-    gtk_box_append(GTK_BOX(deb_box), check2);
+    deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
+    gtk_box_append(GTK_BOX(deb_box), deb_steam_check);
 
-    check3 = gtk_check_button_new_with_label("Checkbox 3");
-    gtk_box_append(GTK_BOX(deb_box), check3);
+   deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
+    gtk_box_append(GTK_BOX(deb_box),deb_game_check );
   
   view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-  gtk_text_buffer_set_text (buffer, "sudo apt update && sudo apt upgrade; sudo apt update && sudo apt full-upgrade; ", -1);
+  gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_box_append(GTK_BOX(deb_box), view);
   
   // checkbox logic
   
-  g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(nvidia_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(deb_nvidia_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_steam_check), "toggled", G_CALLBACK(deb_steam_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_game_check), "toggled", G_CALLBACK(deb_game_toggled), buffer);
   
   gtk_widget_show(deb_window);
   
 }
 
-static void nvidia_toggled(GtkWidget *widget, gpointer data) {
+////////// DEBIAN NVIDIA CHECKBOX ///////////////
+
+static void deb_nvidia_toggled(GtkWidget *widget, gpointer data) {
   
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "\nsudo apt install nvidia-driver; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs:i386 nvidia-driver-libs;\n", -1);
   } else {
     gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
     GtkTextIter end_iter;
 gtk_text_buffer_get_end_iter(buffer, &end_iter);
 gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
-    gchar *substring = "\nsudo apt install nvidia-driver; \n";
+    gchar *substring = "  sudo apt install nvidia-driver nvidia-driver-libs:i386 nvidia-driver-libs;";
+    gchar *p = strstr(text, substring);
+    if (p) {
+      GtkTextIter start;
+      gtk_text_iter_set_offset(&start, p - text);
+      gtk_text_buffer_delete(buffer, &start, &iter); // Delete the substring
+    }
+    g_free(text);
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// DEBIAN STEAM CHECKBOX ///////
+
+
+static void deb_steam_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install steam-devices steam-installer; \n", -1);
+  } else {
+    gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
+    GtkTextIter end_iter;
+gtk_text_buffer_get_end_iter(buffer, &end_iter);
+gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
+    gchar *substring = "  sudo apt install steam-devices steam-installer;";
     gchar *p = strstr(text, substring);
     if (p) {
       GtkTextIter start;
@@ -77,12 +110,48 @@ gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
 }
 
 
+
+//// DEBIAN GAME CHECKBOX ///////
+
+
+static void deb_game_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; \n", -1);
+  } else {
+    gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
+    GtkTextIter end_iter;
+gtk_text_buffer_get_end_iter(buffer, &end_iter);
+gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
+    gchar *substring = "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; \n";
+    gchar *p = strstr(text, substring);
+    if (p) {
+      GtkTextIter start;
+      gtk_text_iter_set_offset(&start, p - text);
+      gtk_text_buffer_delete(buffer, &start, &iter); // Delete the substring
+    }
+    g_free(text);
+  }
+}
+
+
+
+
+//////////////////////////////////////////
+
+
+
+//////////////////////////////////////////
 static void
 fedora_window (GtkWidget *widget,
 	       gpointer data)
 {
   GtkWidget *fed_window;
-  GtkWidget *fed_box, *fed_nvidia_check, *check2, *check3;
+  GtkWidget *fed_box, *fed_nvidia_check,  *deb_steam_check,*deb_game_check;
   fed_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
   gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
@@ -93,14 +162,14 @@ fedora_window (GtkWidget *widget,
   fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (fed_window), fed_box);
   
-    fed_nvidia_check = gtk_check_button_new_with_label("Do you have an Nvidia graphics card?");
+    fed_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
     gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
 
-    check2 = gtk_check_button_new_with_label("Checkbox 2");
-    gtk_box_append(GTK_BOX(fed_box), check2);
+    deb_steam_check = gtk_check_button_new_with_label("Checkbox 2");
+    gtk_box_append(GTK_BOX(fed_box), deb_steam_check);
 
-    check3 = gtk_check_button_new_with_label("Checkbox 3");
-    gtk_box_append(GTK_BOX(fed_box), check3);
+   deb_game_check = gtk_check_button_new_with_label("Checkbox 3");
+    gtk_box_append(GTK_BOX(fed_box),deb_game_check);
   
   view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
