@@ -95,19 +95,19 @@ static void deb_steam_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install steam-devices steam-installer; \n", -1);
   } else {
-    gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
-    GtkTextIter end_iter;
-gtk_text_buffer_get_end_iter(buffer, &end_iter);
-gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
-    gchar *substring = "  sudo apt install steam-devices steam-installer; \n";
-    gchar *p = strstr(text, substring);
-    if (p) {
-      GtkTextIter start;
-      gtk_text_iter_set_offset(&start, p - text);
-      gtk_text_buffer_delete(buffer, &start, &iter); // Delete the substring
-     
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install steam-devices steam-installer;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
     }
-    g_free(text);
   }
 }
 
@@ -125,21 +125,21 @@ static void deb_game_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; \n", -1);
   } else {
-    gtk_text_buffer_get_iter_at_offset(buffer, &iter, 0); // Move the iterator to the start
-    GtkTextIter end_iter;
-gtk_text_buffer_get_end_iter(buffer, &end_iter);
-gchar *text = gtk_text_buffer_get_text(buffer, &iter, &end_iter, FALSE);
-    gchar *substring = "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; \n";
-    gchar *p = strstr(text, substring);
-    if (p) {
-      GtkTextIter start;
-      gtk_text_iter_set_offset(&start, p - text);
-      gtk_text_buffer_delete(buffer, &start, &iter); // Delete the substring
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
     }
-    g_free(text);
   }
 }
-
 
 
 
