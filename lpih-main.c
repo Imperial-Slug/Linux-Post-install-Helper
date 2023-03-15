@@ -10,6 +10,10 @@ static void deb_flatpak_toggled(GtkWidget *widget, gpointer data);
 static void deb_microcode_toggled(GtkWidget *widget, gpointer data);
 static void deb_fonts_toggled(GtkWidget *widget, gpointer data);
 
+static void deb_ufw_toggled(GtkWidget *widget, gpointer data);
+static void deb_tlp_toggled(GtkWidget *widget, gpointer data);
+static void deb_vlc_toggled(GtkWidget *widget, gpointer data);
+
 
 
 static void
@@ -17,7 +21,7 @@ debian_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *deb_window;
-  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check;
+  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check;
   deb_window = gtk_window_new();
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
@@ -49,6 +53,17 @@ debian_window (GtkWidget *widget,
 
     deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products?");
     gtk_box_append(GTK_BOX(deb_box),deb_fonts_check );
+    ///////////////////////////////////////////////////////
+     deb_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
+    gtk_box_append(GTK_BOX(deb_box), deb_ufw_check);
+
+    deb_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
+    gtk_box_append(GTK_BOX(deb_box), deb_tlp_check);
+
+    deb_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
+    gtk_box_append(GTK_BOX(deb_box),deb_vlc_check );
+    
+    
     
    // Create a scrolled window and set the size
   GtkWidget *scroll_window = gtk_scrolled_window_new();
@@ -73,6 +88,11 @@ debian_window (GtkWidget *widget,
   g_signal_connect(G_OBJECT(deb_microcode_check), "toggled", G_CALLBACK(deb_microcode_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_fonts_check), "toggled", G_CALLBACK(deb_fonts_toggled), buffer);
   
+  g_signal_connect(G_OBJECT(deb_ufw_check), "toggled", G_CALLBACK(deb_ufw_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_tlp_check), "toggled", G_CALLBACK(deb_tlp_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
+  
+  
   gtk_widget_show(deb_window);
   
 }
@@ -86,10 +106,10 @@ static void deb_nvidia_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs:i386 nvidia-driver-libs;\n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs;\n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs:i386 nvidia-driver-libs;";
+    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -146,10 +166,10 @@ static void deb_game_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;";
+    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -178,10 +198,10 @@ static void deb_flatpak_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak; sudo apt install gnome-software-plugin-flatpak; sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install flatpak; sudo apt install gnome-software-plugin-flatpak; sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;";
+    const gchar *search_string = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -238,10 +258,73 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
+    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////
+///// NEWEST ////////////////////
+////////////////////////////////
+
+
+
+////////// DEBIAN UFW CHECKBOX ///////////////
+
+static void deb_ufw_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install ufw; sudo ufw enable; \n";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// DEBIAN TLP CHECKBOX ///////
+
+
+static void deb_tlp_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install tlp; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install tlp; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -258,23 +341,33 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
 
 
 
+//// DEBIAN VLC CHECKBOX ///////
 
 
+static void deb_vlc_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install vlc; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install vlc; ";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
 
 
 
