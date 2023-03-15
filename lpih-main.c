@@ -50,13 +50,18 @@ debian_window (GtkWidget *widget,
     deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products?");
     gtk_box_append(GTK_BOX(deb_box),deb_fonts_check );
     
+   // Create a scrolled window and set the size
+  GtkWidget *scroll_window = gtk_scrolled_window_new();
+  gtk_widget_set_size_request(scroll_window, 400, 300);
+
   
   view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
-  gtk_box_append(GTK_BOX(deb_box), view);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
+  gtk_box_append(GTK_BOX(deb_box), scroll_window);
   
   // checkbox logic
   
