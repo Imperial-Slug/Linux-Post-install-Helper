@@ -29,6 +29,7 @@ debian_window (GtkWidget *widget,
   GtkWidget *deb_window;
   GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check;
   deb_window = gtk_window_new();
+  gtk_widget_add_css_class(deb_window, "deb_window");
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
   gtk_window_set_resizable (GTK_WINDOW(deb_window), FALSE);
   gtk_window_set_default_size(GTK_WINDOW(deb_window), 700, 700);
@@ -386,7 +387,10 @@ fedora_window (GtkWidget *widget,
 {
   GtkWidget *fed_window;
   GtkWidget *fed_box, *fed_nvidia_check,  *deb_steam_check,*deb_game_check;
-  fed_window = gtk_window_new();
+  
+    fed_window = gtk_window_new();
+    gtk_widget_add_css_class(fed_window, "fed_window");
+    
   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
   gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
   gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
@@ -432,6 +436,7 @@ activate (GtkApplication *app,
 
   /* create a new window, and set its title */
   window = gtk_application_window_new (app);
+  gtk_widget_add_css_class(window, "main_window");
   gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper");
   gtk_widget_set_size_request(window, 444, 444);
   gtk_window_set_resizable (GTK_WINDOW(window), FALSE);

@@ -8,31 +8,53 @@ button:hover {
 }
 
 .deb {
-background-color: purple;
+background: purple;
 color: chartreuse;
 }
 
 .deb:hover {
-  background-color: blue;
+  background: blue;
+  color: chartreuse;
 }
 
 .fed {
-background-color: navy;
-color: magenta;
+background: teal;
+color: yellow;
 }
 
 .fed:hover {
-  background-color: teal;
-  color: black;
+  background: navy;
+  color: yellow;
 }
 
 .quit {
-background-color: black;
+background: black;
 color: red;
 }
 
 .quit:hover {
-  background-color: red;
+  background: red;
+  color: chartreuse;
 }
 
 
+.deb_window {
+
+ background-image: url("debian1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.fed_window {
+background-image: url("fedora1.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+
+}
+
+.main_window {
+background-image: url("linux1.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+
+}
