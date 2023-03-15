@@ -20,7 +20,7 @@ static void fed_dnf_toggled(GtkWidget *widget, gpointer data);
 static void fed_flatpak_toggled(GtkWidget *widget, gpointer data);
 static void fed_repo_toggled(GtkWidget *widget, gpointer data);
 static void fed_customization_toggled(GtkWidget *widget, gpointer data);
-static void fed_ufw_toggled(GtkWidget *widget, gpointer data);
+static void fed_codecs_toggled(GtkWidget *widget, gpointer data);
 static void fed_tlp_toggled(GtkWidget *widget, gpointer data);
 static void fed_vlc_toggled(GtkWidget *widget, gpointer data);
 
@@ -51,8 +51,7 @@ debian_window (GtkWidget *widget,
   
   // CHECKBOXES //////////
   
-    deb_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
-    gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
+    
     
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
     gtk_box_append(GTK_BOX(deb_box), deb_steam_check);
@@ -79,6 +78,8 @@ debian_window (GtkWidget *widget,
     deb_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
     gtk_box_append(GTK_BOX(deb_box),deb_vlc_check );
     
+    deb_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
+    gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
     
     
    // Create a scrolled window and set the size
@@ -295,11 +296,6 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
   }
 }
 
-///////////////////////////////////
-///// NEWEST ////////////////////
-////////////////////////////////
-
-
 
 ////////// DEBIAN UFW CHECKBOX ///////////////
 
@@ -401,10 +397,10 @@ fedora_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *fed_window;
-  GtkWidget *fed_box, *fed_nvidia_check, *fed_steam_check,*fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_ufw_check, *fed_tlp_check, *fed_vlc_check;
+  GtkWidget *fed_box, *fed_nvidia_check, *fed_steam_check,*fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check;
   fed_window = gtk_window_new();
   gtk_widget_add_css_class(fed_window, "fed_window");
-  gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: FEDORA");
+  gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
   gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
   gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
 
@@ -416,27 +412,25 @@ fedora_window (GtkWidget *widget,
   
   // CHECKBOXES //////////
   
-    fed_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
-    gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
     
     fed_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
     gtk_box_append(GTK_BOX(fed_box), fed_steam_check);
 
-    fed_dnf_check = gtk_check_button_new_with_label("  Optimize dnf package manager for faster downloads?");
+    fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
     gtk_box_append(GTK_BOX(fed_box),fed_dnf_check );
     ////////////////////////////////////////////////
     
     fed_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
     gtk_box_append(GTK_BOX(fed_box), fed_flatpak_check);
 
-    fed_repo_check = gtk_check_button_new_with_label("  Enable non-free repositories?");
+    fed_repo_check = gtk_check_button_new_with_label("  Enable RPM-fusion repositories for wider range of software?");
     gtk_box_append(GTK_BOX(fed_box), fed_repo_check);
 
     fed_customization_check = gtk_check_button_new_with_label("  Install gnome-tweaks and gnome-extensions for desktop customization?");
     gtk_box_append(GTK_BOX(fed_box),fed_customization_check );
     ///////////////////////////////////////////////////////
-     fed_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
-    gtk_box_append(GTK_BOX(fed_box), fed_ufw_check);
+     fed_codecs_check = gtk_check_button_new_with_label("  Do you want to install multimedia codecs for unsupported media formats?");
+    gtk_box_append(GTK_BOX(fed_box), fed_codecs_check);
 
     fed_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
     gtk_box_append(GTK_BOX(fed_box), fed_tlp_check);
@@ -444,6 +438,8 @@ fedora_window (GtkWidget *widget,
     fed_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
     gtk_box_append(GTK_BOX(fed_box),fed_vlc_check );
     
+    fed_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
+    gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
     
     
    // Create a scrolled window and set the size
@@ -456,7 +452,7 @@ fedora_window (GtkWidget *widget,
   gtk_widget_set_opacity(view, 0.77);
     gtk_widget_add_css_class(view, "fed_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-  gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
+  gtk_text_buffer_set_text (buffer, "  sudo dnf update && sudo dnf upgrade; \n  sudo dnf update && sudo dnf full-upgrade; \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -472,7 +468,7 @@ fedora_window (GtkWidget *widget,
   g_signal_connect(G_OBJECT(fed_repo_check), "toggled", G_CALLBACK(fed_repo_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_customization_check), "toggled", G_CALLBACK(fed_customization_toggled), buffer);
   
-  g_signal_connect(G_OBJECT(fed_ufw_check), "toggled", G_CALLBACK(fed_ufw_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_codecs_check), "toggled", G_CALLBACK(fed_codecs_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_tlp_check), "toggled", G_CALLBACK(fed_tlp_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
   
@@ -490,10 +486,10 @@ static void fed_nvidia_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs;\n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;";
+    const gchar *search_string = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -520,10 +516,10 @@ static void fed_steam_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install steam-devices steam-installer; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install steam; \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install steam-devices steam-installer;";
+    const gchar *search_string = "  sudo dnf install steam;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -550,10 +546,10 @@ static void fed_dnf_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; ";
+    const gchar *search_string = "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -582,10 +578,10 @@ static void fed_flatpak_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
+    const gchar *search_string = "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -612,10 +608,10 @@ static void fed_repo_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install amd64-repo; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm; \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install amd64-repo;";
+    const gchar *search_string = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm; \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -642,11 +638,10 @@ static void fed_customization_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorecustomization-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install customization-crosextra-carlito customization-crosextra-caladea;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gnome-tweaks gnome-extensions-app;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ttf-mscorecustomization-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install customization-crosextra-carlito customization-crosextra-caladea;";
-
+    const gchar *search_string = "  sudo dnf install gnome-tweaks gnome-extensions-app;  ";
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
@@ -660,25 +655,20 @@ static void fed_customization_toggled(GtkWidget *widget, gpointer data) {
   }
 }
 
-///////////////////////////////////
-///// NEWEST ////////////////////
-////////////////////////////////
 
+////////// FEDORA CODECS CHECKBOX ///////////////
 
-
-////////// FEDORA UFW CHECKBOX ///////////////
-
-static void fed_ufw_toggled(GtkWidget *widget, gpointer data) {
+static void fed_codecs_toggled(GtkWidget *widget, gpointer data) {
   
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ufw; sudo ufw enable; \n";
+    const gchar *search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -705,10 +695,10 @@ static void fed_tlp_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install tlp; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install tlp; \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install tlp; ";
+    const gchar *search_string = "  sudo dnf install tlp; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -735,10 +725,10 @@ static void fed_vlc_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install vlc; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install vlc; \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install vlc; ";
+    const gchar *search_string = "  sudo dnf install vlc; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -771,7 +761,7 @@ activate (GtkApplication *app,
   /* create a new window, and set its title */
   window = gtk_application_window_new (app);
   gtk_widget_add_css_class(window, "main_window");
-  gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper");
+  gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper For Debian and Fedora");
   gtk_widget_set_size_request(window, 444, 444);
   gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
     

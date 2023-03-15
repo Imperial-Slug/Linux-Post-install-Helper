@@ -1,56 +1,70 @@
 button {
-background-color: magenta;
+background: magenta;
 color: chartreuse;
 }
 
 button:hover {
-  background-color: blue;
+  background: blue;
 }
 
 .deb {
 background: purple;
 color: chartreuse;
+  font-family: "Cantarell";
+  font-size: 24px;
 }
 
 .deb:hover {
   background: blue;
-  color: chartreuse;
+  color: yellow;
+  font-family: "Cantarell";
+    font-size: 24px;
 }
 
 .fed {
 background: teal;
-color: blue;
+color: Black;
+  font-family: "Cantarell";
+  font-size: 24px;
 }
 
 .fed:hover {
   background: navy;
   color: yellow;
+  font-family: "Cantarell";
+  font-size: 24px;
 }
 
 .quit {
 background: #312e39;
 color: red;
+  font-family: "Cantarell";
+  font-size: 24px;
 }
 
 .quit:hover {
   background: red;
   color: chartreuse;
+  font-family: "Cantarell";
+  font-size: 24px;  
 }
 
 
 .deb_window {
 
    background-image: linear-gradient(180deg, #5C2774, #335CC5, #637FFD);
+     font-family: "Cantarell";
 }
 
 .fed_window {
   background-image: linear-gradient(180deg, teal, navy);
-
+  color: yellow;
+  font-family: "Cantarell";
 }
 
 .main_window {
-  background-image: linear-gradient(180deg, #436AAC, #43B7B8);
-
+  background-image: linear-gradient(180deg, #000000, #F04800);
+  font-family: "Cantarell";
 }
 
 
@@ -58,13 +72,21 @@ color: red;
 
 checkbutton {
 
-color: white;
-
+color: #FFFF00;
 
 }
 
 .deb_view {
 background: black;
-color: chartreuse;
+color: #1FFF0F;
+font-family: "monospace";
+
+}
+
+.fed_view {
+
+background: black;
+color: #1FFF0F;
+font-family: "monospace";
 
 }
