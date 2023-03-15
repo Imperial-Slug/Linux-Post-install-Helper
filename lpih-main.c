@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 // TODO // USE A VARIABLE TO HOLD THE PROPER COMMAND DEPENDING ON THE GPU CHOSEN ///////////////////
 static void deb_nvidia_toggled(GtkWidget *widget, gpointer data);
 static void deb_steam_toggled(GtkWidget *widget, gpointer data);
@@ -14,6 +15,11 @@ static void deb_ufw_toggled(GtkWidget *widget, gpointer data);
 static void deb_tlp_toggled(GtkWidget *widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget *widget, gpointer data);
 
+void init_css_provider(){
+GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(provider, "style.css");
+    gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
 
 
 static void
@@ -420,6 +426,7 @@ activate (GtkApplication *app,
   GtkWidget *fed_button;
   GtkWidget *quit_button;
   
+
   
  ///////////////////////////////////////////////////////////////////////////
 
@@ -445,6 +452,7 @@ activate (GtkApplication *app,
   gtk_window_set_child (GTK_WINDOW (window), grid);
 
   deb_button = gtk_button_new_with_label ("DEBIAN");
+  gtk_widget_add_css_class(deb_button, "deb");
   gtk_widget_set_size_request(deb_button, 100, 50);
   g_signal_connect (deb_button, "clicked", G_CALLBACK (debian_window), NULL);
     
@@ -452,7 +460,9 @@ activate (GtkApplication *app,
    * just 1 cell horizontally and vertically (ie no spanning)
    */
   gtk_grid_attach (GTK_GRID (grid), deb_button, 0, 0, 1, 1);
+  
   fed_button = gtk_button_new_with_label ("FEDORA");
+  gtk_widget_add_css_class(fed_button, "fed");
   gtk_widget_set_size_request(fed_button, 100, 50);
   g_signal_connect (fed_button, "clicked", G_CALLBACK (fedora_window), NULL);
 
@@ -460,10 +470,9 @@ activate (GtkApplication *app,
    * just 1 cell horizontally and vertically (ie no spanning)
    */
   gtk_grid_attach (GTK_GRID (grid), fed_button, 1, 0, 1, 1);
+  
   quit_button = gtk_button_new_with_label ("QUIT");
-  
-  /////////////////////////////////////////
-  
+  gtk_widget_add_css_class(quit_button, "quit");
   gtk_widget_set_name (quit_button, "quit");
   gtk_widget_set_size_request(quit_button, 100, 50);
   g_signal_connect_swapped (quit_button, "clicked", G_CALLBACK (gtk_window_destroy), window);
@@ -474,7 +483,7 @@ activate (GtkApplication *app,
   gtk_grid_attach (GTK_GRID (grid), quit_button, 0, 1, 2, 1);
   gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
-
+  init_css_provider();
   gtk_widget_show (window);
 
 }

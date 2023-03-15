@@ -1,6 +1,38 @@
-#deb-button {
-  color: white;
-  background-color: blue;
-  
-
+button {
+background-color: purple;
+color: chartreuse;
 }
+
+button:hover {
+  background-color: blue;
+}
+
+.deb {
+background-color: purple;
+color: chartreuse;
+}
+
+.deb:hover {
+  background-color: blue;
+}
+
+.fed {
+background-color: navy;
+color: magenta;
+}
+
+.fed:hover {
+  background-color: teal;
+  color: black;
+}
+
+.quit {
+background-color: black;
+color: red;
+}
+
+.quit:hover {
+  background-color: red;
+}
+
+
