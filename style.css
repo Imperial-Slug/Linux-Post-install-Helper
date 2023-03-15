@@ -40,22 +40,16 @@ color: red;
 
 .deb_window {
 
- background-image: url("debian1.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
+   background-image: linear-gradient(180deg, #5C2774, #335CC5, #637FFD);
 }
 
 .fed_window {
-background-image: url("fedora1.jpg");
-background-size: cover;
-background-repeat: no-repeat;
+  background-image: linear-gradient(180deg, teal, navy);
 
 }
 
 .main_window {
-background-image: url("linux1.jpg");
-background-size: cover;
-background-repeat: no-repeat;
+  background-image: linear-gradient(180deg, #436AAC, #43B7B8);
 
 }
 
@@ -64,7 +58,7 @@ background-repeat: no-repeat;
 
 checkbutton {
 
-color: #ff0c00;
+color: white;
 
 
 }

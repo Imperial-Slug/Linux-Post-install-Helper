@@ -79,6 +79,7 @@ debian_window (GtkWidget *widget,
 
   
   view = gtk_text_view_new ();
+  gtk_widget_set_opacity(view, 0.77);
     gtk_widget_add_css_class(view, "deb_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
