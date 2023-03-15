@@ -10,10 +10,19 @@ static void deb_game_toggled(GtkWidget *widget, gpointer data);
 static void deb_flatpak_toggled(GtkWidget *widget, gpointer data);
 static void deb_microcode_toggled(GtkWidget *widget, gpointer data);
 static void deb_fonts_toggled(GtkWidget *widget, gpointer data);
-
 static void deb_ufw_toggled(GtkWidget *widget, gpointer data);
 static void deb_tlp_toggled(GtkWidget *widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget *widget, gpointer data);
+
+static void fed_nvidia_toggled(GtkWidget *widget, gpointer data);
+static void fed_steam_toggled(GtkWidget *widget, gpointer data);
+static void fed_dnf_toggled(GtkWidget *widget, gpointer data);
+static void fed_flatpak_toggled(GtkWidget *widget, gpointer data);
+static void fed_repo_toggled(GtkWidget *widget, gpointer data);
+static void fed_customization_toggled(GtkWidget *widget, gpointer data);
+static void fed_ufw_toggled(GtkWidget *widget, gpointer data);
+static void fed_tlp_toggled(GtkWidget *widget, gpointer data);
+static void fed_vlc_toggled(GtkWidget *widget, gpointer data);
 
 void init_css_provider(){
 GtkCssProvider *provider = gtk_css_provider_new();
@@ -268,10 +277,10 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
+    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -380,48 +389,370 @@ static void deb_vlc_toggled(GtkWidget *widget, gpointer data) {
 }
 
 
-
-
-
 //////////////////////////////////////////
+//                                      //
+//      FEDORA WINDOW AND FUNCTIONS     //
+//                                      //
+//////////////////////////////////////////
+
+
 static void
 fedora_window (GtkWidget *widget,
-	       gpointer data)
+             gpointer   data)
 {
   GtkWidget *fed_window;
-  GtkWidget *fed_box, *fed_nvidia_check,  *deb_steam_check,*deb_game_check;
-  
-    fed_window = gtk_window_new();
-    gtk_widget_add_css_class(fed_window, "fed_window");
-    
-  gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
-  gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
+  GtkWidget *fed_box, *fed_nvidia_check, *fed_steam_check,*fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_ufw_check, *fed_tlp_check, *fed_vlc_check;
+  fed_window = gtk_window_new();
+  gtk_widget_add_css_class(fed_window, "fed_window");
+  gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: FEDORA");
   gtk_window_set_resizable (GTK_WINDOW(fed_window), FALSE);
+  gtk_window_set_default_size(GTK_WINDOW(fed_window), 700, 700);
+
   GtkWidget *view;
   GtkTextBuffer *buffer;
   
   fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (fed_window), fed_box);
   
+  // CHECKBOXES //////////
+  
     fed_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
     gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
+    
+    fed_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
+    gtk_box_append(GTK_BOX(fed_box), fed_steam_check);
 
-    deb_steam_check = gtk_check_button_new_with_label("Checkbox 2");
-    gtk_box_append(GTK_BOX(fed_box), deb_steam_check);
+    fed_dnf_check = gtk_check_button_new_with_label("  Optimize dnf package manager for faster downloads?");
+    gtk_box_append(GTK_BOX(fed_box),fed_dnf_check );
+    ////////////////////////////////////////////////
+    
+    fed_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
+    gtk_box_append(GTK_BOX(fed_box), fed_flatpak_check);
 
-   deb_game_check = gtk_check_button_new_with_label("Checkbox 3");
-    gtk_box_append(GTK_BOX(fed_box),deb_game_check);
+    fed_repo_check = gtk_check_button_new_with_label("  Enable non-free repositories?");
+    gtk_box_append(GTK_BOX(fed_box), fed_repo_check);
+
+    fed_customization_check = gtk_check_button_new_with_label("  Install gnome-tweaks and gnome-extensions for desktop customization?");
+    gtk_box_append(GTK_BOX(fed_box),fed_customization_check );
+    ///////////////////////////////////////////////////////
+     fed_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
+    gtk_box_append(GTK_BOX(fed_box), fed_ufw_check);
+
+    fed_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
+    gtk_box_append(GTK_BOX(fed_box), fed_tlp_check);
+
+    fed_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
+    gtk_box_append(GTK_BOX(fed_box),fed_vlc_check );
+    
+    
+    
+   // Create a scrolled window and set the size
+  GtkWidget *scroll_window = gtk_scrolled_window_new();
+
+  gtk_widget_set_size_request(scroll_window, 400, 300);
+
   
   view = gtk_text_view_new ();
+  gtk_widget_set_opacity(view, 0.77);
+    gtk_widget_add_css_class(view, "fed_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-  gtk_text_buffer_set_text (buffer, "sudo dnf update && sudo dnf upgrade; sudo dnf update && sudo dnf full-upgrade; ", -1);
+  gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE); //stops cursor from showing in textview when clicked. 
-  gtk_box_append(GTK_BOX(fed_box), view);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
+  gtk_box_append(GTK_BOX(fed_box), scroll_window);
   
-gtk_widget_show(fed_window);  
-
+  // checkbox logic
+  
+  g_signal_connect(G_OBJECT(fed_nvidia_check), "toggled", G_CALLBACK(fed_nvidia_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_steam_check), "toggled", G_CALLBACK(fed_steam_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_dnf_check), "toggled", G_CALLBACK(fed_dnf_toggled), buffer);
+  
+  g_signal_connect(G_OBJECT(fed_flatpak_check), "toggled", G_CALLBACK(fed_flatpak_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_repo_check), "toggled", G_CALLBACK(fed_repo_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_customization_check), "toggled", G_CALLBACK(fed_customization_toggled), buffer);
+  
+  g_signal_connect(G_OBJECT(fed_ufw_check), "toggled", G_CALLBACK(fed_ufw_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_tlp_check), "toggled", G_CALLBACK(fed_tlp_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
+  
+  
+  gtk_widget_show(fed_window);
+  
 }
+
+////////// FEDORA NVIDIA CHECKBOX ///////////////
+
+static void fed_nvidia_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs;\n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// FEDORA STEAM CHECKBOX ///////
+
+
+static void fed_steam_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install steam-devices steam-installer; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install steam-devices steam-installer;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+//// FEDORA GAME CHECKBOX ///////
+
+
+static void fed_dnf_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; ";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+//////////////////////////////////////////
+/////////////////////////////////////////
+
+////////// FEDORA FLATPAK CHECKBOX ///////////////
+
+static void fed_flatpak_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// FEDORA repo CHECKBOX ///////
+
+
+static void fed_repo_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install amd64-repo; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install amd64-repo;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+//// FEDORA customization CHECKBOX ///////
+
+
+static void fed_customization_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorecustomization-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install customization-crosextra-carlito customization-crosextra-caladea;  \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install ttf-mscorecustomization-installer rar unrar libavcodec-extra; \n sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install customization-crosextra-carlito customization-crosextra-caladea;";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////
+///// NEWEST ////////////////////
+////////////////////////////////
+
+
+
+////////// FEDORA UFW CHECKBOX ///////////////
+
+static void fed_ufw_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install ufw; sudo ufw enable; \n";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+///////////////////////////////////////////////////////////
+
+//// FEDORA TLP CHECKBOX ///////
+
+
+static void fed_tlp_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install tlp; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install tlp; ";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
+
+
+//// FEDORA VLC CHECKBOX ///////
+
+
+static void fed_vlc_toggled(GtkWidget *widget, gpointer data) {
+  
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+  static GtkTextIter iter; // A static variable to store the iterator position
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install vlc; \n", -1);
+  } else {
+    GtkTextIter start, end;
+    const gchar *search_string = "  sudo apt install vlc; ";
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+
+
+    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
+    {
+        gtk_text_buffer_delete(buffer, &start, &end);
+        gtk_text_buffer_get_start_iter(buffer, &start);
+        gtk_text_buffer_get_end_iter(buffer, &end);
+    }
+  }
+}
+
 
 static void
 activate (GtkApplication *app,
