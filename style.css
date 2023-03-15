@@ -19,7 +19,7 @@ color: chartreuse;
 
 .fed {
 background: teal;
-color: yellow;
+color: blue;
 }
 
 .fed:hover {
@@ -28,7 +28,7 @@ color: yellow;
 }
 
 .quit {
-background: black;
+background: #312e39;
 color: red;
 }
 
