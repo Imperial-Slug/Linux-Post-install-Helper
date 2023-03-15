@@ -89,7 +89,7 @@ debian_window (GtkWidget *widget,
 
   
   view = gtk_text_view_new ();
-  gtk_widget_set_opacity(view, 0.77);
+  gtk_widget_set_opacity(view, 0.9);
     gtk_widget_add_css_class(view, "deb_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
@@ -278,10 +278,10 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
     GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra; \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi; \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;";
+    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -449,7 +449,7 @@ fedora_window (GtkWidget *widget,
 
   
   view = gtk_text_view_new ();
-  gtk_widget_set_opacity(view, 0.77);
+  gtk_widget_set_opacity(view, 0.9);
     gtk_widget_add_css_class(view, "fed_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo dnf update && sudo dnf upgrade; \n  sudo dnf update && sudo dnf full-upgrade; \n", -1);
