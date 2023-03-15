@@ -1,5 +1,5 @@
 button {
-background-color: purple;
+background-color: magenta;
 color: chartreuse;
 }
 
@@ -56,5 +56,21 @@ background-repeat: no-repeat;
 background-image: url("linux1.jpg");
 background-size: cover;
 background-repeat: no-repeat;
+
+}
+
+
+
+
+checkbutton {
+
+color: #ff0c00;
+
+
+}
+
+.deb_view {
+background: black;
+color: chartreuse;
 
 }
