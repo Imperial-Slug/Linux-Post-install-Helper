@@ -1,17 +1,35 @@
+.deb_info_button {
+
+background: #FE5000;
+color: BLACK;
+font-family: "Cantarell";
+position: absolute;
+top: 10px;
+right: 10px;
+margin: 12px;
+border: 3px solid black;
+
+}
+
+
 button {
 background: magenta;
 color: chartreuse;
+border: 2px solid black;
 }
 
+/* This one also applies to the Tips buttons*/
 button:hover {
   background: blue;
+  color: YELLOW;
 }
 
 .deb {
-background: purple;
-color: chartreuse;
+background: #980001;
+color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
+  border: 3px solid black;
 }
 
 .deb:hover {
@@ -19,41 +37,47 @@ color: chartreuse;
   color: yellow;
   font-family: "Cantarell";
     font-size: 24px;
+    border: 3px solid yellow;
 }
 
 .fed {
 background: teal;
-color: Yellow;
+color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
+  border: 3px solid black;
 }
 
 .fed:hover {
-  background: navy;
+  background: blue;
   color: yellow;
   font-family: "Cantarell";
   font-size: 24px;
+  border: 3px solid yellow;
 }
 
 .quit {
 background: #312e39;
-color: red;
+color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
+  border: 3px solid black;
 }
 
 .quit:hover {
-  background: red;
-  color: chartreuse;
+  background: blue;
+  color: YELLOW;
   font-family: "Cantarell";
-  font-size: 24px;  
+  font-size: 24px;
+  border: 3px solid yellow;
 }
 
 
 .deb_window {
 
-   background-image: linear-gradient(180deg, #5C2774, #335CC5, #637FFD);
+   background-image: linear-gradient(180deg, black, #335CC5, navy);
      font-family: "Cantarell";
+     border: 1px solid black;
 }
 
 .fed_window {
@@ -63,8 +87,9 @@ color: red;
 }
 
 .main_window {
-  background-image: linear-gradient(180deg, #000000, #F04800);
+  background-image: linear-gradient(180deg, #000000, #1D1045);
   font-family: "Cantarell";
+  border: 3px solid black;
 }
 
 
@@ -90,3 +115,10 @@ color: #1FFF0F;
 font-family: "monospace";
 
 }
+
+.deb_info_window {
+font-family: "Cantarell";
+
+}
+
+

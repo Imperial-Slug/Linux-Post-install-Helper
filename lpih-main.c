@@ -51,13 +51,68 @@ GtkCssProvider *provider = gtk_css_provider_new();
     gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
+// UNDER CONSTRUCTION START //////////
+
+/////////////////////////////////////////////////////
+// INFORMATIONAL WINDOW: DEBIAN /////////////////////
+// //////////////////////////////////////////////////
+
+
+static void
+debian_info_window (GtkWidget *widget,
+             gpointer   data)
+{
+  GtkWidget *deb_info_window;
+  GtkWidget *deb_info_box; 
+  GtkWidget *deb_info_button;
+  
+  deb_info_window = gtk_window_new();
+  gtk_widget_add_css_class(deb_info_window, "deb_info_window");
+  gtk_window_set_title(GTK_WINDOW(deb_info_window), "Debian: tips");
+  gtk_window_set_resizable (GTK_WINDOW(deb_info_window), FALSE);
+  gtk_window_set_default_size(GTK_WINDOW(deb_info_window), 700, 700);
+  
+  GtkWidget *view;
+  GtkTextBuffer *buffer;
+  
+  deb_info_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+  gtk_window_set_child (GTK_WINDOW (deb_info_window), deb_info_box);
+        
+
+  
+
+ // Create a scrolled window and set the size
+  GtkWidget *scroll_info_window = gtk_scrolled_window_new();
+
+  gtk_widget_set_size_request(scroll_info_window, 400, 300);
+
+  
+  view = gtk_text_view_new ();
+  gtk_widget_set_opacity(view, 0.9);
+  gtk_widget_add_css_class(view, "deb_info_view");
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+  gtk_text_buffer_set_text (buffer, "  This is the Debian info text.", -1);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
+  
+  ///
+  gtk_box_append(GTK_BOX(deb_info_box), scroll_info_window);
+  
+  //
+  gtk_widget_show(deb_info_window);
+  
+  
+}
+  // UNDER CONSTRUCTION END //////////
 
 static void
 debian_window (GtkWidget *widget,
              gpointer   data)
 {
-  GtkWidget *deb_window;
-  GtkWidget *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check;
+   
+  GtkWidget *deb_window, *deb_box, *deb_nvidia_check, *deb_steam_check,*deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check, *deb_info_button;
+  
   deb_window = gtk_window_new();
   gtk_widget_add_css_class(deb_window, "deb_window");
   gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
@@ -69,6 +124,9 @@ debian_window (GtkWidget *widget,
   
   deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
   gtk_window_set_child (GTK_WINDOW (deb_window), deb_box);
+  
+  
+
   
   // CHECKBOXES //////////
   
@@ -111,15 +169,32 @@ debian_window (GtkWidget *widget,
   
   view = gtk_text_view_new ();
   gtk_widget_set_opacity(view, 0.9);
-    gtk_widget_add_css_class(view, "deb_view");
+  gtk_widget_add_css_class(view, "deb_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
-    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
+  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
   gtk_box_append(GTK_BOX(deb_box), scroll_window);
   
-  // checkbox logic
+  // DEBIAN INFO WINDOW //
+  
+  // Create separate box to hold button to solve sizing issues //////
+  GtkWidget *deb_info_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_append(GTK_BOX(deb_box), deb_info_box);
+  // create info button for Debian window //
+  
+  deb_info_button = gtk_button_new_with_label ("Tips");
+  gtk_widget_add_css_class(view, "deb_info_button");
+  gtk_widget_set_size_request(deb_info_button, 100, 100);
+  gtk_widget_add_css_class(deb_info_button, "deb_info_button");
+  gtk_box_append(GTK_BOX(deb_info_box), deb_info_button);
+  
+
+  
+// CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
+
+  g_signal_connect (deb_info_button, "clicked", G_CALLBACK (debian_info_window), NULL);
   
   g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(deb_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_steam_check), "toggled", G_CALLBACK(deb_steam_toggled), buffer);
@@ -479,7 +554,7 @@ fedora_window (GtkWidget *widget,
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
   gtk_box_append(GTK_BOX(fed_box), scroll_window);
   
-  // checkbox logic
+// Connect checkbox functions to checkboxes ///
   
   g_signal_connect(G_OBJECT(fed_nvidia_check), "toggled", G_CALLBACK(fed_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_steam_check), "toggled", G_CALLBACK(fed_steam_toggled), buffer);
@@ -765,6 +840,9 @@ static void fed_vlc_toggled(GtkWidget *widget, gpointer data) {
 }
 
 
+  
+  /// INITIAL WINDOW ////////////////////////////////////////////////////
+
 static void
 activate (GtkApplication *app,
           gpointer        user_data)
@@ -776,7 +854,7 @@ activate (GtkApplication *app,
   GtkWidget *quit_button;
   
 
-  
+///////////////////////////////////////////////////////////////////////  
  ///////////////////////////////////////////////////////////////////////////
 
   /* create a new window, and set its title */
