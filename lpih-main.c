@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 
+
 // TODO // USE A VARIABLE TO HOLD THE PROPER COMMAND DEPENDING ON THE GPU CHOSEN ///////////////////
 static void deb_nvidia_toggled(GtkWidget *widget, gpointer data);
 static void deb_steam_toggled(GtkWidget *widget, gpointer data);
@@ -916,6 +917,8 @@ activate (GtkApplication *app,
   GtkWidget *deb_button;
   GtkWidget *fed_button;
   GtkWidget *quit_button;
+
+
   
 
 ///////////////////////////////////////////////////////////////////////  
@@ -927,7 +930,7 @@ activate (GtkApplication *app,
   gtk_window_set_title (GTK_WINDOW (window), "Linux Post-install Helper For Debian and Fedora");
   gtk_widget_set_size_request(window, 444, 444);
   gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
-    
+
 /////////////////////////////////////////////////////////////////////////
 
 
@@ -989,6 +992,8 @@ main (int    argc,
   int status;
 
   app = gtk_application_new ("petc0016.project.lpisg", G_APPLICATION_DEFAULT_FLAGS);
+  
+ 
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
   status = g_application_run (G_APPLICATION (app), argc, argv);
   g_object_unref (app);
