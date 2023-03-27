@@ -12,6 +12,20 @@ border-radius: 25px;
 
 }
 
+.fed_info_button {
+
+background: #FE5000;
+color: BLACK;
+font-family: "Cantarell";
+position: absolute;
+top: 10px;
+right: 10px;
+margin: 12px;
+border: 3px solid black;
+border-radius: 25px;
+
+}
+
 
 button {
 background: magenta;

@@ -51,8 +51,6 @@ GtkCssProvider *provider = gtk_css_provider_new();
     gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-// UNDER CONSTRUCTION START //////////
-
 /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: DEBIAN /////////////////////
 // //////////////////////////////////////////////////
@@ -79,8 +77,6 @@ debian_info_window (GtkWidget *widget,
   gtk_window_set_child (GTK_WINDOW (deb_info_window), deb_info_box);
         
 
-  
-
  // Create a scrolled window and set the size
   GtkWidget *scroll_info_window = gtk_scrolled_window_new();
 
@@ -104,7 +100,7 @@ debian_info_window (GtkWidget *widget,
   
   
 }
-  // UNDER CONSTRUCTION END //////////
+
 
 static void
 debian_window (GtkWidget *widget,
@@ -190,8 +186,8 @@ debian_window (GtkWidget *widget,
   gtk_widget_add_css_class(deb_info_button, "deb_info_button");
   gtk_box_append(GTK_BOX(deb_info_box), deb_info_button);
   
-
   
+
 // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
 
   g_signal_connect (deb_info_button, "clicked", G_CALLBACK (debian_info_window), NULL);
@@ -481,19 +477,74 @@ static void deb_vlc_toggled(GtkWidget *widget, gpointer data) {
 }
 
 
+// UNDER CONSTRUCTION START //////////
+
+/////////////////////////////////////////////////////
+// INFORMATIONAL WINDOW: FEDORA /////////////////////
+// //////////////////////////////////////////////////
+
+
+static void
+fedora_info_window (GtkWidget *widget,
+             gpointer   data)
+{
+  GtkWidget *fed_info_window;
+  GtkWidget *fed_info_box; 
+  GtkWidget *fed_info_button;
+  
+  fed_info_window = gtk_window_new();
+  gtk_widget_add_css_class(fed_info_window, "fed_info_window");
+  gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: tips");
+  gtk_window_set_resizable (GTK_WINDOW(fed_info_window), FALSE);
+  gtk_window_set_default_size(GTK_WINDOW(fed_info_window), 700, 700);
+  
+  GtkWidget *view;
+  GtkTextBuffer *buffer;
+  
+  fed_info_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+  gtk_window_set_child (GTK_WINDOW (fed_info_window), fed_info_box);
+        
+
+  
+
+ // Create a scrolled window and set the size
+  GtkWidget *scroll_info_window = gtk_scrolled_window_new();
+
+  gtk_widget_set_size_request(scroll_info_window, 400, 300);
+
+  
+  view = gtk_text_view_new ();
+  gtk_widget_set_opacity(view, 0.9);
+  gtk_widget_add_css_class(view, "fed_info_view");
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+  gtk_text_buffer_set_text (buffer, "  This is the Fedora info text.", -1);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+  gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
+  
+  ///
+  gtk_box_append(GTK_BOX(fed_info_box), scroll_info_window);
+  
+  //
+  gtk_widget_show(fed_info_window);
+  
+  
+}
+  // UNDER CONSTRUCTION END //////////
+
+
 //////////////////////////////////////////
 //                                      //
 //      FEDORA WINDOW AND FUNCTIONS     //
 //                                      //
 //////////////////////////////////////////
 
-
 static void
 fedora_window (GtkWidget *widget,
              gpointer   data)
 {
   GtkWidget *fed_window;
-  GtkWidget *fed_box, *fed_nvidia_check, *fed_steam_check,*fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check;
+  GtkWidget *fed_box, *fed_nvidia_check, *fed_steam_check,*fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check, *fed_info_button;
   fed_window = gtk_window_new();
   gtk_widget_add_css_class(fed_window, "fed_window");
   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
@@ -554,7 +605,21 @@ fedora_window (GtkWidget *widget,
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
   gtk_box_append(GTK_BOX(fed_box), scroll_window);
   
+  // FEDORA INFO WINDOW //
+  
+  // Create separate box to hold button to solve sizing issues //////
+  GtkWidget *fed_info_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_box_append(GTK_BOX(fed_box), fed_info_box);
+  // create info button for Debian window //
+  
+  fed_info_button = gtk_button_new_with_label ("Tips");
+  gtk_widget_add_css_class(view, "fed_info_button");
+  gtk_widget_set_size_request(fed_info_button, 100, 100);
+  gtk_widget_add_css_class(fed_info_button, "fed_info_button");
+  gtk_box_append(GTK_BOX(fed_info_box), fed_info_button);
+
 // Connect checkbox functions to checkboxes ///
+  g_signal_connect (fed_info_button, "clicked", G_CALLBACK (fedora_info_window), NULL);
   
   g_signal_connect(G_OBJECT(fed_nvidia_check), "toggled", G_CALLBACK(fed_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_steam_check), "toggled", G_CALLBACK(fed_steam_toggled), buffer);
@@ -840,8 +905,7 @@ static void fed_vlc_toggled(GtkWidget *widget, gpointer data) {
 }
 
 
-  
-  /// INITIAL WINDOW ////////////////////////////////////////////////////
+////// INITIAL WINDOW ////////////////////////////////////////////////////
 
 static void
 activate (GtkApplication *app,
@@ -870,7 +934,7 @@ activate (GtkApplication *app,
 
   
 
-  grid = gtk_grid_new ();
+    grid = gtk_grid_new ();
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE); // Make columns of equal width
     gtk_grid_set_row_spacing(GTK_GRID(grid), 50); // Add spacing between rows
