@@ -46,9 +46,10 @@ static void fed_codecs_toggled(GtkWidget *widget, gpointer data);
 static void fed_tlp_toggled(GtkWidget *widget, gpointer data);
 static void fed_vlc_toggled(GtkWidget *widget, gpointer data);
 
+
 void init_css_provider(){
 GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_path(provider, "style.css");
+    gtk_css_provider_load_from_path(provider, "Resources/style.css");
     gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
@@ -86,16 +87,68 @@ debian_info_window (GtkWidget *widget,
   
   view = gtk_text_view_new ();
   gtk_widget_set_opacity(view, 0.9);
+  gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
   gtk_widget_add_css_class(view, "deb_info_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-  gtk_text_buffer_set_text (buffer, "  This is the Debian info text.", -1);
+  gtk_text_buffer_set_text (buffer, "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems.\n\
+\n\
+Debian, like other Linux distributions, has a package manager; which handles the installation, updating and removal of software packages on the computer.  Debian's package manager is called apt.  In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user, example: sudo apt install nvidia-driver, where nvidia-driver is the package you are trying to install.  \n\
+\n\
+There are some insrtuctions for optional system configuration outlined here that you might find useful.\n\
+\n\
+SETTING STATIC IP\n\
+\n\
+Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant conection by setting a static IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  The instructions are as follows:\n\
+\n\
+1.     Click in the top-right corner of the screen where the power icon is.  Click the gear-shaped icon to access settings.  You can also find the settings application icon by pressing the super key (Windows key or command key on Mac) and either find it visually or search settings in the searchbar that pops up with the GNOME Activities window.  This Activities window can also be accessed by clicking Activities in the tope left of the screen.\n\
+\n\
+\n\
+2.     If you are using Wi-Fi, click on Wi-Fi at the top of the scrollable menu on the left of the settings window.  If you are using ethernet, click on Network. \n\
+\n\
+3.     Click on the gear icon for the network connection you are using.  Take note of the IP you are currently assigned in the IPv4 Address section of this window, under the Details tab.  When you assign a static IP to your connection, you will make one that looks very similar to this one; save for the digits after the last decimal.  So, if your IPv4 is currently 172.178.1.19 then you can likely assign yourself anything from 192.168.1.0 to 192.168.1.255, as long as the address is not in use by another network device.\n\
+\n\
+4.     Click the IPv4 tab, and change the method from Automatic (DHCP) to Manual.\n\
+\n\
+5.     In the address field, enter the static IP address you want to use.  \n\
+\n\
+6.     Under Netmask, enter the subnet mask for your network.  You can enter the ip addr show command to check which netmask to use.  If you are using Wi-Fi, you will be looking for an interface that looks something like wlp32s0.  Ethernet will look something like enp18s0. \n\
+Beside the inet line for your interface in the terminal command output, there will be a slash follwed by a number: this is the number of bits in your subnet mask.\n\
+\n\
+Thus, inet 192.168.1.123/24 indicates a 24-bit netmask, which means 255.255.255.0 is your subnet mask.  \n\
+\n\
+- If it reads /16 then you will enter 255.255.0.0.  \n\
+\n\
+- For /8: 255.0.0.0 \n\
+\n\
+- For /25: 255.255.255.128 and finally \n\
+\n\
+- For /30 we have 255.255.255.252 for the subnet mask.    \n\
+\n\
+Basically, a subnet mask determines the size of a network.\n\
+\n\
+7.  Now we must determine the Gateway address, which is the address of your router.  If you have accessed your router's admin tools from your browser before by typing in an IP address, this would be the same address; and it will generally be a similar IP sequence to what you have been dealing with, but with 1 as the only digit after the last decimal, like:  XXX.XXX.X.1 \n\
+So, if we are to keep with our 192.168.1.123 example, our gateway is most likely 192.168.1.1.  However, we want to be sure of this.  To confirm your gateway, use the ip route show command in the terminal.  Look for the default via line with an IP beside it.  This is your gateway address to enter. \n\
+\n\
+8.    Time to choose your DNS servers.  You can pick whichever one you like.  Cloudflare is popular with many, since it offers security features like DDoS protection, SSL encryption, and web application firewall.  You can specify 2 addresses, in case one is down (seperate them with a comma in the textfield).  To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare.  To use OpenDNS, use 208.67.222.222, 208.67.220.220. \n\
+\n\
+9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings.", -1);
+  
+  
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
   
+
+  // Create an image widget
+     GtkWidget *static_ip_image;
+  
+  static_ip_image = gtk_image_new_from_file("Resources/static_ip_image.png");
+
+    //gtk_box_pack_start(GTK_BOX(deb_info_box), static_ip_image, FALSE, FALSE, 0);
   ///
   gtk_box_append(GTK_BOX(deb_info_box), scroll_info_window);
-  
+
+
   //
   gtk_widget_show(deb_info_window);
   
