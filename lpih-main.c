@@ -277,21 +277,18 @@ static void deb_nvidia_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install nvidia-driver nvidia-driver-libs;\n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
-
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
+
 
 ///////////////////////////////////////////////////////////
 
@@ -307,18 +304,15 @@ static void deb_steam_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install steam-devices steam-installer; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install steam-devices steam-installer;";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install steam-devices steam-installer; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -337,18 +331,15 @@ static void deb_game_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode; ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -369,18 +360,15 @@ static void deb_flatpak_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
   } else {
-    GtkTextIter start, end;
+    GtkTextIter start, end, match_start, match_end;
     const gchar *search_string = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -399,18 +387,15 @@ static void deb_microcode_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install amd64-microcode; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install amd64-microcode;";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install amd64-microcode; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -429,18 +414,15 @@ static void deb_fonts_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install ttf-mscorefonts-installer rar unrar libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -457,18 +439,15 @@ static void deb_ufw_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
   } else {
-    GtkTextIter start, end;
+    GtkTextIter start, end, match_start, match_end;
     const gchar *search_string = "  sudo apt install ufw; sudo ufw enable; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -487,18 +466,15 @@ static void deb_tlp_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install tlp; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install tlp; ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install tlp; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -517,18 +493,15 @@ static void deb_vlc_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo apt install vlc; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo apt install vlc; ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo apt install vlc; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -704,18 +677,15 @@ static void fed_nvidia_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;  \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;  \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -734,18 +704,15 @@ static void fed_steam_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install steam; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dnf install steam;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dnf install steam; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -762,20 +729,17 @@ static void fed_dnf_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -794,20 +758,17 @@ static void fed_flatpak_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -824,20 +785,17 @@ static void fed_repo_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -854,19 +812,16 @@ static void fed_customization_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gnome-tweaks gnome-extensions-app;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gnome-tweaks gnome-extensions-app; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dnf install gnome-tweaks gnome-extensions-app;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dnf install gnome-tweaks gnome-extensions-app; \n";
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -881,20 +836,17 @@ static void fed_codecs_toggled(GtkWidget *widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia; \n", -1);
   } else {
-    GtkTextIter start, end;
-    const gchar *search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  ";
+    GtkTextIter start, end, match_start, match_end;
+    const gchar *search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -913,18 +865,15 @@ static void fed_tlp_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install tlp; \n", -1);
   } else {
-    GtkTextIter start, end;
+    GtkTextIter start, end, match_start, match_end;
     const gchar *search_string = "  sudo dnf install tlp; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
@@ -943,18 +892,15 @@ static void fed_vlc_toggled(GtkWidget *widget, gpointer data) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install vlc; \n", -1);
   } else {
-    GtkTextIter start, end;
+    GtkTextIter start, end, match_start, match_end;
     const gchar *search_string = "  sudo dnf install vlc; ";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
 
 
-    while (gtk_text_iter_forward_search(&start, search_string, 0, &start, NULL, NULL))
-    {
-        gtk_text_buffer_delete(buffer, &start, &end);
-        gtk_text_buffer_get_start_iter(buffer, &start);
-        gtk_text_buffer_get_end_iter(buffer, &end);
+    if (gtk_text_iter_forward_search(&start, search_string, 0, &match_start, &match_end, NULL)) {
+        gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
 }
