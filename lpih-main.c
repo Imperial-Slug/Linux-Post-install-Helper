@@ -232,11 +232,9 @@ debian_window(GtkWidget * widget,
   g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(deb_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_steam_check), "toggled", G_CALLBACK(deb_steam_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_game_check), "toggled", G_CALLBACK(deb_game_toggled), buffer);
-
   g_signal_connect(G_OBJECT(deb_flatpak_check), "toggled", G_CALLBACK(deb_flatpak_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_microcode_check), "toggled", G_CALLBACK(deb_microcode_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_fonts_check), "toggled", G_CALLBACK(deb_fonts_toggled), buffer);
-
   g_signal_connect(G_OBJECT(deb_ufw_check), "toggled", G_CALLBACK(deb_ufw_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_tlp_check), "toggled", G_CALLBACK(deb_tlp_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
@@ -267,8 +265,6 @@ static void deb_nvidia_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// DEBIAN STEAM CHECKBOX ///////
 
@@ -316,9 +312,6 @@ static void deb_game_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-//////////////////////////////////////////
-/////////////////////////////////////////
-
 ////////// DEBIAN FLATPAK CHECKBOX ///////////////
 
 static void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
@@ -341,8 +334,6 @@ static void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// DEBIAN MICROCODE CHECKBOX ///////
 
@@ -412,8 +403,6 @@ static void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// DEBIAN TLP CHECKBOX ///////
 
@@ -542,17 +531,13 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 \n\
 9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings.", -1);
 
-
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
   gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
-
-  ///
   gtk_box_append(GTK_BOX(fed_info_box), scroll_info_window);
 
-  //
   gtk_widget_show(fed_info_window);
 
 }
@@ -587,7 +572,6 @@ fedora_window(GtkWidget * widget,
 
   fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
   gtk_box_append(GTK_BOX(fed_box), fed_dnf_check);
-  ////////////////////////////////////////////////
 
   fed_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
   gtk_box_append(GTK_BOX(fed_box), fed_flatpak_check);
@@ -597,7 +581,7 @@ fedora_window(GtkWidget * widget,
 
   fed_customization_check = gtk_check_button_new_with_label("  Install gnome-tweaks and gnome-extensions for desktop customization?");
   gtk_box_append(GTK_BOX(fed_box), fed_customization_check);
-  ///////////////////////////////////////////////////////
+  
   fed_codecs_check = gtk_check_button_new_with_label("  Do you want to install multimedia codecs for unsupported media formats?");
   gtk_box_append(GTK_BOX(fed_box), fed_codecs_check);
 
@@ -620,7 +604,7 @@ fedora_window(GtkWidget * widget,
 
   gtk_widget_add_css_class(view, "fed_view");
   buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-  gtk_text_buffer_set_text(buffer, "  sudo dnf update &&sudo dnf upgrade; \n  sudo dnf update &&sudo dnf full-upgrade; \n", -1);
+  gtk_text_buffer_set_text(buffer, "  sudo dnf update && sudo dnf upgrade; \n  sudo dnf update && sudo dnf full-upgrade; \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -645,11 +629,9 @@ fedora_window(GtkWidget * widget,
   g_signal_connect(G_OBJECT(fed_nvidia_check), "toggled", G_CALLBACK(fed_nvidia_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_steam_check), "toggled", G_CALLBACK(fed_steam_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_dnf_check), "toggled", G_CALLBACK(fed_dnf_toggled), buffer);
-
   g_signal_connect(G_OBJECT(fed_flatpak_check), "toggled", G_CALLBACK(fed_flatpak_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_repo_check), "toggled", G_CALLBACK(fed_repo_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_customization_check), "toggled", G_CALLBACK(fed_customization_toggled), buffer);
-
   g_signal_connect(G_OBJECT(fed_codecs_check), "toggled", G_CALLBACK(fed_codecs_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_tlp_check), "toggled", G_CALLBACK(fed_tlp_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
@@ -680,8 +662,6 @@ static void fed_nvidia_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// FEDORA STEAM CHECKBOX ///////
 
@@ -729,9 +709,6 @@ static void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-//////////////////////////////////////////
-/////////////////////////////////////////
-
 ////////// FEDORA FLATPAK CHECKBOX ///////////////
 
 static void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
@@ -754,8 +731,6 @@ static void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// FEDORA repo CHECKBOX ///////
 
@@ -811,10 +786,10 @@ static void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, &iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel &&sudo dnf group upgrade --with-optional Multimedia; \n", -1);
+    gtk_text_buffer_insert(buffer, &iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia; \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel &&sudo dnf group upgrade --with-optional Multimedia; \n";
+    const gchar * search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia; \n";
 
     gtk_text_buffer_get_start_iter(buffer, &start);
     gtk_text_buffer_get_end_iter(buffer, &end);
@@ -824,8 +799,6 @@ static void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
     }
   }
 }
-
-///////////////////////////////////////////////////////////
 
 //// FEDORA TLP CHECKBOX ///////
 
@@ -907,9 +880,6 @@ activate(GtkApplication * app,
   gtk_widget_set_size_request(deb_button, 100, 50);
   g_signal_connect(deb_button, "clicked", G_CALLBACK(debian_window), NULL);
 
-  /* Place the first button in the grid cell (0, 0), and make it fill
-   * just 1 cell horizontally and vertically (ie no spanning)
-   */
   gtk_grid_attach(GTK_GRID(grid), deb_button, 0, 0, 1, 1);
 
   fed_button = gtk_button_new_with_label("FEDORA");
@@ -917,9 +887,6 @@ activate(GtkApplication * app,
   gtk_widget_set_size_request(fed_button, 100, 50);
   g_signal_connect(fed_button, "clicked", G_CALLBACK(fedora_window), NULL);
 
-  /* Place the second button in the grid cell (1, 0), and make it fill
-   * just 1 cell horizontally and vertically (ie no spanning)
-   */
   gtk_grid_attach(GTK_GRID(grid), fed_button, 1, 0, 1, 1);
 
   quit_button = gtk_button_new_with_label("QUIT");
@@ -928,9 +895,6 @@ activate(GtkApplication * app,
   gtk_widget_set_size_request(quit_button, 100, 50);
   g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(gtk_window_destroy), window);
 
-  /* Place the Quit button in the grid cell (0, 1), and make it
-   * span 2 columns.
-   */
   gtk_grid_attach(GTK_GRID(grid), quit_button, 0, 1, 2, 1);
   gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
   gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
