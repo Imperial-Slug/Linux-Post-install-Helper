@@ -96,7 +96,7 @@ color: YELLOW;
 }
 
 .fed_window {
-  background-image: linear-gradient(180deg, teal, navy);
+  background-image: linear-gradient(180deg, black, teal);
   color: yellow;
   font-family: "Cantarell";
 }
@@ -106,8 +106,6 @@ color: YELLOW;
   font-family: "Cantarell";
   border: 3px solid black;
 }
-
-
 
 
 checkbutton {
@@ -131,9 +129,20 @@ font-family: "monospace";
 
 }
 
-.deb_info_window {
+
+
+
+.deb_info_window_view {
 font-family: "Cantarell";
+background-image: linear-gradient(180deg, #000000, #292168);
+color:#39D601;
 
 }
 
 
+.fed_info_window_view {
+font-family: "Cantarell";
+background-image: linear-gradient(180deg, #000000, #008080);
+color:YELLOW;
+
+}

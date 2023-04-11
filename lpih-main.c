@@ -82,10 +82,11 @@ debian_info_window (GtkWidget *widget,
  // Create a scrolled window and set the size
   GtkWidget *scroll_info_window = gtk_scrolled_window_new();
 
-  gtk_widget_set_size_request(scroll_info_window, 400, 300);
+  gtk_widget_set_size_request(scroll_info_window, 700, 700);
 
   
   view = gtk_text_view_new ();
+  gtk_widget_add_css_class(view, "deb_info_window_view");
   gtk_widget_set_opacity(view, 0.9);
   gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
   gtk_widget_add_css_class(view, "deb_info_view");
@@ -94,11 +95,11 @@ debian_info_window (GtkWidget *widget,
 \n\
 Debian, like other Linux distributions, has a package manager; which handles the installation, updating and removal of software packages on the computer.  Debian's package manager is called apt.  In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user, example: sudo apt install nvidia-driver, where nvidia-driver is the package you are trying to install.  \n\
 \n\
-There are some insrtuctions for optional system configuration outlined here that you might find useful.\n\
+There are some instructions for optional system configuration outlined here that you might find useful.\n\
 \n\
 SETTING STATIC IP\n\
 \n\
-Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant conection by setting a static IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  The instructions are as follows:\n\
+Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant connection by setting a static IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  The instructions are as follows:\n\
 \n\
 1.     Click in the top-right corner of the screen where the power icon is.  Click the gear-shaped icon to access settings.  You can also find the settings application icon by pressing the super key (Windows key or command key on Mac) and either find it visually or search settings in the searchbar that pops up with the GNOME Activities window.  This Activities window can also be accessed by clicking Activities in the tope left of the screen.\n\
 \n\
@@ -124,7 +125,7 @@ Thus, inet 192.168.1.123/24 indicates a 24-bit netmask, which means 255.255.255.
 \n\
 - For /30 we have 255.255.255.252 for the subnet mask.    \n\
 \n\
-Basically, a subnet mask determines the size of a network.\n\
+A subnet mask determines the size of a network: if more bits are available, then more devices can be connected.\n\
 \n\
 7.  Now we must determine the Gateway address, which is the address of your router.  If you have accessed your router's admin tools from your browser before by typing in an IP address, this would be the same address; and it will generally be a similar IP sequence to what you have been dealing with, but with 1 as the only digit after the last decimal, like:  XXX.XXX.X.1 \n\
 So, if we are to keep with our 192.168.1.123 example, our gateway is most likely 192.168.1.1.  However, we want to be sure of this.  To confirm your gateway, use the ip route show command in the terminal.  Look for the default via line with an IP beside it.  This is your gateway address to enter. \n\
@@ -136,6 +137,8 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
   
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+  gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
+  gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
   
 
@@ -530,9 +533,6 @@ static void deb_vlc_toggled(GtkWidget *widget, gpointer data) {
   }
 }
 
-
-// UNDER CONSTRUCTION START //////////
-
 /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
@@ -564,12 +564,14 @@ fedora_info_window (GtkWidget *widget,
  // Create a scrolled window and set the size
   GtkWidget *scroll_info_window = gtk_scrolled_window_new();
 
-  gtk_widget_set_size_request(scroll_info_window, 400, 300);
+  gtk_widget_set_size_request(scroll_info_window, 700, 700);
 
   
   view = gtk_text_view_new ();
   gtk_widget_set_opacity(view, 0.9);
-  gtk_widget_add_css_class(view, "fed_info_view");
+  gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
+  gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
+  gtk_widget_add_css_class(view, "fed_info_window_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  This is the Fedora info text.", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
@@ -584,8 +586,6 @@ fedora_info_window (GtkWidget *widget,
   
   
 }
-  // UNDER CONSTRUCTION END //////////
-
 
 //////////////////////////////////////////
 //                                      //
@@ -651,12 +651,13 @@ fedora_window (GtkWidget *widget,
   
   view = gtk_text_view_new ();
   gtk_widget_set_opacity(view, 0.9);
-    gtk_widget_add_css_class(view, "fed_view");
+  
+  gtk_widget_add_css_class(view, "fed_view");
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
   gtk_text_buffer_set_text (buffer, "  sudo dnf update && sudo dnf upgrade; \n  sudo dnf update && sudo dnf full-upgrade; \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
-    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
+  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
   gtk_box_append(GTK_BOX(fed_box), scroll_window);
   
   // FEDORA INFO WINDOW //
