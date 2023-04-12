@@ -1,4 +1,4 @@
-# This can be used on Linux to compile it into a runnable file.
+# This can be used on Linux to compile the lpih-main.c file into a runnable file.
 
 gcc $(pkg-config --cflags gtk4) -o lpih-main-runnable lpih-main.c $(pkg-config --libs gtk4)
 

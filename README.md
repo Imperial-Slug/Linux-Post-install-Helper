@@ -36,5 +36,3 @@ programming skills to create an application that takes care of any post-installa
 scare new Linux desktop users away, and that might make it more inviting for others to try Linux; taking some of
 the desktop marketshare away from profit-focused, proprietary operating systems that only exist to make money
 for someone far removed from everyday life.
-
-This project is far from finished and will eventually support other distributions.  
