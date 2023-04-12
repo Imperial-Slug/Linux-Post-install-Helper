@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linux Post-install Helper
+Comment=Aid in post-install Linux Desktop activities
+Exec=/bin/lpih-main
+Icon=/usr/share/icons/hicolor/512x512/apps/petc0016.project.lpisg.png
+Terminal=false
+Type=Application
+Categories=GTK;
