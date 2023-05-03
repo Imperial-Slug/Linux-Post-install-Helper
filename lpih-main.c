@@ -271,10 +271,10 @@ static void deb_steam_toggled(GtkWidget * widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install steam-devices steam-installer; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install steam-devices steam-installer; \n";
+    const gchar * search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -294,10 +294,10 @@ static void deb_game_toggled(GtkWidget * widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
+    const gchar * search_string = "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
