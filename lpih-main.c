@@ -221,7 +221,6 @@ debian_window(GtkWidget * widget,
   gtk_widget_add_css_class(deb_info_button, "deb_info_button");
   gtk_box_append(GTK_BOX(deb_info_box), deb_info_button);
 
-  // Here
   // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
 
   g_signal_connect(deb_info_button, "clicked", G_CALLBACK(debian_info_window), NULL);
