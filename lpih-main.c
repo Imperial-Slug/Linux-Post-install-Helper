@@ -21,6 +21,8 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <X11/Xlib.h>
+#include <GL/gl.h>
 
 static void deb_nvidia_toggled(GtkWidget * widget, gpointer data);
 static void deb_steam_toggled(GtkWidget * widget, gpointer data);
@@ -31,6 +33,7 @@ static void deb_fonts_toggled(GtkWidget * widget, gpointer data);
 static void deb_ufw_toggled(GtkWidget * widget, gpointer data);
 static void deb_tlp_toggled(GtkWidget * widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget * widget, gpointer data);
+static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data);
 
 static void fed_nvidia_toggled(GtkWidget * widget, gpointer data);
 static void fed_steam_toggled(GtkWidget * widget, gpointer data);
@@ -41,10 +44,22 @@ static void fed_customization_toggled(GtkWidget * widget, gpointer data);
 static void fed_codecs_toggled(GtkWidget * widget, gpointer data);
 static void fed_tlp_toggled(GtkWidget * widget, gpointer data);
 static void fed_vlc_toggled(GtkWidget * widget, gpointer data);
+static void on_fed_window_destroy(GtkWidget *fed_window, gpointer user_data);
+
+// Static variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
+// 1 = AMD, 2 = Intel, 3 = Nvidia...
+static int cpu_manufacturer = 0;
+static int gpu_manufacturer = 0;
+
+//For keeping track of single-instance windows.
+static int debian_window_open = 0;
+static int debian_tips_open = 0;
+static int fedora_window_open = 0;
+static int fedora_tips_open = 0;
 
 void init_css_provider() {
   GtkCssProvider * provider = gtk_css_provider_new();
-  gtk_css_provider_load_from_path(provider, "/usr/share/LPIH/css/style.css");
+  gtk_css_provider_load_from_path(provider, "Resources/style.css");
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
@@ -148,7 +163,9 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 static void
 debian_window(GtkWidget * widget,
   gpointer data) {
-
+  
+  if (debian_window_open != 1) {
+      
   GtkWidget * deb_window, * deb_box, * deb_nvidia_check, * deb_steam_check, * deb_game_check, * deb_flatpak_check, * deb_microcode_check, * deb_fonts_check, * deb_ufw_check, * deb_tlp_check, * deb_vlc_check, * deb_info_button;
 
   deb_window = gtk_window_new();
@@ -234,10 +251,13 @@ debian_window(GtkWidget * widget,
   g_signal_connect(G_OBJECT(deb_ufw_check), "toggled", G_CALLBACK(deb_ufw_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_tlp_check), "toggled", G_CALLBACK(deb_tlp_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
+  g_signal_connect(deb_window, "destroy", G_CALLBACK(on_deb_window_destroy), NULL);
 
   gtk_widget_show(deb_window);
 
-}
+}               
+    debian_window_open = 1;               
+  }
 
 ////////// DEBIAN NVIDIA CHECKBOX ///////////////
 
@@ -446,6 +466,11 @@ static void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
+static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data)
+{
+  debian_window_open = 0;
+}
+
 /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
@@ -547,6 +572,10 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 static void
 fedora_window(GtkWidget * widget,
   gpointer data) {
+    
+  if (fedora_window_open != 1) 
+  { 
+    
   GtkWidget * fed_window;
   GtkWidget * fed_box, * fed_nvidia_check, * fed_steam_check, * fed_dnf_check, * fed_flatpak_check, * fed_repo_check, * fed_customization_check, * fed_codecs_check, * fed_tlp_check, * fed_vlc_check, * fed_info_button;
   fed_window = gtk_window_new();
@@ -631,10 +660,13 @@ fedora_window(GtkWidget * widget,
   g_signal_connect(G_OBJECT(fed_codecs_check), "toggled", G_CALLBACK(fed_codecs_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_tlp_check), "toggled", G_CALLBACK(fed_tlp_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
+  g_signal_connect(fed_window, "destroy", G_CALLBACK(on_fed_window_destroy), NULL);
 
   gtk_widget_show(fed_window);
 
 }
+  fedora_window_open = 1;                 
+  }
 
 ////////// FEDORA NVIDIA CHECKBOX ///////////////
 
@@ -842,11 +874,17 @@ static void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
+static void on_fed_window_destroy(GtkWidget *fed_window, gpointer user_data)
+{
+  fedora_window_open = 0;
+}
+
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
 static void
 activate(GtkApplication * app,
   gpointer user_data) {
+  
   GtkWidget * window;
   GtkWidget * grid;
   GtkWidget * deb_button;
@@ -899,14 +937,21 @@ activate(GtkApplication * app,
 
 }
 
+
+static void on_quit(GtkApplication *app, gpointer user_data)
+{
+  app = NULL;
+}
+
 int
 main(int argc,
   char ** argv) {
+  
   GtkApplication * app;
-  int status;
-
+  int status;             
   app = gtk_application_new("petc0016.project.lpisg", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
+  g_signal_connect(app, "shutdown", G_CALLBACK(on_quit), NULL);
   status = g_application_run(G_APPLICATION(app), argc, argv);
   g_object_unref(app);
 
@@ -914,53 +959,3 @@ main(int argc,
 }
 
 
-
-
-
-
-//             ████████╗██╗░░██╗░█████╗░███╗░░██╗██╗░░██╗░██████╗██╗  ██╗░░██╗░█████╗░██╗░░░██╗███████╗  ░█████╗░
-//             ╚══██╔══╝██║░░██║██╔══██╗████╗░██║██║░██╔╝██╔════╝██║  ██║░░██║██╔══██╗██║░░░██║██╔════╝  ██╔══██╗
-//             ░░░██║░░░███████║███████║██╔██╗██║█████═╝░╚█████╗░██║  ███████║███████║╚██╗░██╔╝█████╗░░  ███████║
-//             ░░░██║░░░██╔══██║██╔══██║██║╚████║██╔═██╗░░╚═══██╗╚═╝  ██╔══██║██╔══██║░╚████╔╝░██╔══╝░░  ██╔══██║
-//             ░░░██║░░░██║░░██║██║░░██║██║░╚███║██║░╚██╗██████╔╝██╗  ██║░░██║██║░░██║░░╚██╔╝░░███████╗  ██║░░██║
-//             ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚═════╝░╚═╝  ╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝  ╚═╝░░╚═╝
-
-//             ███╗░░██╗██╗░█████╗░███████╗  ██████╗░░█████╗░██╗░░░██╗
-//             ████╗░██║██║██╔══██╗██╔════╝  ██╔══██╗██╔══██╗╚██╗░██╔╝
-//             ██╔██╗██║██║██║░░╚═╝█████╗░░  ██║░░██║███████║░╚████╔╝░
-//             ██║╚████║██║██║░░██╗██╔══╝░░  ██║░░██║██╔══██║░░╚██╔╝░░
-//             ██║░╚███║██║╚█████╔╝███████╗  ██████╔╝██║░░██║░░░██║░░░
-//             ╚═╝░░╚══╝╚═╝░╚════╝░╚══════╝  ╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░
-
-
-
-
-
-
-//            _____                                      _____                     
-//          ,888888b.                                  ,888888b.                   
-//        .d888888888b                               .d888888888b                  
-//    _..-'.`*'_,88888b                          _..-'.`*'_,88888b                 
-//  ,'..-..`"ad88888888b.                      ,'..-..`"ad88888888b.               
-//         ``-. `*Y888888b.                           ``-. `*Y888888b.             
-//             \   `Y888888b.                             \   `Y888888b.           
-//             :     Y8888888b.                           :     Y8888888b.         
-//             :      Y88888888b.                         :      Y88888888b.       
-//             |    _,8ad88888888.                        |    _,8ad88888888.      
-//             : .d88888888888888b.                       : .d88888888888888b.     
-//             \d888888888888888888                       \d888888888888888888     
-//             8888;'''`88888888888                       8888;ss'`88888888888     
-//             888'     Y8888888888                       888'N""N Y8888888888     
-//             `Y8      :8888888888                       `Y8 N  " :8888888888     
-//              |`      '8888888888                        |` N    '8888888888     
-//              |        8888888888                        |  N     8888888888     
-//              |        8888888888                        |  N     8888888888     
-//              |        8888888888                        |  N     8888888888     
-//              |       ,888888888P                        |  N    ,888888888P     
-//              :       ;888888888'                        :  N    ;888888888'     
-//               \      d88888888'                         :  N    ;888888888'     
-//              _.>,    888888P'                            \ N    d88888888'      
-//            <,--''`.._>8888(                             _.>N    888888P'        
-//             `>__...--' `''` SSt                       <,--'N`.._>8888(          
-//                                                        `>__N..--' `''` SSt      
-//                                                            N                    
