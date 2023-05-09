@@ -52,6 +52,7 @@ static int cpu_manufacturer = 0;
 static int gpu_manufacturer = 0;
 
 //For keeping track of single-instance windows.
+static int lpih_instance_running = 0;
 static int debian_window_open = 0;
 static int debian_tips_open = 0;
 static int fedora_window_open = 0;
@@ -884,7 +885,10 @@ static void on_fed_window_destroy(GtkWidget *fed_window, gpointer user_data)
 static void
 activate(GtkApplication * app,
   gpointer user_data) {
+    
+    if (lpih_instance_running != 1) {
   
+  lpih_instance_running = 1;    
   GtkWidget * window;
   GtkWidget * grid;
   GtkWidget * deb_button;
@@ -936,11 +940,15 @@ activate(GtkApplication * app,
   gtk_widget_show(window);
 
 }
+  else {  g_print("Error: instance of LPIH is already running!");   }
+                        
+  }
 
 
 static void on_quit(GtkApplication *app, gpointer user_data)
 {
-  app = NULL;
+  g_print("Shutting down LPIH now.");
+  lpih_instance_running = 0;
 }
 
 int
