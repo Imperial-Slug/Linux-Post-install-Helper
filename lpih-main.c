@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 
@@ -62,6 +63,11 @@ void init_css_provider() {
   GtkCssProvider * provider = gtk_css_provider_new();
   gtk_css_provider_load_from_path(provider, "Resources/style.css");
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
+const char* getGraphicsCardVendor()
+{
+    return (const char*)glGetString(GL_VENDOR);
 }
 
 //////////////////////////////////////////
@@ -888,7 +894,8 @@ activate(GtkApplication * app,
     
     if (lpih_instance_running != 1) {
   
-  lpih_instance_running = 1;    
+  lpih_instance_running = 1;
+         
   GtkWidget * window;
   GtkWidget * grid;
   GtkWidget * deb_button;
@@ -939,15 +946,26 @@ activate(GtkApplication * app,
   init_css_provider();
   gtk_widget_show(window);
 
+const char* gpu_vendor = getGraphicsCardVendor();
+
+if (strstr(gpu_vendor, "NVIDIA") != NULL) {
+    gpu_manufacturer = 1;
+} else if (strstr(gpu_vendor, "AMD") != NULL) {
+    gpu_manufacturer = 2;
+} else if (strstr(gpu_vendor, "Intel") != NULL) {
+    gpu_manufacturer = 3;
+} else {
+    gpu_manufacturer = 0;
 }
-  else {  g_print("Error: instance of LPIH is already running!");   }
+g_print("The GPU manufacturer for this machine is %s \n", gpu_vendor);
+}
+  else {   g_print("Error: instance of LPIH is already running!");   }
                         
   }
 
-
 static void on_quit(GtkApplication *app, gpointer user_data)
 {
-  g_print("Shutting down LPIH now.");
+  g_print("Shutting down LPIH now.\n");
   lpih_instance_running = 0;
 }
 
