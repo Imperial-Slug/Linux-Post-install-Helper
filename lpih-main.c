@@ -63,7 +63,7 @@ static int fedora_tips_open = 0;
 
 void init_css_provider() {
   GtkCssProvider * provider = gtk_css_provider_new();
-  gtk_css_provider_load_from_path(provider, "Resources/style.css");
+  gtk_css_provider_load_from_path(provider, "/usr/share/LPIH/css/style.css");
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
