@@ -35,6 +35,7 @@ static void deb_ufw_toggled(GtkWidget * widget, gpointer data);
 static void deb_tlp_toggled(GtkWidget * widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget * widget, gpointer data);
 static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data);
+static void on_deb_tips_window_destroy(GtkWidget *deb_info_window, gpointer user_data);
 
 static void fed_nvidia_toggled(GtkWidget * widget, gpointer data);
 static void fed_steam_toggled(GtkWidget * widget, gpointer data);
@@ -46,6 +47,7 @@ static void fed_codecs_toggled(GtkWidget * widget, gpointer data);
 static void fed_tlp_toggled(GtkWidget * widget, gpointer data);
 static void fed_vlc_toggled(GtkWidget * widget, gpointer data);
 static void on_fed_window_destroy(GtkWidget *fed_window, gpointer user_data);
+static void on_fed_tips_window_destroy(GtkWidget *fed_info_window, gpointer user_data);
 
 // Static variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
 // 1 = AMD, 2 = Intel, 3 = Nvidia...
@@ -74,9 +76,18 @@ const char* getGraphicsCardVendor()
 // INFORMATIONAL WINDOW: DEBIAN /////////
 // /////////////////////////////////////
 
+static void on_deb_tips_window_destroy(GtkWidget *deb_info_window, gpointer user_data)
+{
+  debian_tips_open = 0;
+}
+
 static void
 debian_info_window(GtkWidget * widget,
   gpointer data) {
+    
+    if (debian_tips_open != 1)
+      {
+
   GtkWidget * deb_info_window;
   GtkWidget * deb_info_box;
   GtkWidget * deb_info_button;
@@ -158,15 +169,24 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 
   static_ip_image = gtk_image_new_from_file("Resources/static_ip_image.png");
 
-  //gtk_box_pack_start(GTK_BOX(deb_info_box), static_ip_image, FALSE, FALSE, 0);
-  ///
   gtk_box_append(GTK_BOX(deb_info_box), scroll_info_window);
+        
+  g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
   //
   gtk_widget_show(deb_info_window);
 
 }
-
+                   
+       else    {  g_print("Error: debian_tips window is already open.");  } 
+                   
+     debian_tips_open = 1;               
+                     
+  }
+  
+  
+  
+  
 static void
 debian_window(GtkWidget * widget,
   gpointer data) {
@@ -478,6 +498,8 @@ static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data)
   debian_window_open = 0;
 }
 
+
+
 /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
@@ -485,6 +507,9 @@ static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data)
 static void
 fedora_info_window(GtkWidget * widget,
   gpointer data) {
+    
+    if (fedora_tips_open != 1) {
+      
   GtkWidget * fed_info_window;
   GtkWidget * fed_info_box;
   GtkWidget * fed_info_button;
@@ -566,10 +591,21 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
   gtk_box_append(GTK_BOX(fed_info_box), scroll_info_window);
 
+  g_signal_connect(fed_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
+      
   gtk_widget_show(fed_info_window);
 
 }
+      else {  g_print("Error: Fedora Tips already open.");  }
+              
+      fedora_tips_open = 1;            
+  }
 
+  static void on_fed_tips_window_destroy(GtkWidget *fed_info_window, gpointer user_data)
+{
+  fedora_tips_open = 0;
+}
+  
 //////////////////////////////////////////
 //                                     || //
 //      FEDORA WINDOW AND FUNCTIONS   |  |  ||
@@ -967,6 +1003,7 @@ static void on_quit(GtkApplication *app, gpointer user_data)
 {
   g_print("Shutting down LPIH now.\n");
   lpih_instance_running = 0;
+  
 }
 
 int

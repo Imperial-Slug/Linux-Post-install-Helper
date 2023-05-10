@@ -1,4 +1,4 @@
-# This can be used on Linux to compile the lpih-main.c file into a runnable file. -lGL option at the end is for the GPU auto-detecting feature.
+# This can be used on Linux to compile the lpih-main.c file into a runnable file. -lGL option at the end is for the GPU mfg auto-detecting feature.
 
 gcc $(pkg-config --cflags gtk4) -o ~/Documents/Projects/"C Projects"/Linux-Post-install-Helper/.gitignore/lpih-main-runnable lpih-main.c $(pkg-config --libs gtk4) -lGL
 
