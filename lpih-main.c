@@ -36,6 +36,7 @@ static void deb_tlp_toggled(GtkWidget * widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget * widget, gpointer data);
 static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data);
 static void on_deb_tips_window_destroy(GtkWidget *deb_info_window, gpointer user_data);
+static void get_cpu_vendor(char *vendor);
 
 static void fed_nvidia_toggled(GtkWidget * widget, gpointer data);
 static void fed_steam_toggled(GtkWidget * widget, gpointer data);
@@ -67,10 +68,28 @@ void init_css_provider() {
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
+//Function to get the graphics card vendor of the user.
 const char* getGraphicsCardVendor()
 {
     return (const char*)glGetString(GL_VENDOR);
 }
+
+void get_cpu_vendor(char *vendor)
+{
+    unsigned int eax, ebx, ecx, edx;
+
+    // Call cpuid with input 0 to get vendor string
+    __asm__("cpuid"
+            : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+            : "a"(0));
+    
+    // Copy the vendor string to the output buffer
+    ((int*)vendor)[0] = ebx;
+    ((int*)vendor)[1] = edx;
+    ((int*)vendor)[2] = ecx;
+    vendor[12] = '\0';
+}
+
 
 //////////////////////////////////////////
 // INFORMATIONAL WINDOW: DEBIAN /////////
@@ -173,7 +192,6 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
         
   g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
-  //
   gtk_widget_show(deb_info_window);
 
 }
@@ -183,9 +201,6 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
      debian_tips_open = 1;               
                      
   }
-  
-  
-  
   
 static void
 debian_window(GtkWidget * widget,
@@ -982,6 +997,7 @@ activate(GtkApplication * app,
   init_css_provider();
   gtk_widget_show(window);
 
+// Automatically establishing the user's GPU vendor on init of the program.       
 const char* gpu_vendor = getGraphicsCardVendor();
 
 if (strstr(gpu_vendor, "NVIDIA") != NULL) {
@@ -991,11 +1007,29 @@ if (strstr(gpu_vendor, "NVIDIA") != NULL) {
 } else if (strstr(gpu_vendor, "Intel") != NULL) {
     gpu_manufacturer = 3;
 } else {
+    g_print("The GPU vendor could not be determined for this ");
     gpu_manufacturer = 0;
 }
-g_print("The GPU manufacturer for this machine is %s \n", gpu_vendor);
+
+char vendor[13];
+    get_cpu_vendor(vendor);
+    g_print("CPU Vendor: %s\n", vendor);
+
+ if (strstr(vendor, "AMD") != NULL) {
+    cpu_manufacturer = 2;
+} else if (strstr(vendor, "Intel") != NULL) {
+    cpu_manufacturer = 3;
+} else {
+    g_print("The CPU vendor could not be determined for this ");
+    cpu_manufacturer = 0;
+}
+
+g_print("The GPU manufacturer for this machine is %ld, %s \n", gpu_manufacturer, gpu_vendor);
+g_print("The GPU manufacturer for this machine is %ld, %s \n", cpu_manufacturer, vendor);
+
 }
   else {   g_print("Error: instance of LPIH is already running!");   }
+                                                                     
                         
   }
 
@@ -1020,5 +1054,6 @@ main(int argc,
 
   return status;
 }
+
 
 

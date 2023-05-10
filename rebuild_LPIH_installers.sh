@@ -3,6 +3,7 @@
 # To make it work, ensure you have navigated to the .deb builder directory's  directory (ie; LPIH should be in the directory you are in, with the DEBIAN and usr directories).
 # This script uninstalls the original one first.  It is purely for development purposes when testing changes and quickly re-deploying the .deb and .rpm installer packages.
 # If you are testing it on a Fedora machine, you may wish to change the commands to suit your Fedora system.
+# Requires Alien to convert the built .deb to a .rpm: -----> ( sudo apt/dnf install alien )
 
 # Uninstall the previous version from dev computer.
 sudo dpkg --purge LPIH
