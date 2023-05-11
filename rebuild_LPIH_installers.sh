@@ -5,11 +5,15 @@
 # If you are testing it on a Fedora machine, you may wish to change the commands to suit your Fedora system.
 # Requires Alien to convert the built .deb to a .rpm: -----> ( sudo apt/dnf install alien )
 
+#Delete previous .deb and .rpm from current directory:
+rm -r LPIH.deb LPIH*.rpm  || sudo rm -r LPIH.deb LPIH*.rpm;
 # Uninstall the previous version from dev computer.
-sudo dpkg --purge LPIH
+sudo dpkg --purge LPIH;
 # Build the .deb
-dpkg-deb --build LPIH
+dpkg-deb --build LPIH;
 # Build the .rpm
-alien -r -c -v LPIH.deb
+alien -r -c -v LPIH.deb;
 # Install the new .deb to the system.  Use the .rpm on Fedora
-sudo dpkg -i LPIH.deb
+sudo dpkg -i LPIH.deb;
+
+rm -r rpmbuild  || sudo rm -r rpmbuild;

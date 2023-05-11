@@ -261,7 +261,7 @@ debian_window(GtkWidget * widget,
     gtk_widget_set_opacity(view, 0.9);
     gtk_widget_add_css_class(view, "deb_view");
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_text_buffer_set_text(buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n  sudo apt install firmware-linux-nonfree; \n", -1);
+    gtk_text_buffer_set_text(buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -994,8 +994,7 @@ activate(GtkApplication * app,
 
     char vendor[13];
     get_cpu_vendor(vendor);
-    g_print("CPU Vendor: %s\n", vendor);
-
+    
     if (strstr(vendor, "AMD") != NULL) {
       cpu_manufacturer = 2;
     } else if (strstr(vendor, "Intel") != NULL) {
@@ -1005,8 +1004,8 @@ activate(GtkApplication * app,
       cpu_manufacturer = 0;
     }
 
-    g_print("The GPU manufacturer for this machine is %ld, %s \n", gpu_manufacturer, gpu_vendor);
-    g_print("The GPU manufacturer for this machine is %ld, %s \n", cpu_manufacturer, vendor);
+    g_print("The GPU manufacturer for this machine is %ld, %s. \n", gpu_manufacturer, gpu_vendor);
+    g_print("The CPU manufacturer for this machine is %ld, %s. \n", cpu_manufacturer, vendor);
 
   } else {
     g_print("Error: instance of LPIH is already running!");
