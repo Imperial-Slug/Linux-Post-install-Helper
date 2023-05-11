@@ -25,7 +25,7 @@
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 
-static void deb_nvidia_toggled(GtkWidget * widget, gpointer data);
+static void deb_gpu_toggled(GtkWidget * widget, gpointer data);
 static void deb_steam_toggled(GtkWidget * widget, gpointer data);
 static void deb_game_toggled(GtkWidget * widget, gpointer data);
 static void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
@@ -38,7 +38,7 @@ static void on_deb_window_destroy(GtkWidget *deb_window, gpointer user_data);
 static void on_deb_tips_window_destroy(GtkWidget *deb_info_window, gpointer user_data);
 static void get_cpu_vendor(char *vendor);
 
-static void fed_nvidia_toggled(GtkWidget * widget, gpointer data);
+static void fed_gpu_toggled(GtkWidget * widget, gpointer data);
 static void fed_steam_toggled(GtkWidget * widget, gpointer data);
 static void fed_dnf_toggled(GtkWidget * widget, gpointer data);
 static void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
@@ -208,7 +208,7 @@ debian_window(GtkWidget * widget,
   
   if (debian_window_open != 1) {
       
-  GtkWidget * deb_window, * deb_box, * deb_nvidia_check, * deb_steam_check, * deb_game_check, * deb_flatpak_check, * deb_microcode_check, * deb_fonts_check, * deb_ufw_check, * deb_tlp_check, * deb_vlc_check, * deb_info_button;
+  GtkWidget * deb_window, * deb_box, * deb_gpu_check, * deb_steam_check, * deb_game_check, * deb_flatpak_check, * deb_microcode_check, * deb_fonts_check, * deb_ufw_check, * deb_tlp_check, * deb_vlc_check, * deb_info_button;
 
   deb_window = gtk_window_new();
   gtk_widget_add_css_class(deb_window, "deb_window");
@@ -249,8 +249,8 @@ debian_window(GtkWidget * widget,
   deb_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
   gtk_box_append(GTK_BOX(deb_box), deb_vlc_check);
 
-  deb_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
-  gtk_box_append(GTK_BOX(deb_box), deb_nvidia_check);
+  deb_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
+  gtk_box_append(GTK_BOX(deb_box), deb_gpu_check);
 
   // Create a scrolled window and set the size
   GtkWidget * scroll_window = gtk_scrolled_window_new();
@@ -261,7 +261,7 @@ debian_window(GtkWidget * widget,
   gtk_widget_set_opacity(view, 0.9);
   gtk_widget_add_css_class(view, "deb_view");
   buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-  gtk_text_buffer_set_text(buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
+  gtk_text_buffer_set_text(buffer, "  sudo apt update && sudo apt upgrade; \n  sudo apt update && sudo apt full-upgrade; \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n  sudo apt install firmware-linux-nonfree; \n", -1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
   gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -284,7 +284,7 @@ debian_window(GtkWidget * widget,
 
   g_signal_connect(deb_info_button, "clicked", G_CALLBACK(debian_info_window), NULL);
 
-  g_signal_connect(G_OBJECT(deb_nvidia_check), "toggled", G_CALLBACK(deb_nvidia_toggled), buffer);
+  g_signal_connect(G_OBJECT(deb_gpu_check), "toggled", G_CALLBACK(deb_gpu_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_steam_check), "toggled", G_CALLBACK(deb_steam_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_game_check), "toggled", G_CALLBACK(deb_game_toggled), buffer);
   g_signal_connect(G_OBJECT(deb_flatpak_check), "toggled", G_CALLBACK(deb_flatpak_toggled), buffer);
@@ -301,19 +301,35 @@ debian_window(GtkWidget * widget,
     debian_window_open = 1;               
   }
 
-////////// DEBIAN NVIDIA CHECKBOX ///////////////
+////////// DEBIAN gpu CHECKBOX ///////////////
 
-static void deb_nvidia_toggled(GtkWidget * widget, gpointer data) {
+static void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
+  
+  const gchar *debian_gpu_command;
+  if (gpu_manufacturer == 1) 
+    {
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+  }
+  else if (gpu_manufacturer == 2) 
+    {
+      debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+    }  
+else if (gpu_manufacturer == 3)
+    {
+            debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+      
+    }
+
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install nvidia-driver nvidia-driver-libs;\n", -1);
+    gtk_text_buffer_insert(buffer, & iter, debian_gpu_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+    const gchar * search_string = debian_gpu_command;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -400,12 +416,26 @@ static void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
   static GtkTextIter iter; // A static variable to store the iterator position
+                             
+  const gchar *debian_microcode_command;
+  
+  if (cpu_manufacturer == 2) 
+    {
+      debian_microcode_command = "  sudo apt install amd64-microcode;\n";
+    }  
+else if (cpu_manufacturer == 3)
+    {
+            debian_microcode_command = "  sudo apt install intel-microcode;\n";
+    }
+    else { g_print("Something went wrong trying to get the cpu manufacturer."); }
+  
+  
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install amd64-microcode; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, debian_microcode_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install amd64-microcode; \n";
+    const gchar * search_string = debian_microcode_command;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -635,7 +665,7 @@ fedora_window(GtkWidget * widget,
   { 
     
   GtkWidget * fed_window;
-  GtkWidget * fed_box, * fed_nvidia_check, * fed_steam_check, * fed_dnf_check, * fed_flatpak_check, * fed_repo_check, * fed_customization_check, * fed_codecs_check, * fed_tlp_check, * fed_vlc_check, * fed_info_button;
+  GtkWidget * fed_box, * fed_gpu_check, * fed_steam_check, * fed_dnf_check, * fed_flatpak_check, * fed_repo_check, * fed_customization_check, * fed_codecs_check, * fed_tlp_check, * fed_vlc_check, * fed_info_button;
   fed_window = gtk_window_new();
   gtk_widget_add_css_class(fed_window, "fed_window");
   gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
@@ -674,8 +704,8 @@ fedora_window(GtkWidget * widget,
   fed_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
   gtk_box_append(GTK_BOX(fed_box), fed_vlc_check);
 
-  fed_nvidia_check = gtk_check_button_new_with_label("  Do you have an Nvidia graphics card?");
-  gtk_box_append(GTK_BOX(fed_box), fed_nvidia_check);
+  fed_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
+  gtk_box_append(GTK_BOX(fed_box), fed_gpu_check);
 
   // Create a scrolled window and set the size
   GtkWidget * scroll_window = gtk_scrolled_window_new();
@@ -709,7 +739,7 @@ fedora_window(GtkWidget * widget,
   // Connect checkbox functions to checkboxes ///
   g_signal_connect(fed_info_button, "clicked", G_CALLBACK(fedora_info_window), NULL);
 
-  g_signal_connect(G_OBJECT(fed_nvidia_check), "toggled", G_CALLBACK(fed_nvidia_toggled), buffer);
+  g_signal_connect(G_OBJECT(fed_gpu_check), "toggled", G_CALLBACK(fed_gpu_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_steam_check), "toggled", G_CALLBACK(fed_steam_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_dnf_check), "toggled", G_CALLBACK(fed_dnf_toggled), buffer);
   g_signal_connect(G_OBJECT(fed_flatpak_check), "toggled", G_CALLBACK(fed_flatpak_toggled), buffer);
@@ -726,19 +756,35 @@ fedora_window(GtkWidget * widget,
   fedora_window_open = 1;                 
   }
 
-////////// FEDORA NVIDIA CHECKBOX ///////////////
+////////// FEDORA gpu CHECKBOX ///////////////
 
-static void fed_nvidia_toggled(GtkWidget * widget, gpointer data) {
+static void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
+  
+  const gchar *fedora_gpu_command;
+  if (gpu_manufacturer == 1) 
+    {
+    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;\n";
+  }
+  else if (gpu_manufacturer == 2) 
+    {
+      fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers;\n";
+    }  
+else if (gpu_manufacturer == 3)
+    {
+            fedora_gpu_command = "  # Intel GPU drivers already installed. \n";
+      
+    }
+  
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;\n", -1);
+    gtk_text_buffer_insert(buffer, & iter, fedora_gpu_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda;\n";
+    const gchar * search_string = fedora_gpu_command;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -781,10 +827,10 @@ static void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=10\" >> /etc/dnf/dnf.conf; fi \n";
+    const gchar * search_string = "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n";
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -1054,6 +1100,7 @@ main(int argc,
 
   return status;
 }
+
 
 
 
