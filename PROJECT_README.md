@@ -25,3 +25,6 @@ A big example of a problem solved for new users in this program is the GPU drive
 Additionally, the commands to install Steam are generated, along with the necessary command to enable 32-bit architecture for Steam to work properly.  
 
 This program is mostly targeted at people new to Linux and/or people who don't want to spend the time searching for the proper commands to configure their Linux system and get past some common hurdles to new Linux users.
+
+If you want to contribute: feel free! That's what the build directory is for.  It has an automated build script to run within the template build directory, intended to act as the directory where you build the new packages every time you want to test a new build of the project that you've wrought.  Go ahead and improve it too. It's open source and free under the GNU GENERAL PUBLIC LICENSE.
+
