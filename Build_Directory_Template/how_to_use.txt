@@ -1,4 +1,4 @@
-This is a directory organized to suit the shell script written to rebuild the installer packages and reinstall them to the developer's machine for testing immediately.  
+This is a directory organized to suit the script written to rebuild the installer packages and reinstall them to the developer's machine for testing immediately.  
 
 Run it only if you don't need the current .deb and .rpm files supplied in the master LPIH repo and are working on changes to the application or otherwise experimenting with the code.
 

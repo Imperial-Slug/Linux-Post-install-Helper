@@ -4,8 +4,9 @@
 # This script uninstalls the original one first.  It is purely for development purposes when testing changes and quickly re-deploying the .deb and .rpm installer packages.
 # If you are testing it on a Fedora machine, you may wish to change the commands to suit your Fedora system.
 # Requires Alien to convert the built .deb to a .rpm: -----> ( sudo apt/dnf install alien )
+# The script currently only fully supports building automatically on Debian based distros.  Feel free to add your own Fedora support if I haven't gotten to it by now, and make a pull request.
 
-#Delete previous .deb and .rpm from current directory:
+# Delete previous .deb and .rpm from current directory:
 rm -r LPIH.deb LPIH*.rpm  || sudo rm -r LPIH.deb LPIH*.rpm;
 # Uninstall the previous version from dev computer.
 sudo dpkg --purge LPIH;
