@@ -1,4 +1,11 @@
-# Linux-Post-install-Helper
+Linux-Post-install-Helper: to install, download the zip (or just the Build_Directory_Template) and within Build_Directory_Template you will find the .deb and /rpm for installing on Debian or Fedora respectively, with:
+
+sudo dpkg -i LPIH.deb; # (For Debian)
+# or
+sudo rpm -i LPIH*.rpm;  # (For Fedora)
+
+**** IN DEVELOPMENT ****
+
 Started as my project for a programming language research project at my college in the final semester, but is intended to be free and open source; with many useful new features planned to be added.
 
 PURPOSE: The general purpose of this program will be to make Linux desktop systems easier to configure
