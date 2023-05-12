@@ -178,15 +178,10 @@ debian_info_window(GtkWidget * widget,
     gtk_text_buffer_set_text(buffer, tips_spiel, -1);
 
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-    gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+    gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
     gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
-
-    // Create an image widget
-    GtkWidget * static_ip_image;
-
-    static_ip_image = gtk_image_new_from_file("Resources/static_ip_image.png");
 
     gtk_box_append(GTK_BOX(deb_info_box), scroll_info_window);
 
@@ -202,6 +197,7 @@ debian_info_window(GtkWidget * widget,
 
 }
 
+
 static void
 debian_window(GtkWidget * widget,
   gpointer data) {
@@ -215,13 +211,15 @@ debian_window(GtkWidget * widget,
     gtk_window_set_title(GTK_WINDOW(deb_window), "Linux Post-install Helper: Debian");
     gtk_window_set_resizable(GTK_WINDOW(deb_window), FALSE);
     gtk_window_set_default_size(GTK_WINDOW(deb_window), 960, 700);
+    gtk_widget_set_can_focus(GTK_WIDGET(deb_window), TRUE);
 
     GtkWidget * view;
     GtkTextBuffer * buffer;
 
     deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child(GTK_WINDOW(deb_window), deb_box);
-
+    gtk_widget_set_can_focus(GTK_WIDGET(deb_box), TRUE);
+    
     // CHECKBOXES //////////
 
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
@@ -256,6 +254,7 @@ debian_window(GtkWidget * widget,
     GtkWidget * scroll_window = gtk_scrolled_window_new();
 
     gtk_widget_set_size_request(scroll_window, 400, 300);
+    gtk_widget_set_can_focus(GTK_WIDGET(scroll_window), TRUE);
 
     view = gtk_text_view_new();
     gtk_widget_set_opacity(view, 0.9);
@@ -263,9 +262,10 @@ debian_window(GtkWidget * widget,
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
     gtk_text_buffer_set_text(buffer, "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'tips' for details.  \n\n  sudo apt update && sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-    gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+    gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(deb_box), scroll_window);
+    
 
     // DEBIAN INFO WINDOW //
 
@@ -572,7 +572,7 @@ fedora_info_window(GtkWidget * widget,
     gtk_text_buffer_set_text(buffer, tips_spiel, -1);
 
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-    gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+    gtk_widget_set_can_focus(GTK_WIDGET(view), True);
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
     gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
@@ -612,6 +612,7 @@ fedora_window(GtkWidget * widget,
     gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
     gtk_window_set_resizable(GTK_WINDOW(fed_window), FALSE);
     gtk_window_set_default_size(GTK_WINDOW(fed_window), 960, 700);
+    gtk_widget_set_can_focus(GTK_WIDGET(fed_window), TRUE);
 
     GtkWidget * view;
     GtkTextBuffer * buffer;
@@ -660,7 +661,7 @@ fedora_window(GtkWidget * widget,
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
     gtk_text_buffer_set_text(buffer, "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update && sudo dnf upgrade; \n", -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-    gtk_widget_set_can_focus(GTK_WIDGET(view), FALSE);
+    gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(fed_box), scroll_window);
 
@@ -976,6 +977,10 @@ activate(GtkApplication * app,
     gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
     init_css_provider();
+    gtk_widget_set_can_focus(GTK_WIDGET(window), TRUE);
+    gtk_widget_set_can_focus(GTK_WIDGET(grid), TRUE);
+    
+    
     gtk_widget_show(window);
 
     // Automatically establishing the user's GPU vendor on init of the program.       
