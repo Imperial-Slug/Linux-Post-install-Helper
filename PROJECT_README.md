@@ -1,5 +1,5 @@
 # Linux-Post-install-Helper
-Project for Programming Language Research Project at Algonquin College, final semester.
+Started as my project for a programming language research project at my college in the final semester, but is intended to be free and open source; with many useful new features planned to be added.
 
 PURPOSE: The general purpose of this program will be to make Linux desktop systems easier to configure
 after installation for non-tech-oriented people; or people who can't be bothered with looking for information
@@ -8,33 +8,20 @@ install hurdles that new users run into.
 
 THE PROGRAM: The program will be an application in C (using GTK4 via the GOBject framework) that aids in the
 post-installation activities involved with setting up a GNU/Linux desktop system specifically for GNOME
-desktop-environment users on Debian- and Fedora-based desktop/laptop systems. There will be a slight focus
-on gamers new to Linux who use Steam, since this is a huge hurdle in increasing Linux desktop marketshare.
+desktop-environment users on Debian- and Fedora-based desktop/laptop systems; though users of other desktop environments will still find they may benefit from the application.  Support for DE-agnostic functionality is one of the features that will be added. There is a slight focus
+on gamers new to Linux who use Steam, since this is a huge hurdle in increasing Linux desktop usage.
 
-DETAILS/FLOW: The program, following installation, will first be used for guiding the user through some
-basic optional setup, like network options and aesthetics-related actvities. More integral things like graphics
-drivers and Steam integration will be handled after these initial setup prompts.
-Once the user makes it through all the GUI prompts, the program will then use the user input from the
-GUI/program written in C to generate, assemble and execute a set of bash scripts for adding any software,
-repositories or settings that don't come pre-installed on the Linux distro that the user needs. The goal is to
-make it less scary and troublesome getting all of a user's "stuff" working properly on a newly installed system,
-since this is a major point of frustration/failure for many new Linux users.
 The program will be for Debian- and Fedora-based Linux distros running the standard GNOME desktop
-environment. The goal is to teach/inform as well as help the user with post-install.
+environment. The goal is to teach/inform as well as help the user with post-install activities.
 
-PERSONAL CONTEXT (reason for creating):
-Over the course of the past year I have used several different GNU/Linux desktop distributions like
-Ubuntu, Mint, Fedora, Arch, Oracle Linux in a VM, Debian Stable, and now finally Debian Testing.
-After using GNU/Linux desktop distributions so regularly as my "daily driver", I cannot help but think it to be a
-crime against humanity that this free, open source, non-profit and beautiful alternative operating system/kernel
-are not in wider use by the common user; and furthermore that Linux's integration into the wider sphere of the
-desktop world seems to have been actively stymied by corporate, profit-centric interests: effectively depriving
-the world of the same security, stability and reliability that these same corporations' headless Linux servers enjoy
-by using it.
-This strange disparity of reasoning that I have come to see motivated me to use my meager-yet-growing
-programming skills to create an application that takes care of any post-installation headaches that commonly
-scare new Linux desktop users away, and that might make it more inviting for others to try Linux; taking some of
-the desktop marketshare away from profit-focused, proprietary operating systems that only exist to make money
-for someone far removed from everyday life.
+This project is far from finished and will eventually support other distributions, as well as offer more and more advanced features over the course of time.
 
-This project is far from finished and will eventually support other distributions.  
+Currently, the project is in a perfectly useful form, but could use some quality-of-life improvements for the user, like more error handling in the bash script generated and especially populating the TIPS windows with more tips and information for new/curious GNU/Linux desktop users.
+
+Again, the entire goal of the project is to make it easier for new Linux users to get their freshly installed systems going with key software and functionality installed that might otherwise take a while to figure out for new users.  
+
+A big example of a problem solved for new users in this program is the GPU drivers.  It is quite well known in the Linux community that certain brands of GPU can confuse users, owing to the GPU drivers not coming installed by default in many GNU/Linux distributions.  Linux Post-install Helper automatically detects the users's GPU and CPU make and adjusts the generated Linux/bash commands to suit it.  
+
+Additionally, the commands to install Steam are generated, along with the necessary command to enable 32-bit architecture for Steam to work properly.  
+
+This program is mostly targeted at people new to Linux and/or people who don't want to spend the time searching for the proper commands to configure their Linux system and get past some common hurdles to new Linux users.

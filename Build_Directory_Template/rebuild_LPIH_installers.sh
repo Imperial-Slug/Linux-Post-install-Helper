@@ -11,9 +11,9 @@ rm -r LPIH.deb LPIH*.rpm  || sudo rm -r LPIH.deb LPIH*.rpm;
 sudo dpkg --purge LPIH;
 # Build the .deb
 dpkg-deb --build LPIH;
-# Build the .rpm
-alien -r -c -v LPIH.deb;
+# Build the .rpm with alien: install alien if not present.
+alien -r -c -v LPIH.deb || sudo apt install alien;
 # Install the new .deb to the system.  Use the .rpm on Fedora
-sudo dpkg -i LPIH.deb;
+sudo dpkg -i LPIH.deb || echo "Error: packages were not built.";
 
 rm -r rpmbuild  || sudo rm -r rpmbuild;
