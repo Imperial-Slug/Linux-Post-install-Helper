@@ -317,6 +317,11 @@ static void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
     debian_gpu_command = "  # Intel GPU drivers already installed. \n";
 
   }
+  
+  else if (gpu_manufacturer == 0) {
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+
+  }
 
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state) {
