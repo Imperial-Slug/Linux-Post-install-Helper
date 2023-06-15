@@ -187,7 +187,7 @@ debian_info_window(GtkWidget * widget,
 
     g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
-    gtk_widget_show(deb_info_window);
+        gtk_widget_set_visible(deb_info_window, TRUE);
 
   } else {
     g_print("Error: debian_tips window is already open.");
@@ -235,7 +235,7 @@ debian_window(GtkWidget * widget,
     deb_microcode_check = gtk_check_button_new_with_label("  Install your processor's latest microcode?");
     gtk_box_append(GTK_BOX(deb_box), deb_microcode_check);
 
-    deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products?");
+    deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?");
     gtk_box_append(GTK_BOX(deb_box), deb_fonts_check);
     ///////////////////////////////////////////////////////
     deb_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
@@ -295,7 +295,7 @@ debian_window(GtkWidget * widget,
     g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
     g_signal_connect(deb_window, "destroy", G_CALLBACK(on_deb_window_destroy), NULL);
 
-    gtk_widget_show(deb_window);
+        gtk_widget_set_visible(deb_window, TRUE);
 
   }
   debian_window_open = 1;
@@ -585,7 +585,7 @@ fedora_info_window(GtkWidget * widget,
 
     g_signal_connect(fed_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
 
-    gtk_widget_show(fed_info_window);
+        gtk_widget_set_visible(fed_info_window, TRUE);
 
   } else {
     g_print("Error: Fedora Tips already open.");
@@ -697,7 +697,7 @@ fedora_window(GtkWidget * widget,
     g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
     g_signal_connect(fed_window, "destroy", G_CALLBACK(on_fed_window_destroy), NULL);
 
-    gtk_widget_show(fed_window);
+        gtk_widget_set_visible(fed_window, TRUE);
 
   }
   fedora_window_open = 1;
@@ -860,10 +860,10 @@ static void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
   static GtkTextIter iter; // A static variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel; sudo dnf group upgrade --with-optional Multimedia \n  || sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;;  \n  sudo dnf install lame\\* --exclude=lame-devel; sudo dnf group upgrade --with-optional Multimedia; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n  || sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update;  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;  \n  sudo dnf install lame\\* --exclude=lame-devel; sudo dnf group upgrade --with-optional Multimedia \n  || sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel;;  \n  sudo dnf install lame\\* --exclude=lame-devel; sudo dnf group upgrade --with-optional Multimedia; \n";
+    const gchar * search_string = "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n  || sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update;  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia;  \n";
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -986,7 +986,7 @@ activate(GtkApplication * app,
     gtk_widget_set_can_focus(GTK_WIDGET(grid), TRUE);
     
     
-    gtk_widget_show(window);
+    gtk_widget_set_visible(window, TRUE);
 
     // Automatically establishing the user's GPU vendor on init of the program.       
     const char * gpu_vendor = getGraphicsCardVendor();
