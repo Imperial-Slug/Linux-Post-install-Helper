@@ -926,10 +926,10 @@ static void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
-static void
-activate(GtkApplication * app,
+static void activate(GtkApplication * app,
   gpointer user_data) {
 
+//For singleton
   if (lpih_instance_running != 1) {
 
     lpih_instance_running = 1;
@@ -1010,7 +1010,7 @@ activate(GtkApplication * app,
     } else if (strstr(vendor, "Intel") != NULL) {
       cpu_manufacturer = 3;
     } else {
-      g_print("The CPU vendor could not be determined for this ");
+      g_print("The CPU vendor could not be determined for this computer.");
       cpu_manufacturer = 0;
     }
 
