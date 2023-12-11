@@ -110,11 +110,19 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 \n\
 9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings.";
 
+
 void init_css_provider() {
+
   GtkCssProvider * provider = gtk_css_provider_new();
-  gtk_css_provider_load_from_path(provider, "/usr/share/LPIH/css/style.css");
+  GtkCssProvider * provider2 = gtk_css_provider_new();
+  const char * filepath1 = "/usr/share/LPIH/css/style.css";
+  const char * filepath2 = "style.css";
+  gtk_css_provider_load_from_path(provider, filepath1);
+  gtk_css_provider_load_from_path(provider2, filepath2);
+  gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-}
+    }
+
 
 //Function to get the graphics card vendor of the user.
 const char * getGraphicsCardVendor() {
@@ -1014,8 +1022,8 @@ static void activate(GtkApplication * app,
       cpu_manufacturer = 0;
     }
 
-    g_print("The GPU manufacturer for this machine is %ld, %s. \n", gpu_manufacturer, gpu_vendor);
-    g_print("The CPU manufacturer for this machine is %ld, %s. \n", cpu_manufacturer, vendor);
+    g_print("The GPU manufacturer for this machine is %d, %s. \n", gpu_manufacturer, gpu_vendor);
+    g_print("The CPU manufacturer for this machine is %d, %s. \n", cpu_manufacturer, vendor);
 
   } else {
     g_print("Error: instance of LPIH is already running!");
