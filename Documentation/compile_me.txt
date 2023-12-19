@@ -9,3 +9,8 @@ gcc $(pkg-config --cflags gtk4) -o lpih-main lpih-main.c $(pkg-config --libs gtk
 # Arch:	gtk4
 # Debian/Ubuntu:	libgtk-4-1 libgtk-4-dev	gtk-4-examples  <--- (examples optional)
 # Fedora:	gtk4	gtk4-devel   	mesa-libGL-devel        <--- (for -lGL opengl C headers)
+
+rpmbuild -ba rpmbuild/SPECS/lpih.spec
+
+rpmbuild -ba -D 'debug_package %{nil}' /home/sam/rpmbuild/SPECS/lpih.spec
+
