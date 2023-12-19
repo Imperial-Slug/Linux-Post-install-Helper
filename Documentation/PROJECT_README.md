@@ -27,7 +27,7 @@ Currently, the project is in a perfectly useful form, but could use some quality
 
 Again, the entire goal of the project is to make it easier for new Linux users to get their freshly installed systems going with key software and functionality installed that might otherwise take a while to figure out for new users.  
 
-A big example of a problem solved for new users in this program is the GPU drivers.  It is quite well known in the Linux community that certain brands of GPU can confuse users, owing to the GPU drivers not coming installed by default in many GNU/Linux distributions.  Linux Post-install Helper automatically detects the users's GPU and CPU make and adjusts the generated Linux/bash commands to suit it.  
+A big example of a problem solved for new users in this program is the GPU drivers.  It is quite well known in the Linux community that certain brands of GPU can confuse users, owing to the GPU drivers not coming installed by default in many GNU/Linux distributions.  Linux Post-install Helper automatically detects the user's GPU and CPU make and adjusts the generated Linux/bash commands to suit it.  
 
 Additionally, the commands to install Steam are generated, along with the necessary command to enable 32-bit architecture for Steam to work properly.  
 
