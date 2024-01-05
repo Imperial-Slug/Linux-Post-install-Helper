@@ -56,7 +56,8 @@ static void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
 static void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
 
 // Static variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
-// 1 = AMD, 2 = Intel, 3 = Nvidia...
+
+// 1 = AMD, 2 = Intel, 3 = Nvidia.
 static int cpu_manufacturer = 0;
 static int gpu_manufacturer = 0;
 
@@ -67,7 +68,7 @@ static int debian_tips_open = 0;
 static int fedora_window_open = 0;
 static int fedora_tips_open = 0;
 
-const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems.\n\
+const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
 Debian, like other Linux distributions, has a package manager; which handles the installation, updating and removal of software packages on the computer.  Debian's package manager is called apt.  In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user, example: sudo apt install nvidia-driver, where nvidia-driver is the package you are trying to install.  \n\
 \n\
@@ -78,7 +79,6 @@ SETTING STATIC IP\n\
 Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant connection by setting a static IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  The instructions are as follows:\n\
 \n\
 1.     Click in the top-right corner of the screen where the power icon is.  Click the gear-shaped icon to access settings.  You can also find the settings application icon by pressing the super key (Windows key or command key on Mac) and either find it visually or search settings in the searchbar that pops up with the GNOME Activities window.  This Activities window can also be accessed by clicking Activities in the tope left of the screen.\n\
-\n\
 \n\
 2.     If you are using Wi-Fi, click on Wi-Fi at the top of the scrollable menu on the left of the settings window.  If you are using ethernet, click on Network. \n\
 \n\
@@ -108,7 +108,9 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 \n\
 8.    Time to choose your DNS servers.  You can pick whichever one you like.  Cloudflare is popular with many, since it offers security features like DDoS protection, SSL encryption, and web application firewall.  You can specify 2 addresses, in case one is down (seperate them with a comma in the textfield).  To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare.  To use OpenDNS, use 208.67.222.222, 208.67.220.220. \n\
 \n\
-9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings.";
+9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings. \n\n\
+TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
+Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.  \"This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package, no angle brackets>\n\n";
 
 
 void init_css_provider() {
@@ -122,7 +124,6 @@ void init_css_provider() {
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
-
 
 //Function to get the graphics card vendor of the user.
 const char * getGraphicsCardVendor() {
