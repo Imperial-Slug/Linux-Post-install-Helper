@@ -1,4 +1,8 @@
 
 
-https://github.com/Imperial-Slug/Linux-Post-install-Helper/assets/111785134/1bcbc1f2-99dc-4a48-b1b1-b28241478f23
+WHO IS THIS PROGRAM FOR?
+
+It is specifically targeted at new users who may not know where to start with getting their systems running the bare necesseties for their use case.  This program will detect your GPU make and give you the command to do so, which you simply copy and paste into your terminal after checking the corresponding checkbox.
+
+Experienced users may find it useful as a "quick and easy" way to get all of the basics installed as well.
 
