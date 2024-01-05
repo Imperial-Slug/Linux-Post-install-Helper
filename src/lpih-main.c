@@ -1,4 +1,4 @@
-/* main.c
+/* lpih-main.c
  *
  * Copyright 2023 Samuel Petch
  *
