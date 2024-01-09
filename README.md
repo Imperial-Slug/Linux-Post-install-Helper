@@ -1,6 +1,5 @@
 
-
-WHO IS THIS PROGRAM FOR?
+Who is this program for?
 
 It is specifically targeted at new users who may not know where to start with getting their systems running the bare necesseties for their use case.  This program will detect your GPU make and give you the command to do so, which you simply copy and paste into your terminal after checking the corresponding checkbox.
 
