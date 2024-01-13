@@ -11,7 +11,7 @@ DISTRO := $(shell lsb_release -si)
 ifeq ($(DISTRO),Debian)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)
-    DEPENDENCIES = libgtk-4-1 libgtk-4-dev gtk-4-examples
+    DEPENDENCIES = libgtk-4-1 libgtk-4-dev
 else ifeq ($(DISTRO),Fedora)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)
