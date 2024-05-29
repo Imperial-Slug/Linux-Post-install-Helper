@@ -17,18 +17,19 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
+ 
+  /////////////////////////////////
+ ////        L I B S      ////////
+/////////////////////////////////
+ #include <gtk/gtk.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <X11/Xlib.h>
+ #include <GL/gl.h>
+/////////////////////////
+////////////////////////
 
-#include <gtk/gtk.h>
-
-#include <stdio.h>
-
-#include <stdlib.h>
-
-#include <string.h>
-
-#include <X11/Xlib.h>
-
-#include <GL/gl.h>
 
 static void deb_gpu_toggled(GtkWidget * widget, gpointer data);
 static void deb_steam_toggled(GtkWidget * widget, gpointer data);
@@ -117,14 +118,26 @@ Occasionally, when trying to install software with apt on Debian, you may encoun
 void init_css_provider() {
 
   GtkCssProvider * provider = gtk_css_provider_new();
-  GtkCssProvider * provider2 = gtk_css_provider_new();
-  const char * filepath1 = "/usr/share/LPIH/css/style.css";
-  const char * filepath2 = "style.css";
-  // Define a CSS provider for each potential file path: filepath1 for if it was installed using
-  // the .deb or .rpm; and filepath2 if it is being run from the source code directory.
-  gtk_css_provider_load_from_path(provider, filepath1);
-  gtk_css_provider_load_from_path(provider2, filepath2);
-  gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  
+  const char *cssFilePathDecided;
+  const char *cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
+  const char *cssPathForAppInSrc = "style.css";
+  
+  FILE *cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
+  FILE *cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
+
+  if (cssFileForAppInSrc) {
+  g_print("The CSS file was found beside the executable.\n");
+  cssFilePathDecided = "style.css";
+  fclose(cssFileForAppInSrc);
+
+  } else if (cssPathForAppInstalled) {
+            g_print("The CSS file was found in /usr/share/LPIH/css");
+            cssFilePathDecided = "/usr/share/LPIH/css/style.css";
+            fclose(cssFileForAppInstalled);
+          } else { g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer.\n*********************\n\n"); }
+
+  gtk_css_provider_load_from_path(provider, cssFilePathDecided);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
 
@@ -210,7 +223,7 @@ debian_info_window(GtkWidget * widget,
 }
 
 
-static void
+static int
 debian_window(GtkWidget * widget,
   gpointer data) {
 
@@ -309,8 +322,16 @@ debian_window(GtkWidget * widget,
 
         gtk_widget_set_visible(deb_window, TRUE);
 
+///////////////////////
+   if (gtk_widget_is_visible(deb_window)){ 
+        debian_window_open = 1;
+        return 0;      
+      } else { 
+                g_print("Debian LPIH window failed to open.");
+                return 1; 
+              }
+///////////////////////
   }
-  debian_window_open = 1;
 }
 
 ////////// DEBIAN gpu CHECKBOX ///////////////
@@ -335,9 +356,9 @@ static void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   }
 
-  static GtkTextIter iter; // A static variable to store the iterator position
+  static GtkTextIter iter; 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, debian_gpu_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -436,11 +457,11 @@ static void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
   } else if (cpu_manufacturer == 3) {
     debian_microcode_command = "  sudo apt install intel-microcode;\n";
   } else {
-    g_print("Something went wrong trying to get the cpu manufacturer.");
+    g_print("*****ERROR: Something went wrong trying to get the cpu manufacturer.*****\n");
   }
 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, debian_microcode_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -461,9 +482,9 @@ static void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+  static GtkTextIter iter; 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -616,7 +637,7 @@ static void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer use
 //                                     || //
 //////////////////////////////////////////
 
-static void
+static int
 fedora_window(GtkWidget * widget,
   gpointer data) {
 
@@ -637,7 +658,7 @@ fedora_window(GtkWidget * widget,
     fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child(GTK_WINDOW(fed_window), fed_box);
 
-    // CHECKBOXES //////////
+    // FEDORA CHECKBOXES //////////
 
     fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
     gtk_box_append(GTK_BOX(fed_box), fed_dnf_check);
@@ -710,9 +731,15 @@ fedora_window(GtkWidget * widget,
     g_signal_connect(fed_window, "destroy", G_CALLBACK(on_fed_window_destroy), NULL);
 
         gtk_widget_set_visible(fed_window, TRUE);
-
+        
+        if (gtk_widget_is_visible(fed_window)){ 
+        fedora_window_open = 1;
+        return 0;      
+      } else { 
+                g_print("Fedora window failed to open.");
+                return 1; 
+              }
   }
-  fedora_window_open = 1;
 }
 
 //// FEDORA repo CHECKBOX ///////
@@ -941,7 +968,6 @@ static void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
 static void activate(GtkApplication * app,
   gpointer user_data) {
 
-//For singleton
   if (lpih_instance_running != 1) {
 
     lpih_instance_running = 1;
@@ -1011,7 +1037,7 @@ static void activate(GtkApplication * app,
     } else if (strstr(gpu_vendor, "Intel") != NULL) {
       gpu_manufacturer = 3;
     } else {
-      g_print("The GPU vendor could not be determined for this ");
+      g_print("******ERROR: The GPU vendor could not be determined for this GPU.******\n");
       gpu_manufacturer = 0;
     }
 
@@ -1023,15 +1049,15 @@ static void activate(GtkApplication * app,
     } else if (strstr(vendor, "Intel") != NULL) {
       cpu_manufacturer = 3;
     } else {
-      g_print("The CPU vendor could not be determined for this computer.");
+      g_print("The CPU vendor could not be determined for this computer.\n");
       cpu_manufacturer = 0;
     }
 
-    g_print("The GPU manufacturer for this machine is %d, %s. \n", gpu_manufacturer, gpu_vendor);
-    g_print("The CPU manufacturer for this machine is %d, %s. \n", cpu_manufacturer, vendor);
+    g_print("The GPU manufacturer for this machine is %d, %s.\n", gpu_manufacturer, gpu_vendor);
+    g_print("The CPU manufacturer for this machine is %d, %s.\n", cpu_manufacturer, vendor);
 
   } else {
-    g_print("Error: instance of LPIH is already running!");
+    g_print("Error: instance of LPIH is already running!\n");
   }
 
 }
