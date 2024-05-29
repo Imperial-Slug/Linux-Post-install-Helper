@@ -1,30 +1,46 @@
+.deb_info_view {
+
+  background-image: linear-gradient(180deg, black, #335CC5, navy);
+  color: yellow;
+  font-family: "Cantarell";
+
+}
+
+.fed_info_view {
+
+  background-image: linear-gradient(180deg, teal, navy);
+  color: yellow;
+  font-family: "Cantarell";
+
+}
+
 .deb_info_button {
 
-background: #FE5000;
-color: BLACK;
-font-family: "Cantarell";
-margin: 12px;
-border: 3px solid black;
-border-radius: 25px;
+  background: #FE5000;
+  color: BLACK;
+  font-family: "Cantarell";
+  margin: 12px;
+  border: 3px solid black;
+  border-radius: 25px;
 
 }
 
 .fed_info_button {
 
-background: #FE5000;
-color: BLACK;
-font-family: "Cantarell";
-margin: 12px;
-border: 3px solid black;
-border-radius: 25px;
+  background: #FE5000;
+  color: BLACK;
+  font-family: "Cantarell";
+  margin: 12px;
+  border: 3px solid black;
+  border-radius: 25px;
 
 }
 
 
 button {
-background: magenta;
-color: chartreuse;
-border: 2px solid black;
+  background: magenta;
+  color: chartreuse;
+  border: 2px solid black;
 }
 
 /* This one also applies to the Tips buttons*/
@@ -34,8 +50,8 @@ button:hover {
 }
 
 .deb {
-background: #980001;
-color: YELLOW;
+  background: #980001;
+  color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
   border: 3px solid black;
@@ -45,13 +61,13 @@ color: YELLOW;
   background: blue;
   color: yellow;
   font-family: "Cantarell";
-    font-size: 24px;
-    border: 3px solid yellow;
+  font-size: 24px;
+  border: 3px solid yellow;
 }
 
 .fed {
-background: teal;
-color: YELLOW;
+  background: teal;
+  color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
   border: 3px solid black;
@@ -66,8 +82,8 @@ color: YELLOW;
 }
 
 .quit {
-background: #312e39;
-color: YELLOW;
+  background: #312e39;
+  color: YELLOW;
   font-family: "Cantarell";
   font-size: 24px;
   border: 3px solid black;
@@ -83,10 +99,9 @@ color: YELLOW;
 
 
 .deb_window {
-
-   background-image: linear-gradient(180deg, black, #335CC5, navy);
-     font-family: "Cantarell";
-     border: 1px solid black;
+  background-image: linear-gradient(180deg, black, #335CC5, navy);
+  font-family: "Cantarell";
+  border: 1px solid black;
 }
 
 .fed_window {
@@ -102,48 +117,45 @@ color: YELLOW;
 }
 
 
-
-
 checkbutton {
-
-color: #FFFF00;
-
+  color: #FFFF00;
 }
 
 .deb_view {
-background: black;
-color: #1FFF0F;
-font-family: "monospace";
+  background: black;
+  color: #1FFF0F;
+  font-family: "monospace";
 
 }
 
 .fed_view {
 
-background: black;
-color: #1FFF0F;
-font-family: "monospace";
+  background: black;
+  color: #1FFF0F;
+  font-family: "monospace";
 
 }
 
 .deb_info_window {
-font-family: "Cantarell";
+  font-family: "Cantarell";
 
 }
 
 .deb_copy_button {
-background: #301934;
-color: white;
-font-family: "Cantarell";
-margin: 12px;
-border: 3px solid black;
-border-radius: 25px;
+  background: #301934;
+  color: white;
+  font-family: "Cantarell";
+  margin: 12px;
+  border: 3px solid black;
+  border-radius: 25px;
 }
 
 .fed_copy_button {
-background: #301934;
-color: white;
-font-family: "Cantarell";
-margin: 12px;
-border: 3px solid black;
-border-radius: 25px;
+  background: #301934;
+  color: white;
+  font-family: "Cantarell";
+  margin: 12px;
+  border: 3px solid black;
+  border-radius: 25px;
 }
+

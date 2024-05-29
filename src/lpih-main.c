@@ -41,6 +41,7 @@ static void deb_tlp_toggled(GtkWidget * widget, gpointer data);
 static void deb_vlc_toggled(GtkWidget * widget, gpointer data);
 static void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
 static void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+
 static void get_cpu_vendor(char * vendor);
 
 static void fed_gpu_toggled(GtkWidget * widget, gpointer data);
@@ -106,11 +107,11 @@ A subnet mask determines the size of a network: if more bits are available, then
 7.  Now we must determine the Gateway address, which is the address of your router.  If you have accessed your router's admin tools from your browser before by typing in an IP address, this would be the same address; and it will generally be a similar IP sequence to what you have been dealing with, but with 1 as the only digit after the last decimal, like:  XXX.XXX.X.1 \n\
 So, if we are to keep with our 192.168.1.123 example, our gateway is most likely 192.168.1.1.  However, we want to be sure of this.  To confirm your gateway, use the ip route show command in the terminal.  Look for the default via line with an IP beside it.  This is your gateway address to enter. \n\
 \n\
-8.    Time to choose your DNS servers.  You can pick whichever one you like.  Cloudflare is popular with many, since it offers security features like DDoS protection, SSL encryption, and web application firewall.  You can specify 2 addresses, in case one is down (seperate them with a comma in the textfield).  To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare.  To use OpenDNS, use 208.67.222.222, 208.67.220.220. \n\
+8.    Time to choose your DNS servers.  You can pick whichever one you like.  Cloudflare is popular with many, since it offers security features like DDoS protection, SSL encryption, and a web application firewall.  You can specify 2 addresses, in case one is down (seperate them with a comma in the textfield).  To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. For added malware protection, substitute the last 1 in each address with a 2.  OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare.  To use OpenDNS, use 208.67.222.222, 208.67.220.220. \n\
 \n\
 9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings. \n\n\
 TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
-Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.  \"This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package, no angle brackets>\n\n";
+Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.\"  This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package>\n\n";
 
 
 void init_css_provider() {
@@ -119,6 +120,8 @@ void init_css_provider() {
   GtkCssProvider * provider2 = gtk_css_provider_new();
   const char * filepath1 = "/usr/share/LPIH/css/style.css";
   const char * filepath2 = "style.css";
+  // Define a CSS provider for each potential file path: filepath1 for if it was installed using
+  // the .deb or .rpm; and filepath2 if it is being run from the source code directory.
   gtk_css_provider_load_from_path(provider, filepath1);
   gtk_css_provider_load_from_path(provider2, filepath2);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider2), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -145,7 +148,7 @@ void get_cpu_vendor(char * vendor) {
 
 //////////////////////////////////////////
 // INFORMATIONAL WINDOW: DEBIAN /////////
-// /////////////////////////////////////
+////////////////////////////////////////
 
 static void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
   debian_tips_open = 0;
@@ -179,7 +182,7 @@ debian_info_window(GtkWidget * widget,
     gtk_widget_set_size_request(scroll_info_window, 700, 700);
 
     view = gtk_text_view_new();
-    gtk_widget_add_css_class(view, "deb_info_window_view");
+    //gtk_widget_add_css_class(view, "deb_info_window_view");
     gtk_widget_set_opacity(view, 0.9);
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
     gtk_widget_add_css_class(view, "deb_info_view");
@@ -581,7 +584,7 @@ fedora_info_window(GtkWidget * widget,
     view = gtk_text_view_new();
     gtk_widget_set_opacity(view, 0.9);
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
-    gtk_widget_add_css_class(view, "fed_info_window_view");
+    gtk_widget_add_css_class(view, "fed_info_view");
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
     gtk_text_buffer_set_text(buffer, tips_spiel, -1);
 
@@ -951,6 +954,7 @@ static void activate(GtkApplication * app,
 
     /* create a new window, and set its title */
     window = gtk_application_window_new(app);
+    
     gtk_widget_add_css_class(window, "main_window");
     gtk_window_set_title(GTK_WINDOW(window), "Linux Post-install Helper For Debian and Fedora");
     gtk_widget_set_size_request(window, 444, 444);
