@@ -32,43 +32,43 @@
 
 
 void deb_gpu_toggled(GtkWidget * widget, gpointer data);
-static void deb_steam_toggled(GtkWidget * widget, gpointer data);
-static void deb_game_toggled(GtkWidget * widget, gpointer data);
-static void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
-static void deb_microcode_toggled(GtkWidget * widget, gpointer data);
-static void deb_fonts_toggled(GtkWidget * widget, gpointer data);
-static void deb_ufw_toggled(GtkWidget * widget, gpointer data);
-static void deb_tlp_toggled(GtkWidget * widget, gpointer data);
-static void deb_vlc_toggled(GtkWidget * widget, gpointer data);
-static void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
-static void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+ void deb_steam_toggled(GtkWidget * widget, gpointer data);
+  void deb_game_toggled(GtkWidget * widget, gpointer data);
+  void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
+  void deb_microcode_toggled(GtkWidget * widget, gpointer data);
+  void deb_fonts_toggled(GtkWidget * widget, gpointer data);
+  void deb_ufw_toggled(GtkWidget * widget, gpointer data);
+  void deb_tlp_toggled(GtkWidget * widget, gpointer data);
+  void deb_vlc_toggled(GtkWidget * widget, gpointer data);
+  void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
+  void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
 
-static void get_cpu_vendor(char * vendor);
+  void get_cpu_vendor(char * vendor);
 
-static void fed_gpu_toggled(GtkWidget * widget, gpointer data);
-static void fed_steam_toggled(GtkWidget * widget, gpointer data);
-static void fed_dnf_toggled(GtkWidget * widget, gpointer data);
-static void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
-static void fed_repo_toggled(GtkWidget * widget, gpointer data);
-static void fed_customization_toggled(GtkWidget * widget, gpointer data);
-static void fed_codecs_toggled(GtkWidget * widget, gpointer data);
-static void fed_tlp_toggled(GtkWidget * widget, gpointer data);
-static void fed_vlc_toggled(GtkWidget * widget, gpointer data);
-static void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
-static void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
+  void fed_gpu_toggled(GtkWidget * widget, gpointer data);
+  void fed_steam_toggled(GtkWidget * widget, gpointer data);
+  void fed_dnf_toggled(GtkWidget * widget, gpointer data);
+  void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
+  void fed_repo_toggled(GtkWidget * widget, gpointer data);
+  void fed_customization_toggled(GtkWidget * widget, gpointer data);
+  void fed_codecs_toggled(GtkWidget * widget, gpointer data);
+  void fed_tlp_toggled(GtkWidget * widget, gpointer data);
+  void fed_vlc_toggled(GtkWidget * widget, gpointer data);
+  void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
+  void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
 
-// Static variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
+//   variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
 
 // 1 = AMD, 2 = Intel, 3 = Nvidia.
-static int cpu_manufacturer = 0;
-static int gpu_manufacturer = 0;
+  int cpu_manufacturer = 0;
+  int gpu_manufacturer = 0;
 
 //For keeping track of single-instance windows.
-static int lpih_instance_running = 0;
-static int debian_window_open = 0;
-static int debian_tips_open = 0;
-static int fedora_window_open = 0;
-static int fedora_tips_open = 0;
+  int lpih_instance_running = 0;
+  int debian_window_open = 0;
+  int debian_tips_open = 0;
+  int fedora_window_open = 0;
+  int fedora_tips_open = 0;
 
 const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
@@ -76,19 +76,19 @@ Debian, like other Linux distributions, has a package manager; which handles the
 \n\
 There are some instructions for optional system configuration outlined here that you might find useful.\n\
 \n\
-SETTING STATIC IP\n\
+SETTING   IP\n\
 \n\
-Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant connection by setting a static IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  Having a static IP can be useful for a multitude of reasons, one of them being the implementation of firewall rules.  The instructions for switching to a static IP on Linux in the GNOME desktop environment are as follows:\n\
+Normally, your device's unique IP address is assigned dynamically, meaning it is not necessarily going to be the same everytime it connects to your network.  You can get a slightly more stable and performant connection by setting a   IP address, where your IP is the same everytime it connects to the network.  This will also aid in configuration of firewalls and servers, since you can now specify your computer's connection by its exact IP address.  Having a   IP can be useful for a multitude of reasons, one of them being the implementation of firewall rules.  The instructions for switching to a   IP on Linux in the GNOME desktop environment are as follows:\n\
 \n\
 1.     Click in the top-right corner of the screen where the power icon is.  Click the gear-shaped icon to access settings.  You can also find the settings application icon by pressing the super key (Windows key or command key on Mac) and either find it visually or search settings in the searchbar that pops up with the GNOME Activities window.  This Activities window can also be accessed by clicking Activities in the tope left of the screen.\n\
 \n\
 2.     If you are using Wi-Fi, click on Wi-Fi at the top of the scrollable menu on the left of the settings window.  If you are using ethernet, click on Network. \n\
 \n\
-3.     Click on the gear icon for the network connection you are using.  Take note of the IP you are currently assigned in the IPv4 Address section of this window, under the Details tab.  When you assign a static IP to your connection, you will make one that looks very similar to this one; save for the digits after the last decimal.  So, if your IPv4 is currently 172.178.1.19 then you can likely assign yourself anything from 192.168.1.0 to 192.168.1.255, as long as the address is not in use by another network device.\n\
+3.     Click on the gear icon for the network connection you are using.  Take note of the IP you are currently assigned in the IPv4 Address section of this window, under the Details tab.  When you assign a   IP to your connection, you will make one that looks very similar to this one; save for the digits after the last decimal.  So, if your IPv4 is currently 172.178.1.19 then you can likely assign yourself anything from 192.168.1.0 to 192.168.1.255, as long as the address is not in use by another network device.\n\
 \n\
 4.     Click the IPv4 tab, and change the method from Automatic (DHCP) to Manual.\n\
 \n\
-5.     In the address field, enter the static IP address you want to use.  \n\
+5.     In the address field, enter the   IP address you want to use.  \n\
 \n\
 6.     Under Netmask, enter the subnet mask for your network.  You can enter the ip addr show command to check which netmask to use.  If you are using Wi-Fi, you will be looking for an interface that looks something like wlp32s0.  Ethernet will look something like enp18s0. \n\
 Beside the inet line for your interface in the terminal command output, there will be a slash follwed by a number: this is the number of bits in your subnet mask.\n\
@@ -110,7 +110,7 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 \n\
 8.    Time to choose your DNS servers.  You can pick whichever one you like.  Cloudflare is popular with many, since it offers security features like DDoS protection, SSL encryption, and a web application firewall.  You can specify 2 addresses, in case one is down (seperate them with a comma in the textfield).  To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. For added malware protection, substitute the last 1 in each address with a 2.  OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare.  To use OpenDNS, use 208.67.222.222, 208.67.220.220. \n\
 \n\
-9.  Save your new static IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings. \n\n\
+9.  Save your new   IP address configuration with the Apply button.  Go to your network settings and switch the connection off, then on again.  Try to connect to a webpage.  If it works, you are good to go.  If not, you may have made an error in your IP configuration.  If you need to go back to an automatically assigned IP you can undo the   IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings. \n\n\
 TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
 Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.\"  This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package>\n\n";
 
@@ -170,11 +170,11 @@ void get_cpu_vendor(char* vendor) {
 // INFORMATIONAL WINDOW: DEBIAN /////////
 ////////////////////////////////////////
 
-static void on_deb_tips_window_destroy(GtkWidget* deb_info_window, gpointer user_data) {
+  void on_deb_tips_window_destroy(GtkWidget* deb_info_window, gpointer user_data) {
   debian_tips_open = 0;
 }
 
-static void
+  void
 debian_info_window(GtkWidget* widget,
   gpointer data) {
 
@@ -230,7 +230,7 @@ debian_info_window(GtkWidget* widget,
 }
 
 
-static int
+  int
 debian_window(GtkWidget * widget,
   gpointer data) {
 
@@ -363,7 +363,7 @@ debian_window(GtkWidget * widget,
 
   }
 
-  static GtkTextIter iter; 
+    GtkTextIter iter; 
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, debian_gpu_command, -1);
@@ -382,11 +382,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN STEAM CHECKBOX ///////
 
-static void deb_steam_toggled(GtkWidget * widget, gpointer data) {
+  void deb_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n", -1);
@@ -405,11 +405,11 @@ static void deb_steam_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN GAME CHECKBOX ///////
 
-static void deb_game_toggled(GtkWidget * widget, gpointer data) {
+  void deb_game_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
@@ -428,11 +428,11 @@ static void deb_game_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// DEBIAN FLATPAK CHECKBOX ///////////////
 
-static void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
+  void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
@@ -451,11 +451,11 @@ static void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN MICROCODE CHECKBOX ///////
 
-static void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
+  void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
 
   const gchar * debian_microcode_command;
 
@@ -485,11 +485,11 @@ static void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN FONTS CHECKBOX ///////
 
-static void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
+  void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; 
+    GtkTextIter iter; 
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
@@ -508,11 +508,11 @@ static void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// DEBIAN UFW CHECKBOX ///////////////
 
-static void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
+  void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
@@ -531,11 +531,11 @@ static void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN TLP CHECKBOX ///////
 
-static void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
+  void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install tlp; \n", -1);
@@ -554,11 +554,11 @@ static void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN VLC CHECKBOX ///////
 
-static void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
+  void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install vlc; \n", -1);
@@ -575,7 +575,7 @@ static void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-static void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
+  void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
   debian_window_open = 0;
 }
 
@@ -583,7 +583,7 @@ static void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
 
-static void
+  void
 fedora_info_window(GtkWidget * widget,
   gpointer data) {
 
@@ -634,7 +634,7 @@ fedora_info_window(GtkWidget * widget,
   fedora_tips_open = 1;
 }
 
-static void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
+  void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
   fedora_tips_open = 0;
 }
 
@@ -644,7 +644,7 @@ static void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer use
 //                                     || //
 //////////////////////////////////////////
 
-static int
+  int
 fedora_window(GtkWidget * widget,
   gpointer data) {
 
@@ -751,11 +751,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA repo CHECKBOX ///////
 
-static void fed_repo_toggled(GtkWidget * widget, gpointer data) {
+  void fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n", -1);
@@ -774,7 +774,7 @@ static void fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA gpu CHECKBOX ///////////////
 
-static void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
+  void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -789,7 +789,7 @@ static void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   }
 
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, fedora_gpu_command, -1);
@@ -808,11 +808,11 @@ static void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA STEAM CHECKBOX ///////
 
-static void fed_steam_toggled(GtkWidget * widget, gpointer data) {
+  void fed_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install steam;\n", -1);
@@ -831,11 +831,11 @@ static void fed_steam_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA GAME CHECKBOX ///////
 
-static void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
+  void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n", -1);
@@ -854,11 +854,11 @@ static void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA FLATPAK CHECKBOX ///////////////
 
-static void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
+  void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
@@ -877,11 +877,11 @@ static void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA customization CHECKBOX ///////
 
-static void fed_customization_toggled(GtkWidget * widget, gpointer data) {
+  void fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install gnome-tweaks gnome-extensions-app; \n", -1);
@@ -899,11 +899,11 @@ static void fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA CODECS CHECKBOX ///////////////
 
-static void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
+  void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n", -1);
@@ -922,11 +922,11 @@ static void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA TLP CHECKBOX ///////
 
-static void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
+  void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install tlp; \n", -1);
@@ -945,11 +945,11 @@ static void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA VLC CHECKBOX ///////
 
-static void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
+  void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  static GtkTextIter iter; // A static variable to store the iterator position
+    GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install vlc; \n", -1);
@@ -966,13 +966,13 @@ static void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-static void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
+  void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
   fedora_window_open = 0;
 }
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
-static void activate(GtkApplication * app,
+  void activate(GtkApplication * app,
   gpointer user_data) {
 
   if (lpih_instance_running != 1) {
@@ -1071,7 +1071,7 @@ static void activate(GtkApplication * app,
 
 }
 
-static void on_quit(GtkApplication * app, gpointer user_data) {
+  void on_quit(GtkApplication * app, gpointer user_data) {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = 0;
