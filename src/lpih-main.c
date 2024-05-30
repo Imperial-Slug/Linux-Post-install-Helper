@@ -41,12 +41,13 @@
  int deb_tlp_toggled(GtkWidget * widget, gpointer data);
  int deb_vlc_toggled(GtkWidget * widget, gpointer data);
  int on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
-int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+ int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
 
-// Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
-int get_cpu_vendor(char * vendor);
 
-//\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
+ // Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
+ int get_cpu_vendor(char * vendor);
+
+ //\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
  int fed_gpu_toggled(GtkWidget * widget, gpointer data);
  int fed_steam_toggled(GtkWidget * widget, gpointer data);
  int fed_dnf_toggled(GtkWidget * widget, gpointer data);
@@ -59,18 +60,18 @@ int get_cpu_vendor(char * vendor);
  int on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
  int on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
 
-// Variables that tell the program what kind of CPU and GPU the user has.
+ // Variables that tell the program what kind of CPU and GPU the user has.
 
-// 1 = AMD, 2 = Intel, 3 = Nvidia.
-int cpu_manufacturer = 0;
-int gpu_manufacturer = 0;
+ // 1 = AMD, 2 = Intel, 3 = Nvidia.
+ int cpu_manufacturer = 0;
+ int gpu_manufacturer = 0;
 
-// For keeping track of single-instance windows.
-int lpih_instance_running = 0;
-int debian_window_open = 0;
-int debian_tips_open = 0;
-int fedora_window_open = 0;
-int fedora_tips_open = 0;
+ // For keeping track of single-instance windows.
+ int lpih_instance_running = 0;
+ int debian_window_open = 0;
+ int debian_tips_open = 0;
+ int fedora_window_open = 0;
+ int fedora_tips_open = 0;
 
 const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
@@ -197,11 +198,9 @@ int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) 
             g_print("debian_tips_open is NULL.  Failed to set to 0.\n");
             return 1;
             }
-  
 }
 
- int
-debian_info_window(GtkWidget * widget,
+ int debian_info_window(GtkWidget * widget,
   gpointer data) {
 
   if (debian_tips_open != 1) {
@@ -254,8 +253,7 @@ debian_info_window(GtkWidget * widget,
 
 }
 
-int
-debian_window(GtkWidget * widget,
+int debian_window(GtkWidget * widget,
   gpointer data) {
 
   if (debian_window_open != 1) {
@@ -283,7 +281,6 @@ debian_window(GtkWidget * widget,
 
     deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
     gtk_box_append(GTK_BOX(deb_box), deb_game_check);
-    ////////////////////////////////////////////////
 
     deb_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
     gtk_box_append(GTK_BOX(deb_box), deb_flatpak_check);
@@ -293,7 +290,7 @@ debian_window(GtkWidget * widget,
 
     deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?");
     gtk_box_append(GTK_BOX(deb_box), deb_fonts_check);
-    ///////////////////////////////////////////////////////
+    
     deb_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
     gtk_box_append(GTK_BOX(deb_box), deb_ufw_check);
 
@@ -322,7 +319,7 @@ debian_window(GtkWidget * widget,
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(deb_box), scroll_window);
 
-    // DEBIAN INFO WINDOW //
+    ///\\\///\\\///\\\///\\\///\\\ DEBIAN INFO WINDOW ///\\\///\\\///\\\///\\\///\\\///\\\
 
     // Create separate box to hold button to solve sizing issues //////
     GtkWidget * deb_info_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -364,6 +361,19 @@ debian_window(GtkWidget * widget,
   }
 }
 
+const gchar* set_gpu_manufacturer_command_debian(const gchar* debian_gpu_command){
+
+ if (gpu_manufacturer == 1) {
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+  } else if (gpu_manufacturer == 2) {
+    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+  } else if (gpu_manufacturer == 3) {
+    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+  } else if (gpu_manufacturer == 0) {
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+}
+return debian_gpu_command;
+}
 ////////// DEBIAN gpu CHECKBOX ///////////////
 
  int deb_gpu_toggled(GtkWidget * widget, gpointer data) {
@@ -371,18 +381,12 @@ debian_window(GtkWidget * widget,
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
 
-  const gchar * debian_gpu_command;
-  if (gpu_manufacturer == 1) {
-    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-  } else if (gpu_manufacturer == 2) {
-    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-  } else if (gpu_manufacturer == 3) {
-    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
-
-  } else if (gpu_manufacturer == 0) {
-    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-
-  }
+   const gchar* debian_gpu_command;
+   set_gpu_manufacturer_command_debian(debian_gpu_command);
+ // // // // ////// // // // // ////
+ 
+ 
+  
 
   GtkTextIter iter;
   if (state) {
@@ -400,6 +404,9 @@ debian_window(GtkWidget * widget,
     }
   }
 }
+
+
+
 
 //// DEBIAN STEAM CHECKBOX ///////
 
@@ -793,6 +800,21 @@ fedora_window(GtkWidget * widget,
   }
 }
 
+
+const gchar* set_gpu_manufacturer_command_fedora(const gchar* fedora_gpu_command){
+
+ if (gpu_manufacturer == 1) {
+    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
+  } else if (gpu_manufacturer == 2) {
+    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
+  } else if (gpu_manufacturer == 3) {
+    fedora_gpu_command = "  # Intel GPU drivers already installed. \n";
+
+  }
+return fedora_gpu_command;
+}
+
+
 ////////// FEDORA gpu CHECKBOX ///////////////
 
  int fed_gpu_toggled(GtkWidget * widget, gpointer data) {
@@ -801,14 +823,8 @@ fedora_window(GtkWidget * widget,
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
 
   const gchar * fedora_gpu_command;
-  if (gpu_manufacturer == 1) {
-    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-  } else if (gpu_manufacturer == 2) {
-    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-  } else if (gpu_manufacturer == 3) {
-    fedora_gpu_command = "  # Intel GPU drivers already installed. \n";
-
-  }
+     set_gpu_manufacturer_command_fedora(fedora_gpu_command);
+ 
 
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
