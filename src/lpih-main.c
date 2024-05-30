@@ -115,7 +115,7 @@ TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
 Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.\"  This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package>\n\n";
 
 
-void init_css_provider() {
+int init_css_provider() {
 
   GtkCssProvider * provider = gtk_css_provider_new();
   
@@ -135,27 +135,34 @@ void init_css_provider() {
             g_print("The CSS file was found in /usr/share/LPIH/css");
             cssFilePathDecided = "/usr/share/LPIH/css/style.css";
             fclose(cssFileForAppInstalled);
-          } else { g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer.\n*********************\n\n"); }
+          } else { g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer so it can be fixed.\n*********************\n\n"); }
 
   gtk_css_provider_load_from_path(provider, cssFilePathDecided);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  
+  if (provider != NULL){
+        g_print("The CSS provider has found the CSS file.  \n");
+        return 0;
+   
+  } else { g_print("******ERROR: CSS provider failed to find the CSS file in function gtk_css_provider_load_from_path(). \n"); return 2;}
+
     }
 
 //Function to get the graphics card vendor of the user.
-const char * getGraphicsCardVendor() {
-  return (const char * ) glGetString(GL_VENDOR);
+const char* getGraphicsCardVendor() {
+  return (const char* ) glGetString(GL_VENDOR);
 }
 
-void get_cpu_vendor(char * vendor) {
+void get_cpu_vendor(char* vendor) {
   unsigned int eax, ebx, ecx, edx;
 
   // Call cpuid with input 0 to get vendor string
   __asm__("cpuid": "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx): "a"(0));
 
   // Copy the vendor string to the output buffer
-  ((int * ) vendor)[0] = ebx;
-  ((int * ) vendor)[1] = edx;
-  ((int * ) vendor)[2] = ecx;
+  ((int* ) vendor)[0] = ebx;
+  ((int* ) vendor)[1] = edx;
+  ((int* ) vendor)[2] = ecx;
   vendor[12] = '\0';
 }
 
@@ -163,12 +170,12 @@ void get_cpu_vendor(char * vendor) {
 // INFORMATIONAL WINDOW: DEBIAN /////////
 ////////////////////////////////////////
 
-static void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
+static void on_deb_tips_window_destroy(GtkWidget* deb_info_window, gpointer user_data) {
   debian_tips_open = 0;
 }
 
 static void
-debian_info_window(GtkWidget * widget,
+debian_info_window(GtkWidget* widget,
   gpointer data) {
 
   if (debian_tips_open != 1) {
