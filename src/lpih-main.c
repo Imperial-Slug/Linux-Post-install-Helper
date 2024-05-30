@@ -31,7 +31,7 @@
 ////////////////////////
 
 
-static void deb_gpu_toggled(GtkWidget * widget, gpointer data);
+void deb_gpu_toggled(GtkWidget * widget, gpointer data);
 static void deb_steam_toggled(GtkWidget * widget, gpointer data);
 static void deb_game_toggled(GtkWidget * widget, gpointer data);
 static void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
@@ -343,7 +343,7 @@ debian_window(GtkWidget * widget,
 
 ////////// DEBIAN gpu CHECKBOX ///////////////
 
-static void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
+ void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -1056,12 +1056,14 @@ static void activate(GtkApplication * app,
     } else if (strstr(vendor, "Intel") != NULL) {
       cpu_manufacturer = 3;
     } else {
-      g_print("The CPU vendor could not be determined for this computer.\n");
+      g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
+      g_print("*************************************\n\n");
       cpu_manufacturer = 0;
     }
 
     g_print("The GPU manufacturer for this machine is %d, %s.\n", gpu_manufacturer, gpu_vendor);
     g_print("The CPU manufacturer for this machine is %d, %s.\n", cpu_manufacturer, vendor);
+    g_print("*************************************\n\n");
 
   } else {
     g_print("Error: instance of LPIH is already running!\n");
@@ -1070,7 +1072,8 @@ static void activate(GtkApplication * app,
 }
 
 static void on_quit(GtkApplication * app, gpointer user_data) {
-  g_print("Shutting down LPIH now.\n");
+  g_print("Exiting LPIH now.\n");
+  g_print("*************************************\n");
   lpih_instance_running = 0;
 
 }
