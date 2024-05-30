@@ -18,56 +18,54 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-/////////////////////////////////
-////        L I B S      ////////
-/////////////////////////////////
+/////////////////////////////////////////
+////        L I B R A R I E S   ////////
+///////////////////////////////////////
 #include <gtk/gtk.h>
-
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <string.h>
-
 #include <X11/Xlib.h>
-
 #include <GL/gl.h>
- /////////////////////////
-////////////////////////
+ //////////////////////////////
+//////////////////////////////
 
-void deb_gpu_toggled(GtkWidget * widget, gpointer data);
-void deb_steam_toggled(GtkWidget * widget, gpointer data);
-void deb_game_toggled(GtkWidget * widget, gpointer data);
-void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
-void deb_microcode_toggled(GtkWidget * widget, gpointer data);
-void deb_fonts_toggled(GtkWidget * widget, gpointer data);
-void deb_ufw_toggled(GtkWidget * widget, gpointer data);
-void deb_tlp_toggled(GtkWidget * widget, gpointer data);
-void deb_vlc_toggled(GtkWidget * widget, gpointer data);
-void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
-void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+//\\//\\//\\//\\//\\// DEBIAN-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//|||||||||
+ int deb_gpu_toggled(GtkWidget * widget, gpointer data);
+ int deb_steam_toggled(GtkWidget * widget, gpointer data);
+ int deb_game_toggled(GtkWidget * widget, gpointer data);
+ int deb_flatpak_toggled(GtkWidget * widget, gpointer data);
+ int deb_microcode_toggled(GtkWidget * widget, gpointer data);
+ int deb_fonts_toggled(GtkWidget * widget, gpointer data);
+ int deb_ufw_toggled(GtkWidget * widget, gpointer data);
+ int deb_tlp_toggled(GtkWidget * widget, gpointer data);
+ int deb_vlc_toggled(GtkWidget * widget, gpointer data);
+ int on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
+int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
 
-void get_cpu_vendor(char * vendor);
+// Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
+int get_cpu_vendor(char * vendor);
 
-void fed_gpu_toggled(GtkWidget * widget, gpointer data);
-void fed_steam_toggled(GtkWidget * widget, gpointer data);
-void fed_dnf_toggled(GtkWidget * widget, gpointer data);
-void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
-void fed_repo_toggled(GtkWidget * widget, gpointer data);
-void fed_customization_toggled(GtkWidget * widget, gpointer data);
-void fed_codecs_toggled(GtkWidget * widget, gpointer data);
-void fed_tlp_toggled(GtkWidget * widget, gpointer data);
-void fed_vlc_toggled(GtkWidget * widget, gpointer data);
-void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
-void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
+//\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
+ int fed_gpu_toggled(GtkWidget * widget, gpointer data);
+ int fed_steam_toggled(GtkWidget * widget, gpointer data);
+ int fed_dnf_toggled(GtkWidget * widget, gpointer data);
+ int fed_flatpak_toggled(GtkWidget * widget, gpointer data);
+ int fed_repo_toggled(GtkWidget * widget, gpointer data);
+ int fed_customization_toggled(GtkWidget * widget, gpointer data);
+ int fed_codecs_toggled(GtkWidget * widget, gpointer data);
+ int fed_tlp_toggled(GtkWidget * widget, gpointer data);
+ int fed_vlc_toggled(GtkWidget * widget, gpointer data);
+ int on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
+ int on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
 
-//   variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
+// Variables that tell the program what kind of CPU and GPU the user has.
 
 // 1 = AMD, 2 = Intel, 3 = Nvidia.
 int cpu_manufacturer = 0;
 int gpu_manufacturer = 0;
 
-//For keeping track of single-instance windows.
+// For keeping track of single-instance windows.
 int lpih_instance_running = 0;
 int debian_window_open = 0;
 int debian_tips_open = 0;
@@ -156,12 +154,12 @@ int init_css_provider() {
 
 }
 
-//Function to get the graphics card vendor of the user.
+// Function to get the graphics card vendor of the user.
 const char * getGraphicsCardVendor() {
   return (const char * ) glGetString(GL_VENDOR);
 }
 
-void get_cpu_vendor(char * vendor) {
+int get_cpu_vendor(char * vendor) {
   unsigned int eax, ebx, ecx, edx;
 
   // Call cpuid with input 0 to get vendor string
@@ -172,17 +170,37 @@ void get_cpu_vendor(char * vendor) {
   ((int * ) vendor)[1] = edx;
   ((int * ) vendor)[2] = ecx;
   vendor[12] = '\0';
+  
+  if (vendor != NULL) {
+    g_print("CPU vendor loaded.\n");
+    return 0;
+  } 
+  
+  else {
+  g_print("*********ERROR: Problem getting cpu vendor info.*****\n\n");
+  return 1;
+  }
+  
 }
 
-//////////////////////////////////////////
-// INFORMATIONAL WINDOW: DEBIAN /////////
-////////////////////////////////////////
+  ////////////////////////////////////////////
+ ///// INFORMATIONAL WINDOW: DEBIAN /////////
+///////////////////////////////////////////
 
-void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
+int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
   debian_tips_open = 0;
+  
+  if(debian_tips_open == 0){
+    g_print("debian_tips_open set to 0.\n");
+    return 0;
+  } else {
+            g_print("debian_tips_open is NULL.  Failed to set to 0.\n");
+            return 1;
+            }
+  
 }
 
-void
+ int
 debian_info_window(GtkWidget * widget,
   gpointer data) {
 
@@ -210,7 +228,6 @@ debian_info_window(GtkWidget * widget,
     gtk_widget_set_size_request(scroll_info_window, 700, 700);
 
     view = gtk_text_view_new();
-    //gtk_widget_add_css_class(view, "deb_info_window_view");
     gtk_widget_set_opacity(view, 0.9);
     gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
     gtk_widget_add_css_class(view, "deb_info_view");
@@ -230,7 +247,7 @@ debian_info_window(GtkWidget * widget,
     gtk_widget_set_visible(deb_info_window, TRUE);
 
   } else {
-    g_print("Error: debian_tips window is already open.");
+    g_print("debian_tips window is already open.");
   }
 
   debian_tips_open = 1;
@@ -349,7 +366,7 @@ debian_window(GtkWidget * widget,
 
 ////////// DEBIAN gpu CHECKBOX ///////////////
 
-void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
+ int deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -386,7 +403,7 @@ void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN STEAM CHECKBOX ///////
 
-void deb_steam_toggled(GtkWidget * widget, gpointer data) {
+ int deb_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -409,7 +426,7 @@ void deb_steam_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN GAME CHECKBOX ///////
 
-void deb_game_toggled(GtkWidget * widget, gpointer data) {
+ int deb_game_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -432,7 +449,7 @@ void deb_game_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// DEBIAN FLATPAK CHECKBOX ///////////////
 
-void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
+ int deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -455,7 +472,7 @@ void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN MICROCODE CHECKBOX ///////
 
-void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
+ int deb_microcode_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -489,7 +506,7 @@ void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN FONTS CHECKBOX ///////
 
-void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
+ int deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -512,7 +529,7 @@ void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// DEBIAN UFW CHECKBOX ///////////////
 
-void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
+ int deb_ufw_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -535,7 +552,7 @@ void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN TLP CHECKBOX ///////
 
-void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
+ int deb_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -558,7 +575,7 @@ void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
 
 //// DEBIAN VLC CHECKBOX ///////
 
-void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
+ int deb_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -579,7 +596,7 @@ void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
+ int on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
   debian_window_open = 0;
 }
 
@@ -587,7 +604,7 @@ void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
 
-void
+ int
 fedora_info_window(GtkWidget * widget,
   gpointer data) {
 
@@ -638,7 +655,7 @@ fedora_info_window(GtkWidget * widget,
   fedora_tips_open = 1;
 }
 
-void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
+ int on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
   fedora_tips_open = 0;
 }
 
@@ -755,7 +772,7 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA repo CHECKBOX ///////
 
-void fed_repo_toggled(GtkWidget * widget, gpointer data) {
+ int fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -778,7 +795,7 @@ void fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA gpu CHECKBOX ///////////////
 
-void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
+ int fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -812,7 +829,7 @@ void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA STEAM CHECKBOX ///////
 
-void fed_steam_toggled(GtkWidget * widget, gpointer data) {
+ int fed_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -835,7 +852,7 @@ void fed_steam_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA GAME CHECKBOX ///////
 
-void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
+ int fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -858,7 +875,7 @@ void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA FLATPAK CHECKBOX ///////////////
 
-void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
+ int fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -881,7 +898,7 @@ void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA customization CHECKBOX ///////
 
-void fed_customization_toggled(GtkWidget * widget, gpointer data) {
+ int fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -903,7 +920,7 @@ void fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
 ////////// FEDORA CODECS CHECKBOX ///////////////
 
-void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
+ int fed_codecs_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -926,7 +943,7 @@ void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA TLP CHECKBOX ///////
 
-void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
+ int fed_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -949,7 +966,7 @@ void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
 
 //// FEDORA VLC CHECKBOX ///////
 
-void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
+ int fed_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -970,13 +987,13 @@ void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
   }
 }
 
-void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
+ int on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
   fedora_window_open = 0;
 }
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
-void activate(GtkApplication * app,
+ int activate(GtkApplication * app,
   gpointer user_data) {
 
   if (lpih_instance_running != 1) {
@@ -1074,7 +1091,7 @@ void activate(GtkApplication * app,
 
 }
 
-void on_quit(GtkApplication * app, gpointer user_data) {
+ int on_quit(GtkApplication * app, gpointer user_data) {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = 0;
