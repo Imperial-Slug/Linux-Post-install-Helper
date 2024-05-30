@@ -17,58 +17,62 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
- 
-  /////////////////////////////////
- ////        L I B S      ////////
+
 /////////////////////////////////
- #include <gtk/gtk.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <X11/Xlib.h>
- #include <GL/gl.h>
-/////////////////////////
+////        L I B S      ////////
+/////////////////////////////////
+#include <gtk/gtk.h>
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <X11/Xlib.h>
+
+#include <GL/gl.h>
+ /////////////////////////
 ////////////////////////
 
-
 void deb_gpu_toggled(GtkWidget * widget, gpointer data);
- void deb_steam_toggled(GtkWidget * widget, gpointer data);
-  void deb_game_toggled(GtkWidget * widget, gpointer data);
-  void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
-  void deb_microcode_toggled(GtkWidget * widget, gpointer data);
-  void deb_fonts_toggled(GtkWidget * widget, gpointer data);
-  void deb_ufw_toggled(GtkWidget * widget, gpointer data);
-  void deb_tlp_toggled(GtkWidget * widget, gpointer data);
-  void deb_vlc_toggled(GtkWidget * widget, gpointer data);
-  void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
-  void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+void deb_steam_toggled(GtkWidget * widget, gpointer data);
+void deb_game_toggled(GtkWidget * widget, gpointer data);
+void deb_flatpak_toggled(GtkWidget * widget, gpointer data);
+void deb_microcode_toggled(GtkWidget * widget, gpointer data);
+void deb_fonts_toggled(GtkWidget * widget, gpointer data);
+void deb_ufw_toggled(GtkWidget * widget, gpointer data);
+void deb_tlp_toggled(GtkWidget * widget, gpointer data);
+void deb_vlc_toggled(GtkWidget * widget, gpointer data);
+void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
+void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
 
-  void get_cpu_vendor(char * vendor);
+void get_cpu_vendor(char * vendor);
 
-  void fed_gpu_toggled(GtkWidget * widget, gpointer data);
-  void fed_steam_toggled(GtkWidget * widget, gpointer data);
-  void fed_dnf_toggled(GtkWidget * widget, gpointer data);
-  void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
-  void fed_repo_toggled(GtkWidget * widget, gpointer data);
-  void fed_customization_toggled(GtkWidget * widget, gpointer data);
-  void fed_codecs_toggled(GtkWidget * widget, gpointer data);
-  void fed_tlp_toggled(GtkWidget * widget, gpointer data);
-  void fed_vlc_toggled(GtkWidget * widget, gpointer data);
-  void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
-  void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
+void fed_gpu_toggled(GtkWidget * widget, gpointer data);
+void fed_steam_toggled(GtkWidget * widget, gpointer data);
+void fed_dnf_toggled(GtkWidget * widget, gpointer data);
+void fed_flatpak_toggled(GtkWidget * widget, gpointer data);
+void fed_repo_toggled(GtkWidget * widget, gpointer data);
+void fed_customization_toggled(GtkWidget * widget, gpointer data);
+void fed_codecs_toggled(GtkWidget * widget, gpointer data);
+void fed_tlp_toggled(GtkWidget * widget, gpointer data);
+void fed_vlc_toggled(GtkWidget * widget, gpointer data);
+void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
+void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
 
 //   variables that tell the program what kind of CPU and GPU the user has to use the proper commands on the next screen.
 
 // 1 = AMD, 2 = Intel, 3 = Nvidia.
-  int cpu_manufacturer = 0;
-  int gpu_manufacturer = 0;
+int cpu_manufacturer = 0;
+int gpu_manufacturer = 0;
 
 //For keeping track of single-instance windows.
-  int lpih_instance_running = 0;
-  int debian_window_open = 0;
-  int debian_tips_open = 0;
-  int fedora_window_open = 0;
-  int fedora_tips_open = 0;
+int lpih_instance_running = 0;
+int debian_window_open = 0;
+int debian_tips_open = 0;
+int fedora_window_open = 0;
+int fedora_tips_open = 0;
 
 const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
@@ -114,55 +118,59 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
 Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.\"  This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package>\n\n";
 
-
 int init_css_provider() {
 
   GtkCssProvider * provider = gtk_css_provider_new();
-  
-  const char *cssFilePathDecided;
-  const char *cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
-  const char *cssPathForAppInSrc = "style.css";
-  
-  FILE *cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
-  FILE *cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
+
+  const char * cssFilePathDecided;
+  const char * cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
+  const char * cssPathForAppInSrc = "style.css";
+
+  FILE * cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
+  FILE * cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
 
   if (cssFileForAppInSrc) {
-  g_print("The CSS file was found beside the executable.\n");
-  cssFilePathDecided = "style.css";
-  fclose(cssFileForAppInSrc);
+    g_print("The CSS file was found beside the executable.\n");
+    cssFilePathDecided = "style.css";
+    fclose(cssFileForAppInSrc);
 
   } else if (cssPathForAppInstalled) {
-            g_print("The CSS file was found in /usr/share/LPIH/css");
-            cssFilePathDecided = "/usr/share/LPIH/css/style.css";
-            fclose(cssFileForAppInstalled);
-          } else { g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer so it can be fixed.\n*********************\n\n"); }
+    g_print("The CSS file was found in /usr/share/LPIH/css");
+    cssFilePathDecided = "/usr/share/LPIH/css/style.css";
+    fclose(cssFileForAppInstalled);
+  } else {
+    g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer so it can be fixed.\n*********************\n\n");
+  }
 
   gtk_css_provider_load_from_path(provider, cssFilePathDecided);
   gtk_style_context_add_provider_for_display(gdk_display_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  
-  if (provider != NULL){
-        g_print("The CSS provider has found the CSS file.  \n");
-        return 0;
-   
-  } else { g_print("******ERROR: CSS provider failed to find the CSS file in function gtk_css_provider_load_from_path(). \n"); return 2;}
 
-    }
+  if (provider != NULL) {
+    g_print("The CSS provider has found the CSS file.  \n");
+    return 0;
 
-//Function to get the graphics card vendor of the user.
-const char* getGraphicsCardVendor() {
-  return (const char* ) glGetString(GL_VENDOR);
+  } else {
+    g_print("******ERROR: CSS provider failed to find the CSS file in function gtk_css_provider_load_from_path(). \n");
+    return 2;
+  }
+
 }
 
-void get_cpu_vendor(char* vendor) {
+//Function to get the graphics card vendor of the user.
+const char * getGraphicsCardVendor() {
+  return (const char * ) glGetString(GL_VENDOR);
+}
+
+void get_cpu_vendor(char * vendor) {
   unsigned int eax, ebx, ecx, edx;
 
   // Call cpuid with input 0 to get vendor string
   __asm__("cpuid": "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx): "a"(0));
 
   // Copy the vendor string to the output buffer
-  ((int* ) vendor)[0] = ebx;
-  ((int* ) vendor)[1] = edx;
-  ((int* ) vendor)[2] = ecx;
+  ((int * ) vendor)[0] = ebx;
+  ((int * ) vendor)[1] = edx;
+  ((int * ) vendor)[2] = ecx;
   vendor[12] = '\0';
 }
 
@@ -170,12 +178,12 @@ void get_cpu_vendor(char* vendor) {
 // INFORMATIONAL WINDOW: DEBIAN /////////
 ////////////////////////////////////////
 
-  void on_deb_tips_window_destroy(GtkWidget* deb_info_window, gpointer user_data) {
+void on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
   debian_tips_open = 0;
 }
 
-  void
-debian_info_window(GtkWidget* widget,
+void
+debian_info_window(GtkWidget * widget,
   gpointer data) {
 
   if (debian_tips_open != 1) {
@@ -219,7 +227,7 @@ debian_info_window(GtkWidget* widget,
 
     g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
-        gtk_widget_set_visible(deb_info_window, TRUE);
+    gtk_widget_set_visible(deb_info_window, TRUE);
 
   } else {
     g_print("Error: debian_tips window is already open.");
@@ -229,8 +237,7 @@ debian_info_window(GtkWidget* widget,
 
 }
 
-
-  int
+int
 debian_window(GtkWidget * widget,
   gpointer data) {
 
@@ -251,7 +258,7 @@ debian_window(GtkWidget * widget,
     deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child(GTK_WINDOW(deb_window), deb_box);
     gtk_widget_set_can_focus(GTK_WIDGET(deb_box), TRUE);
-    
+
     // CHECKBOXES //////////
 
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
@@ -297,7 +304,6 @@ debian_window(GtkWidget * widget,
     gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(deb_box), scroll_window);
-    
 
     // DEBIAN INFO WINDOW //
 
@@ -327,23 +333,23 @@ debian_window(GtkWidget * widget,
     g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
     g_signal_connect(deb_window, "destroy", G_CALLBACK(on_deb_window_destroy), NULL);
 
-        gtk_widget_set_visible(deb_window, TRUE);
+    gtk_widget_set_visible(deb_window, TRUE);
 
-///////////////////////
-   if (gtk_widget_is_visible(deb_window)){ 
-        debian_window_open = 1;
-        return 0;      
-      } else { 
-                g_print("Debian LPIH window failed to open.");
-                return 1; 
-              }
-///////////////////////
+    ///////////////////////
+    if (gtk_widget_is_visible(deb_window)) {
+      debian_window_open = 1;
+      return 0;
+    } else {
+      g_print("Debian LPIH window failed to open.");
+      return 1;
+    }
+    ///////////////////////
   }
 }
 
 ////////// DEBIAN gpu CHECKBOX ///////////////
 
- void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
+void deb_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -356,16 +362,14 @@ debian_window(GtkWidget * widget,
   } else if (gpu_manufacturer == 3) {
     debian_gpu_command = "  # Intel GPU drivers already installed. \n";
 
-  }
-  
-  else if (gpu_manufacturer == 0) {
+  } else if (gpu_manufacturer == 0) {
     debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
 
   }
 
-    GtkTextIter iter; 
+  GtkTextIter iter;
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_get_end_iter(buffer, & iter);
     gtk_text_buffer_insert(buffer, & iter, debian_gpu_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -382,11 +386,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN STEAM CHECKBOX ///////
 
-  void deb_steam_toggled(GtkWidget * widget, gpointer data) {
+void deb_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n", -1);
@@ -405,11 +409,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN GAME CHECKBOX ///////
 
-  void deb_game_toggled(GtkWidget * widget, gpointer data) {
+void deb_game_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
@@ -428,11 +432,11 @@ debian_window(GtkWidget * widget,
 
 ////////// DEBIAN FLATPAK CHECKBOX ///////////////
 
-  void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
+void deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
@@ -451,11 +455,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN MICROCODE CHECKBOX ///////
 
-  void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
+void deb_microcode_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
 
   const gchar * debian_microcode_command;
 
@@ -468,7 +472,7 @@ debian_window(GtkWidget * widget,
   }
 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_get_end_iter(buffer, & iter);
     gtk_text_buffer_insert(buffer, & iter, debian_microcode_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -485,13 +489,13 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN FONTS CHECKBOX ///////
 
-  void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
+void deb_fonts_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; 
+  GtkTextIter iter;
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_get_end_iter(buffer, & iter);
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -508,11 +512,11 @@ debian_window(GtkWidget * widget,
 
 ////////// DEBIAN UFW CHECKBOX ///////////////
 
-  void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
+void deb_ufw_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
@@ -531,11 +535,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN TLP CHECKBOX ///////
 
-  void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
+void deb_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install tlp; \n", -1);
@@ -554,11 +558,11 @@ debian_window(GtkWidget * widget,
 
 //// DEBIAN VLC CHECKBOX ///////
 
-  void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
+void deb_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo apt install vlc; \n", -1);
@@ -575,7 +579,7 @@ debian_window(GtkWidget * widget,
   }
 }
 
-  void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
+void on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
   debian_window_open = 0;
 }
 
@@ -583,7 +587,7 @@ debian_window(GtkWidget * widget,
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
 
-  void
+void
 fedora_info_window(GtkWidget * widget,
   gpointer data) {
 
@@ -625,7 +629,7 @@ fedora_info_window(GtkWidget * widget,
 
     g_signal_connect(fed_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
 
-        gtk_widget_set_visible(fed_info_window, TRUE);
+    gtk_widget_set_visible(fed_info_window, TRUE);
 
   } else {
     g_print("Error: Fedora Tips already open.");
@@ -634,7 +638,7 @@ fedora_info_window(GtkWidget * widget,
   fedora_tips_open = 1;
 }
 
-  void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
+void on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
   fedora_tips_open = 0;
 }
 
@@ -644,7 +648,7 @@ fedora_info_window(GtkWidget * widget,
 //                                     || //
 //////////////////////////////////////////
 
-  int
+int
 fedora_window(GtkWidget * widget,
   gpointer data) {
 
@@ -669,10 +673,10 @@ fedora_window(GtkWidget * widget,
 
     fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
     gtk_box_append(GTK_BOX(fed_box), fed_dnf_check);
-    
+
     fed_repo_check = gtk_check_button_new_with_label("  Enable RPM-fusion repositories for wider range of software?");
     gtk_box_append(GTK_BOX(fed_box), fed_repo_check);
-    
+
     fed_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
     gtk_box_append(GTK_BOX(fed_box), fed_steam_check);
 
@@ -737,25 +741,25 @@ fedora_window(GtkWidget * widget,
     g_signal_connect(G_OBJECT(fed_vlc_check), "toggled", G_CALLBACK(fed_vlc_toggled), buffer);
     g_signal_connect(fed_window, "destroy", G_CALLBACK(on_fed_window_destroy), NULL);
 
-        gtk_widget_set_visible(fed_window, TRUE);
-        
-        if (gtk_widget_is_visible(fed_window)){ 
-        fedora_window_open = 1;
-        return 0;      
-      } else { 
-                g_print("Fedora window failed to open.");
-                return 1; 
-              }
+    gtk_widget_set_visible(fed_window, TRUE);
+
+    if (gtk_widget_is_visible(fed_window)) {
+      fedora_window_open = 1;
+      return 0;
+    } else {
+      g_print("Fedora window failed to open.");
+      return 1;
+    }
   }
 }
 
 //// FEDORA repo CHECKBOX ///////
 
-  void fed_repo_toggled(GtkWidget * widget, gpointer data) {
+void fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n", -1);
@@ -774,7 +778,7 @@ fedora_window(GtkWidget * widget,
 
 ////////// FEDORA gpu CHECKBOX ///////////////
 
-  void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
+void fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
@@ -789,7 +793,7 @@ fedora_window(GtkWidget * widget,
 
   }
 
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, fedora_gpu_command, -1);
@@ -808,11 +812,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA STEAM CHECKBOX ///////
 
-  void fed_steam_toggled(GtkWidget * widget, gpointer data) {
+void fed_steam_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install steam;\n", -1);
@@ -831,11 +835,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA GAME CHECKBOX ///////
 
-  void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
+void fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n", -1);
@@ -854,11 +858,11 @@ fedora_window(GtkWidget * widget,
 
 ////////// FEDORA FLATPAK CHECKBOX ///////////////
 
-  void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
+void fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
@@ -877,11 +881,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA customization CHECKBOX ///////
 
-  void fed_customization_toggled(GtkWidget * widget, gpointer data) {
+void fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install gnome-tweaks gnome-extensions-app; \n", -1);
@@ -899,11 +903,11 @@ fedora_window(GtkWidget * widget,
 
 ////////// FEDORA CODECS CHECKBOX ///////////////
 
-  void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
+void fed_codecs_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n", -1);
@@ -922,11 +926,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA TLP CHECKBOX ///////
 
-  void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
+void fed_tlp_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install tlp; \n", -1);
@@ -945,11 +949,11 @@ fedora_window(GtkWidget * widget,
 
 //// FEDORA VLC CHECKBOX ///////
 
-  void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
+void fed_vlc_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-    GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
     gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install vlc; \n", -1);
@@ -966,13 +970,13 @@ fedora_window(GtkWidget * widget,
   }
 }
 
-  void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
+void on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
   fedora_window_open = 0;
 }
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
-  void activate(GtkApplication * app,
+void activate(GtkApplication * app,
   gpointer user_data) {
 
   if (lpih_instance_running != 1) {
@@ -987,7 +991,7 @@ fedora_window(GtkWidget * widget,
 
     /* create a new window, and set its title */
     window = gtk_application_window_new(app);
-    
+
     gtk_widget_add_css_class(window, "main_window");
     gtk_window_set_title(GTK_WINDOW(window), "Linux Post-install Helper For Debian and Fedora");
     gtk_widget_set_size_request(window, 444, 444);
@@ -1030,8 +1034,7 @@ fedora_window(GtkWidget * widget,
     init_css_provider();
     gtk_widget_set_can_focus(GTK_WIDGET(window), TRUE);
     gtk_widget_set_can_focus(GTK_WIDGET(grid), TRUE);
-    
-    
+
     gtk_widget_set_visible(window, TRUE);
 
     // Automatically establishing the user's GPU vendor on init of the program.       
@@ -1050,7 +1053,7 @@ fedora_window(GtkWidget * widget,
 
     char vendor[13];
     get_cpu_vendor(vendor);
-    
+
     if (strstr(vendor, "AMD") != NULL) {
       cpu_manufacturer = 2;
     } else if (strstr(vendor, "Intel") != NULL) {
@@ -1071,7 +1074,7 @@ fedora_window(GtkWidget * widget,
 
 }
 
-  void on_quit(GtkApplication * app, gpointer user_data) {
+void on_quit(GtkApplication * app, gpointer user_data) {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = 0;
