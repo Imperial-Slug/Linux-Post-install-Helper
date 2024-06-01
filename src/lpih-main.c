@@ -229,7 +229,7 @@ int debian_window(GtkWidget * widget,
     gtk_widget_set_opacity(view, 0.9);
     gtk_widget_add_css_class(view, "deb_view");
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_text_buffer_set_text(buffer, "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'tips' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n", -1);
+    gtk_text_buffer_set_text(buffer, DEBIAN_OPENER, -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -285,21 +285,6 @@ int debian_window(GtkWidget * widget,
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
 
-   const gchar* debian_gpu_command;
-if (gpu_manufacturer == 1) {
-    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-  } else if (gpu_manufacturer == 2) {
-    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-  } else if (gpu_manufacturer == 3) {
-    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
-  } else if (gpu_manufacturer == 0) {
-    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-}
- // // // // ////// // // // // ////
- 
- 
-  
-
   GtkTextIter iter;
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter);
@@ -329,10 +314,10 @@ if (gpu_manufacturer == 1) {
   GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_STEAM, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
+    const gchar * search_string = DEBIAN_STEAM;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -349,13 +334,13 @@ if (gpu_manufacturer == 1) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n", -1);
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_GAMING, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
+    const gchar * search_string = DEBIAN_GAMING;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -375,10 +360,10 @@ if (gpu_manufacturer == 1) {
   GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_FLATPACK, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
+    const gchar * search_string = DEBIAN_FLATPACK;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -395,17 +380,10 @@ if (gpu_manufacturer == 1) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
 
-  const gchar * debian_microcode_command;
 
-  if (cpu_manufacturer == 2) {
-    debian_microcode_command = "  sudo apt install amd64-microcode;\n";
-  } else if (cpu_manufacturer == 3) {
-    debian_microcode_command = "  sudo apt install intel-microcode;\n";
-  } else {
-    g_print("*****ERROR: Something went wrong trying to get the cpu manufacturer.*****\n");
-  }
+ 
 
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter);
@@ -432,10 +410,10 @@ if (gpu_manufacturer == 1) {
   GtkTextIter iter;
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_MULTIMEDIA, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n";
+    const gchar* search_string = DEBIAN_MULTIMEDIA;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -452,13 +430,13 @@ if (gpu_manufacturer == 1) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install ufw; sudo ufw enable; \n", -1);
+    gtk_text_buffer_get_end_iter(buffer, & iter);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_UFW, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install ufw; sudo ufw enable; \n";
+    const gchar * search_string = DEBIAN_UFW;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -478,10 +456,10 @@ if (gpu_manufacturer == 1) {
   GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install tlp; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_TLP, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install tlp; \n";
+    const gchar * search_string = DEBIAN_TLP;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -501,10 +479,10 @@ if (gpu_manufacturer == 1) {
   GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo apt install vlc; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_VLC, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo apt install vlc; \n";
+    const gchar * search_string = DEBIAN_VLC;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -524,7 +502,7 @@ if (gpu_manufacturer == 1) {
 // //////////////////////////////////////////////////
 
  int
-fedora_info_window(GtkWidget * widget,
+fedora_info_window(GtkWidget * widget,1
   gpointer data) {
 
   if (fedora_tips_open != 1) {
@@ -713,34 +691,19 @@ fedora_window(GtkWidget * widget,
 }
 
 
-const gchar* set_gpu_manufacturer_command_fedora(const gchar* fedora_gpu_command){
+ // TODO: fix FEDORA GPU COMMAND, then create MACROS for Fedora window strings.
 
- if (gpu_manufacturer == 1) {
-    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-  } else if (gpu_manufacturer == 2) {
-    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-  } else if (gpu_manufacturer == 3) {
-    fedora_gpu_command = "  # Intel GPU drivers already installed. \n";
-
-  }
-return fedora_gpu_command;
-}
-
-
-////////// FEDORA gpu CHECKBOX ///////////////
+////////// FEDORA GPU CHECKBOX ///////////////
 
  int fed_gpu_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-
-  const gchar * fedora_gpu_command;
-     set_gpu_manufacturer_command_fedora(fedora_gpu_command);
  
 
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
   if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
     gtk_text_buffer_insert(buffer, & iter, fedora_gpu_command, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
@@ -996,7 +959,27 @@ return fedora_gpu_command;
       gpu_manufacturer = 0;
     }
 
-    char vendor[13];
+
+    if (gpu_manufacturer == 1) {
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
+  } else if (gpu_manufacturer == 2) {
+    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
+  } else if (gpu_manufacturer == 3) {
+    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+    fedora_gpu_command = debian_gpu_command;
+  } else if (gpu_manufacturer == 0) {
+    debian_gpu_command = "******ERROR: The GPU vendor could not be determined for this GPU.******\n";
+    fedora_gpu_command = debian_gpu_command;
+}
+
+
+
+
+
+
+    char vendor[12];
     get_cpu_vendor(vendor);
 
     if (strstr(vendor, "AMD") != NULL) {
@@ -1013,15 +996,19 @@ return fedora_gpu_command;
     g_print("The CPU manufacturer for this machine is %d, %s.\n", cpu_manufacturer, vendor);
     g_print("*************************************\n\n");
 
-
+ if (cpu_manufacturer == 2) {
+    debian_microcode_command = "  sudo apt install amd64-microcode;\n";
+  } else if (cpu_manufacturer == 3) {
+    debian_microcode_command = "  sudo apt install intel-microcode;\n";
+  } else {
+    g_print("*****ERROR: Something went wrong trying to get the cpu manufacturer.*****\n");
+  }
 
   } else {
     g_print("Error: instance of LPIH is already running!\n");
   }
 
 }
-
-
 
  int on_quit(GtkApplication * app, gpointer user_data) {
   g_print("Exiting LPIH now.\n");

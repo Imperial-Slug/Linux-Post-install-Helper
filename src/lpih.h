@@ -20,6 +20,7 @@
  int get_cpu_vendor(char * vendor);
  int init_css_provider();
 
+
  //\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
  int fed_gpu_toggled(GtkWidget * widget, gpointer data);
  int fed_steam_toggled(GtkWidget * widget, gpointer data);
@@ -45,7 +46,10 @@
  int debian_tips_open = 0;
  int fedora_window_open = 0;
  int fedora_tips_open = 0;
- 
+ const gchar* fedora_gpu_command;
+ const gchar* debian_gpu_command;
+ const gchar* debian_microcode_command;
+
  const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
 Debian, like other Linux distributions, has a package manager; which handles the installation, updating and removal of software packages on the computer.  Debian's package manager is called apt.  In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user, example: sudo apt install nvidia-driver, where nvidia-driver is the package you are trying to install.  \n\
@@ -90,6 +94,29 @@ So, if we are to keep with our 192.168.1.123 example, our gateway is most likely
 TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN\n\n\
 Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: \"You have held broken packages.\"  This can be fixed much of the time by following up with the following 2 commands: \n\n  sudo apt --fix-broken install\n  sudo apt install <name of package>\n\n";
 
-const gchar * FEDORA_MULTIMEDIA_COMMAND = "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n";
+const gchar* DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'tips' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
+
+const gchar* DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
+
+const gchar* DEBIAN_GAMING = "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
+
+const gchar* DEBIAN_FLATPACK = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
+
+const gchar* DEBIAN_MULTIMEDIA = "  sudo apt install libavcodec-extra;  \n  sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi;  \n  sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea;  \n";
+
+const gchar* DEBIAN_UFW = "  sudo apt install ufw; sudo ufw enable; \n";
+const gchar* DEBIAN_TLP = "  sudo apt install tlp; \n";
+const gchar* DEBIAN_VLC = "  sudo apt install vlc; \n";
+
+
+
+
+
+
+
+
+
+
+const gchar* FEDORA_MULTIMEDIA_COMMAND = "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n";
 
 
