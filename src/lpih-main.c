@@ -360,10 +360,10 @@ int debian_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_FLATPACK, -1);
+    gtk_text_buffer_insert(buffer, & iter, DEBIAN_FLATPAK, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_FLATPACK;
+    const gchar * search_string = DEBIAN_FLATPAK;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -502,7 +502,7 @@ int debian_window(GtkWidget * widget,
 // //////////////////////////////////////////////////
 
  int
-fedora_info_window(GtkWidget * widget,1
+fedora_info_window(GtkWidget * widget,
   gpointer data) {
 
   if (fedora_tips_open != 1) {
@@ -622,7 +622,7 @@ fedora_window(GtkWidget * widget,
 
     gtk_widget_add_css_class(view, "fed_view");
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_text_buffer_set_text(buffer, "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update; sudo dnf upgrade; \n", -1);
+    gtk_text_buffer_set_text(buffer, FEDORA_OPENER, -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
@@ -667,7 +667,7 @@ fedora_window(GtkWidget * widget,
   }
 }
 
-//// FEDORA repo CHECKBOX ///////
+//// FEDORA REPO CHECKBOX ///////
 
  int fed_repo_toggled(GtkWidget * widget, gpointer data) {
 
@@ -676,10 +676,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_REP, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n";
+    const gchar * search_string = FEDORA_REP;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -727,10 +727,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install steam;\n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_STEAM, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install steam;\n";
+    const gchar * search_string = FEDORA_STEAM;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -741,7 +741,7 @@ fedora_window(GtkWidget * widget,
   }
 }
 
-//// FEDORA GAME CHECKBOX ///////
+//// FEDORA DNF SETTINGS CHECKBOX ///////
 
  int fed_dnf_toggled(GtkWidget * widget, gpointer data) {
 
@@ -750,10 +750,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_DNF , -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo sh -c 'if test -f /etc/dnf/dnf.conf; then echo \"max_parallel_downloads=20\" >> /etc/dnf/dnf.conf; fi'\n";
+    const gchar * search_string = FEDORA_DNF;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -773,10 +773,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_FLATPAK, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
+    const gchar * search_string = FEDORA_FLATPAK;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -787,19 +787,19 @@ fedora_window(GtkWidget * widget,
   }
 }
 
-//// FEDORA customization CHECKBOX ///////
+//// FEDORA CUSTOMIZATION CHECKBOX ///////
 
  int fed_customization_toggled(GtkWidget * widget, gpointer data) {
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
   if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install gnome-tweaks gnome-extensions-app; \n", -1);
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_CUST, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install gnome-tweaks gnome-extensions-app; \n";
+    const gchar * search_string = FEDORA_CUST;
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
 
@@ -818,10 +818,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_MULTIMEDIA, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install ffmpeg --allowerasing &&  \n  sudo dnf install gstreamer1-plugins-{bad-\\*,good-\\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel &&  \n  sudo dnf install lame\\* --exclude=lame-devel && sudo dnf group upgrade --with-optional Multimedia \n";
+    const gchar * search_string = FEDORA_MULTIMEDIA;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -841,10 +841,10 @@ fedora_window(GtkWidget * widget,
   GtkTextIter iter; // A   variable to store the iterator position
   if (state_f) {
     gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install tlp; \n", -1);
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_TLP, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install tlp; \n";
+    const gchar * search_string = FEDORA_TLP;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -861,13 +861,13 @@ fedora_window(GtkWidget * widget,
 
   gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
   GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
+  GtkTextIter iter; 
   if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, "  sudo dnf install vlc; \n", -1);
+    gtk_text_buffer_get_end_iter(buffer, & iter); 
+    gtk_text_buffer_insert(buffer, & iter, FEDORA_VLC, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = "  sudo dnf install vlc; \n";
+    const gchar * search_string = FEDORA_VLC;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -973,11 +973,6 @@ fedora_window(GtkWidget * widget,
     debian_gpu_command = "******ERROR: The GPU vendor could not be determined for this GPU.******\n";
     fedora_gpu_command = debian_gpu_command;
 }
-
-
-
-
-
 
     char vendor[12];
     get_cpu_vendor(vendor);
