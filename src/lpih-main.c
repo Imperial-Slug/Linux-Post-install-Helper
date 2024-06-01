@@ -1012,13 +1012,12 @@ fedora_window(GtkWidget * widget,
 
 }
 
-int
-main(int argc,
+int main(int argc,
   char ** argv) {
 
   GtkApplication * app;
   int status;
-  app = gtk_application_new("petc0016.project.lpisg", G_APPLICATION_DEFAULT_FLAGS);
+  app = gtk_application_new("imperialslug.gtkproject.lpih", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
   g_signal_connect(app, "shutdown", G_CALLBACK(on_quit), NULL);
   status = g_application_run(G_APPLICATION(app), argc, argv);
@@ -1026,6 +1025,6 @@ main(int argc,
 
   return status;
 }
-
+///////////// END OF FILE /////////////
 
 

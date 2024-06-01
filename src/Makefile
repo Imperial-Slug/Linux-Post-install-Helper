@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = 
 LIBS = -lGL
 
-TARGET = lpih-main
+TARGET = lpih
 SRC = lpih-main.c
 
 # Check for the Linux distribution

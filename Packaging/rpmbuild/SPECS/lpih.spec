@@ -1,7 +1,7 @@
 Name:		lpih
 Version:	1.0
 Release:	1%{?dist}
-Summary:        Linux post install helper
+Summary:        Linux post-install Helper
 License:	GPL 3.0
 
 ExclusiveArch:  x86_64
@@ -26,9 +26,11 @@ make install DESTDIR=%{buildroot}
 %files
 /usr/bin/lpih
 %{_datadir}/LPIH/css/style.css
-%{_datadir}/icons/hicolor/512x512/apps/petc0016.project.lpisg.png
-%{_datadir}/applications/petc0016.project.lpisg.desktop
+%{_datadir}/icons/hicolor/512x512/apps/imperialslug.gtkproject.lpih.png
+%{_datadir}/applications/imperialslug.gtkproject.lpih.desktop
 
 %changelog
 * Fri Nov 10 2023 Sam
 - initial
+* Sat Jun 1 2024 Sam
+- Updted names of png icons based on new project name.

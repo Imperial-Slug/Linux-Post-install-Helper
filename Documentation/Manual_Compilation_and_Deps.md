@@ -1,16 +1,13 @@
 # This can be used on Linux to compile the lpih-main.c file into a runnable file. 
 # The -lGL option at the end is for the GPU mfg auto-detecting feature.
 
-gcc $(pkg-config --cflags gtk4) -o lpih-main lpih-main.c $(pkg-config --libs gtk4) -lGL
+		gcc $(pkg-config --cflags gtk4) -o lpih lpih-main.c $(pkg-config --libs gtk4) -lGL
 
 # If it doesn't compile, here are the packages you might be missing by distro type, 
 # as per the GTK4 documentation: https://www.gtk.org/docs/installations/linux:
 
 # Arch:	gtk4
-# Debian/Ubuntu:	libgtk-4-1 libgtk-4-dev	gtk-4-examples  <--- (examples optional)
+# Debian/Ubuntu:	libgtk-4-1 libgtk-4-dev	gtk-4-examples  <--- (GTK examples optional)
 # Fedora:	gtk4	gtk4-devel   	mesa-libGL-devel        <--- (for -lGL opengl C headers)
 
-rpmbuild -ba rpmbuild/SPECS/lpih.spec
-
-rpmbuild -ba -D 'debug_package %{nil}' /home/sam/rpmbuild/SPECS/lpih.spec
 
