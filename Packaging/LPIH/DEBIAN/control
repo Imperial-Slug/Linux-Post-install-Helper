@@ -1,6 +1,6 @@
 Source: lpih
 Package: LPIH
-Version: 1.0
+Version: 1.1
 Architecture: amd64
 Maintainer: Samuel Petch Limax_ImperatoriaVI@outlook.com
 Build-Depends: libgtk-4-0, libglib2.0-0

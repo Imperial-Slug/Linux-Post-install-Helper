@@ -28,7 +28,7 @@
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 #include "lpih.h"
-#include "lpih-string-definitions.h"
+
  //////////////////////////////
 //////////////////////////////
 
