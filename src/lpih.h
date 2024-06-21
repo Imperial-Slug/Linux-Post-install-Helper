@@ -13,8 +13,8 @@
  int deb_ufw_toggled(GtkWidget * widget, gpointer data);
  int deb_tlp_toggled(GtkWidget * widget, gpointer data);
  int deb_vlc_toggled(GtkWidget * widget, gpointer data);
- int on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data);
- int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data);
+ gboolean on_deb_window_destroy(void);
+ int on_deb_tips_window_destroy();
 
  // Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
  int get_cpu_vendor(char * vendor);
@@ -31,8 +31,8 @@
  int fed_codecs_toggled(GtkWidget * widget, gpointer data);
  int fed_tlp_toggled(GtkWidget * widget, gpointer data);
  int fed_vlc_toggled(GtkWidget * widget, gpointer data);
- int on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data);
- int on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data);
+ void on_fed_window_destroy();
+ void on_fed_tips_window_destroy();
 
  // Variables that tell the program what kind of CPU and GPU the user has.
 

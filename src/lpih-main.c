@@ -31,6 +31,32 @@
  //////////////////////////////
 //////////////////////////////
 
+
+// This function is used to add and remove the commands from the GUI based on the status of the checkboxes. 
+gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpointer data) {
+
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
+
+  GtkTextIter iter;
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, & iter);
+    gtk_text_buffer_insert(buffer, & iter, command_string, -1);
+  } else {
+    GtkTextIter start, end, match_start, match_end;
+    const gchar * search_string = command_string;
+
+    gtk_text_buffer_get_start_iter(buffer, & start);
+    gtk_text_buffer_get_end_iter(buffer, & end);
+
+    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
+      gtk_text_buffer_delete(buffer, & match_start, & match_end);
+    }
+  }
+  return TRUE;
+}
+
+
 int init_css_provider() {
 
   GtkCssProvider * provider = gtk_css_provider_new();
@@ -102,7 +128,7 @@ int get_cpu_vendor(char * vendor) {
  ///// INFORMATIONAL WINDOW: DEBIAN /////////
 ///////////////////////////////////////////
 
-int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) {
+int on_deb_tips_window_destroy() {
   debian_tips_open = 0;
   
   if(debian_tips_open == 0){
@@ -116,14 +142,13 @@ int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) 
 
 
 
- int debian_info_window(GtkWidget * widget,
-  gpointer data) {
+ void debian_info_window() {
 
   if (debian_tips_open != 1) {
 
     GtkWidget * deb_info_window;
     GtkWidget * deb_info_box;
-    GtkWidget * deb_info_button;
+  
 
     deb_info_window = gtk_window_new();
     gtk_widget_add_css_class(deb_info_window, "deb_info_window");
@@ -163,14 +188,14 @@ int on_deb_tips_window_destroy(GtkWidget * deb_info_window, gpointer user_data) 
 
   } else {
     g_print("debian_tips window is already open.");
+
   }
 
   debian_tips_open = 1;
 
 }
 
-int debian_window(GtkWidget * widget,
-  gpointer data) {
+void debian_window() {
 
   if (debian_window_open != 1) {
 
@@ -235,7 +260,6 @@ int debian_window(GtkWidget * widget,
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(deb_box), scroll_window);
 
-    ///\\\///\\\///\\\///\\\///\\\ DEBIAN INFO WINDOW ///\\\///\\\///\\\///\\\///\\\///\\\
 
     // Create separate box to hold button to solve sizing issues //////
     GtkWidget * deb_info_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -268,248 +292,79 @@ int debian_window(GtkWidget * widget,
     ///////////////////////
     if (gtk_widget_is_visible(deb_window)) {
       debian_window_open = 1;
-      return 0;
+
     } else {
       g_print("Debian LPIH window failed to open.");
-      return 1;
+     
     }
     ///////////////////////
   }
+  
 }
 
-
-////////// DEBIAN gpu CHECKBOX ///////////////
-
- int deb_gpu_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-
-  GtkTextIter iter;
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, debian_gpu_command, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = debian_gpu_command;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+////////// DEBIAN GPU DRIVERS CHECKBOX ///////////////
+gboolean deb_gpu_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(debian_gpu_command, widget, data);
+  return TRUE;
 }
-
-
-
-
 //// DEBIAN STEAM CHECKBOX ///////
-
- int deb_steam_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_STEAM, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_STEAM;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_steam_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_STEAM, widget, data);
+    return TRUE;
 }
-
 //// DEBIAN GAME CHECKBOX ///////
-
- int deb_game_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; 
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_GAMING, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_GAMING;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_game_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_GAMING, widget, data);
+  return TRUE;
 }
-
 ////////// DEBIAN FLATPAK CHECKBOX ///////////////
-
- int deb_flatpak_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_FLATPAK, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_FLATPAK;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_flatpak_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_FLATPAK, widget, data);
+  return TRUE;
 }
-
 //// DEBIAN MICROCODE CHECKBOX ///////
-
- int deb_microcode_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; 
-
-
- 
-
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, debian_microcode_command, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = debian_microcode_command;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_microcode_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(debian_microcode_command, widget, data);
+  return TRUE;
 }
-
 //// DEBIAN FONTS CHECKBOX ///////
-
- int deb_fonts_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter;
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_MULTIMEDIA, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar* search_string = DEBIAN_MULTIMEDIA;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_fonts_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_MULTIMEDIA, widget, data);
+  return TRUE;
 }
-
 ////////// DEBIAN UFW CHECKBOX ///////////////
-
- int deb_ufw_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; 
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_UFW, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_UFW;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_ufw_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_UFW, widget, data);
+  return TRUE;
 }
-
 //// DEBIAN TLP CHECKBOX ///////
-
- int deb_tlp_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_TLP, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_TLP;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_tlp_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_TLP, widget, data);
+  return TRUE;
 }
-
 //// DEBIAN VLC CHECKBOX ///////
-
- int deb_vlc_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, DEBIAN_VLC, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = DEBIAN_VLC;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean deb_vlc_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(DEBIAN_VLC, widget, data);
+  return TRUE;
 }
 
- int on_deb_window_destroy(GtkWidget * deb_window, gpointer user_data) {
-  debian_window_open = 0;
+///// Do this when the main window is closed. ////////
+gboolean on_deb_window_destroy(void) {
+  debian_window_open = FALSE;
+  return TRUE;
 }
 
 /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
 // //////////////////////////////////////////////////
 
- int
-fedora_info_window(GtkWidget * widget,
-  gpointer data) {
+ void fedora_info_window() {
 
   if (fedora_tips_open != 1) {
 
     GtkWidget * fed_info_window;
     GtkWidget * fed_info_box;
-    GtkWidget * fed_info_button;
+
 
     fed_info_window = gtk_window_new();
     gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: tips");
@@ -550,9 +405,10 @@ fedora_info_window(GtkWidget * widget,
   }
 
   fedora_tips_open = 1;
+
 }
 
- int on_fed_tips_window_destroy(GtkWidget * fed_info_window, gpointer user_data) {
+ void on_fed_tips_window_destroy() {
   fedora_tips_open = 0;
 }
 
@@ -562,9 +418,7 @@ fedora_info_window(GtkWidget * widget,
 //                                     || //
 //////////////////////////////////////////
 
-int
-fedora_window(GtkWidget * widget,
-  gpointer data) {
+void fedora_window() {
 
   if (fedora_window_open != 1) {
 
@@ -659,233 +513,70 @@ fedora_window(GtkWidget * widget,
 
     if (gtk_widget_is_visible(fed_window)) {
       fedora_window_open = 1;
-      return 0;
+
     } else {
       g_print("Fedora window failed to open.");
-      return 1;
-    }
-  }
-}
 
-//// FEDORA REPO CHECKBOX ///////
-
- int fed_repo_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_REP, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_REP;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
     }
   }
 }
 
 
- // TODO: fix FEDORA GPU COMMAND, then create MACROS for Fedora window strings.
 
+ //// FEDORA REPO CHECKBOX ///////
+gboolean fed_repo_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_REP, widget, data);
+  return TRUE;
+}
 ////////// FEDORA GPU CHECKBOX ///////////////
-
- int fed_gpu_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
- 
-
-  GtkTextIter iter; 
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
-    gtk_text_buffer_insert(buffer, & iter, fedora_gpu_command, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = fedora_gpu_command;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
-}
+gboolean fed_gpu_toggled(GtkWidget* widget, gpointer data) {
+ check_box_state(fedora_gpu_command, widget, data); 
+    return TRUE;
+    } 
 
 //// FEDORA STEAM CHECKBOX ///////
-
- int fed_steam_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_STEAM, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_STEAM;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_steam_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_STEAM, widget, data);
+  return TRUE;
 }
-
 //// FEDORA DNF SETTINGS CHECKBOX ///////
-
- int fed_dnf_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_DNF , -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_DNF;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_dnf_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_DNF, widget, data);
+  return TRUE;
 }
-
 ////////// FEDORA FLATPAK CHECKBOX ///////////////
-
- int fed_flatpak_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_FLATPAK, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_FLATPAK;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_flatpak_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_FLATPAK, widget, data);
+  return TRUE;
 }
-
 //// FEDORA CUSTOMIZATION CHECKBOX ///////
-
- int fed_customization_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; 
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_CUST, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_CUST;
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_customization_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_CUST, widget, data);
+  return TRUE;
 }
-
 ////////// FEDORA CODECS CHECKBOX ///////////////
-
- int fed_codecs_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_MULTIMEDIA, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_MULTIMEDIA;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_codecs_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_MULTIMEDIA, widget, data);
+  return TRUE;
 }
-
 //// FEDORA TLP CHECKBOX ///////
-
- int fed_tlp_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; // A   variable to store the iterator position
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); // Store the end iterator position
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_TLP, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_TLP;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_tlp_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_TLP, widget, data);
+  return TRUE;
 }
-
 //// FEDORA VLC CHECKBOX ///////
-
- int fed_vlc_toggled(GtkWidget * widget, gpointer data) {
-
-  gboolean state_f = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
-  GtkTextIter iter; 
-  if (state_f) {
-    gtk_text_buffer_get_end_iter(buffer, & iter); 
-    gtk_text_buffer_insert(buffer, & iter, FEDORA_VLC, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = FEDORA_VLC;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
+gboolean fed_vlc_toggled(GtkWidget* widget, gpointer data) {
+  check_box_state(FEDORA_VLC, widget, data);
+  return TRUE;
 }
 
- int on_fed_window_destroy(GtkWidget * fed_window, gpointer user_data) {
+ void on_fed_window_destroy() {
   fedora_window_open = 0;
 }
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
- int activate(GtkApplication * app,
-  gpointer user_data) {
+ void activate(GtkApplication * app) {
 
   if (lpih_instance_running != 1) {
 
@@ -987,10 +678,12 @@ fedora_window(GtkWidget * widget,
       cpu_manufacturer = 0;
     }
 
+// Print mfgs
     g_print("The GPU manufacturer for this machine is %d, %s.\n", gpu_manufacturer, gpu_vendor);
     g_print("The CPU manufacturer for this machine is %d, %s.\n", cpu_manufacturer, vendor);
     g_print("*************************************\n\n");
 
+// Determine Debian microcode command
  if (cpu_manufacturer == 2) {
     debian_microcode_command = "  sudo apt install amd64-microcode;\n";
   } else if (cpu_manufacturer == 3) {
@@ -1005,7 +698,7 @@ fedora_window(GtkWidget * widget,
 
 }
 
- int on_quit(GtkApplication * app, gpointer user_data) {
+ void on_quit() {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = 0;

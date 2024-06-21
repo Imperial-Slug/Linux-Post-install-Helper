@@ -1,6 +1,6 @@
 Name:		lpih
 Version:	1.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:        Linux post-install Helper
 License:	GPL 3.0
 
@@ -19,7 +19,6 @@ rm -rf %{_builddir}/%{name}-%{version}
 %build
 make
 
-
 %install
 make install DESTDIR=%{buildroot}
 
@@ -30,7 +29,9 @@ make install DESTDIR=%{buildroot}
 %{_datadir}/applications/imperialslug.gtkproject.lpih.desktop
 
 %changelog
+* Fri Jun 7 2024 Sam
+- Updated Version number for new package
+* Sat Jun 1 2024 Sam
+- Updated names of png icons based on new project name.
 * Fri Nov 10 2023 Sam
 - initial
-* Sat Jun 1 2024 Sam
-- Updted names of png icons based on new project name.

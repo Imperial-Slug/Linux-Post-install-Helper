@@ -1,7 +1,9 @@
-CC = gcc
-CFLAGS = 
-LIBS = -lGL
+# MAKEFILE FOR LPIH
+#  Run "make" in your terminal from this file's directory to execute the build/compile instructions in here.
 
+CC = gcc
+CFLAGS = -Wall -g -Wextra -Werror -Iinclude
+LIBS = -lGL
 TARGET = lpih
 SRC = lpih-main.c
 
