@@ -1,0 +1,14 @@
+#ifndef LPIH_STRING_DEFINITIONS_H
+#define LPIH_STRING_DEFINITIONS_H
+
+
+
+
+
+
+
+
+
+
+
+#endif

@@ -1,55 +1,26 @@
-
-#ifndef LPIH_H
-#define LPIH_H
-#endif
-
-//\\//\\//\\//\\//\\// DEBIAN-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//|||||||||
- int deb_gpu_toggled(GtkWidget * widget, gpointer data);
- int deb_steam_toggled(GtkWidget * widget, gpointer data);
- int deb_game_toggled(GtkWidget * widget, gpointer data);
- int deb_flatpak_toggled(GtkWidget * widget, gpointer data);
- int deb_microcode_toggled(GtkWidget * widget, gpointer data);
- int deb_fonts_toggled(GtkWidget * widget, gpointer data);
- int deb_ufw_toggled(GtkWidget * widget, gpointer data);
- int deb_tlp_toggled(GtkWidget * widget, gpointer data);
- int deb_vlc_toggled(GtkWidget * widget, gpointer data);
- gboolean on_deb_window_destroy(void);
- int on_deb_tips_window_destroy();
-
- // Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
- int get_cpu_vendor(char * vendor);
- int init_css_provider();
-
-
- //\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
- int fed_gpu_toggled(GtkWidget * widget, gpointer data);
- int fed_steam_toggled(GtkWidget * widget, gpointer data);
- int fed_dnf_toggled(GtkWidget * widget, gpointer data);
- int fed_flatpak_toggled(GtkWidget * widget, gpointer data);
- int fed_repo_toggled(GtkWidget * widget, gpointer data);
- int fed_customization_toggled(GtkWidget * widget, gpointer data);
- int fed_codecs_toggled(GtkWidget * widget, gpointer data);
- int fed_tlp_toggled(GtkWidget * widget, gpointer data);
- int fed_vlc_toggled(GtkWidget * widget, gpointer data);
- void on_fed_window_destroy();
- void on_fed_tips_window_destroy();
-
- // Variables that tell the program what kind of CPU and GPU the user has.
-
- // 1 = AMD, 2 = Intel, 3 = Nvidia.
- int cpu_manufacturer = 0;
- int gpu_manufacturer = 0;
-
- // For keeping track of single-instance windows.
- int lpih_instance_running = 0;
- int debian_window_open = 0;
- int debian_tips_open = 0;
- int fedora_window_open = 0;
- int fedora_tips_open = 0;
- const gchar* fedora_gpu_command;
- const gchar* debian_gpu_command;
- const gchar* debian_microcode_command;
-
+/* lpih-string-definitions.c
+ *
+ * Copyright 2023 Samuel Petch
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */ 
+ 
+ #include "lpih-string-definitions.h"
+ 
+ 
  const gchar * tips_spiel = "  Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993.  It is known for its stability and reliability: which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).\n\
 \n\
 Debian, like other Linux distributions, has a package manager; which handles the installation, updating and removal of software packages on the computer.  Debian's package manager is called apt.  In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user, example: sudo apt install nvidia-driver, where nvidia-driver is the package you are trying to install.  \n\

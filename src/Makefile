@@ -5,7 +5,8 @@ CC = gcc
 CFLAGS = -Wall -g -Wextra -Werror -Iinclude
 LIBS = -lGL
 TARGET = lpih
-SRC = lpih-main.c
+SRC = lpih-main.c lpih-string-definitions.c
+
 
 # Check for the Linux distribution
 DISTRO := $(shell lsb_release -si)
