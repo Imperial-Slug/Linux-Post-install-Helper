@@ -5,8 +5,7 @@ CC = gcc
 CFLAGS = -Wall -g -Wextra -Werror -Iinclude
 LIBS = -lGL
 TARGET = lpih
-SRC = lpih-main.c
-
+SRC = lpih-main.c deb-window.c fed-window.c utility.c
 
 # Check for the Linux distribution
 DISTRO := $(shell lsb_release -si)
@@ -27,7 +26,7 @@ endif
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
 
 install-dependencies:
 ifeq ($(DISTRO),Debian)
@@ -38,3 +37,4 @@ endif
 
 clean:
 	rm -f $(TARGET)
+
