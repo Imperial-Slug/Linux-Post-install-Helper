@@ -1,22 +1,22 @@
 /* lpih-main.c
- *
- * Copyright 2023 Samuel Petch
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*
+* Copyright 2023 Samuel Petch
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* SPDX-License-Identifier: GPL-3.0-or-later
+*/
 
   ////////////////////////////////////////
  ////        L I B R A R I E S   ////////
@@ -26,7 +26,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "deb-window.h"
-#include "fed-window.h"
 #include "utility.h"
 #include "lpih-main.h"
 
@@ -46,19 +45,19 @@
  
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
- void activate(GtkApplication * app) {
+ void activate(GtkApplication* app) {
 
   if (lpih_instance_running != 1) {
 
     lpih_instance_running = 1;
 
-    GtkWidget * window;
-    GtkWidget * grid;
-    GtkWidget * deb_button;
-    GtkWidget * fed_button;
-    GtkWidget * quit_button;
+    GtkWidget* window;
+    GtkWidget* grid;
+    GtkWidget* deb_button;
+    GtkWidget* fed_button;
+    GtkWidget* quit_button;
 
-    /* create a new window, and set its title */
+    /* create a new window, and set its title*/
     window = gtk_application_window_new(app);
 
     gtk_widget_add_css_class(window, "main_window");
@@ -107,7 +106,7 @@
     gtk_widget_set_visible(window, TRUE);
 
     // Automatically establishing the user's GPU vendor on init of the program.       
-    const char * gpu_vendor = getGraphicsCardVendor();
+    const char* gpu_vendor = getGraphicsCardVendor();
 
     if (strstr(gpu_vendor, "NVIDIA") != NULL) {
       gpu_manufacturer = 1;
@@ -180,9 +179,9 @@
 
 
 int main(int argc,
-  char ** argv) {
+  char** argv) {
 
-  GtkApplication * app;
+  GtkApplication* app;
   int status;
   app = gtk_application_new("imperialslug.gtkproject.lpih", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);

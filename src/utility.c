@@ -1,22 +1,22 @@
 /* utility.c
- *
- * Copyright 2023 Samuel Petch
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
+*
+* Copyright 2023 Samuel Petch
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* SPDX-License-Identifier: GPL-3.0-or-later
+*/
 
 #include <gtk/gtk.h>
 #include <stdio.h>
@@ -27,10 +27,10 @@
 #include "utility.h"
 
 // This function is used to add and remove the commands from the GUI based on the status of the checkboxes. 
-gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpointer data) {
+gboolean check_box_state(const gchar* command_string, GtkWidget* widget, gpointer data) {
 
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
+  GtkTextBuffer* buffer = GTK_TEXT_BUFFER(data);
 
   GtkTextIter iter;
   if (state) {
@@ -38,7 +38,7 @@ gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpoint
     gtk_text_buffer_insert(buffer, & iter, command_string, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = command_string;
+    const gchar* search_string = command_string;
 
     gtk_text_buffer_get_start_iter(buffer, & start);
     gtk_text_buffer_get_end_iter(buffer, & end);
@@ -53,7 +53,7 @@ gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpoint
 
 int init_css_provider() {
 
-  GtkCssProvider * provider = gtk_css_provider_new();
+  GtkCssProvider* provider = gtk_css_provider_new();
 
   const char* cssFilePathDecided;
   const char* cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
