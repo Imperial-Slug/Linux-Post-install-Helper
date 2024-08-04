@@ -114,7 +114,8 @@
       gpu_manufacturer = 2;
     } else if (strstr(gpu_vendor, "Intel") != NULL) {
       gpu_manufacturer = 3;
-    } else {
+ 
+    }  else {
       g_print("******ERROR: The GPU vendor could not be determined for this GPU.******\n");
       gpu_manufacturer = 0;
     }
@@ -123,15 +124,19 @@
     if (gpu_manufacturer == 1) {
     debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
     fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
+   
   } else if (gpu_manufacturer == 2) {
     debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
     fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
+   
   } else if (gpu_manufacturer == 3) {
     debian_gpu_command = "  # Intel GPU drivers already installed. \n";
     fedora_gpu_command = debian_gpu_command;
+   
   } else if (gpu_manufacturer == 0) {
     debian_gpu_command = "******ERROR: The GPU vendor could not be determined for this GPU.******\n";
     fedora_gpu_command = debian_gpu_command;
+   
 }
 
     char vendor[12];
@@ -139,12 +144,15 @@
 
     if (strstr(vendor, "AMD") != NULL) {
       cpu_manufacturer = 2;
+      strcpy(vendor, "AMD");
     } else if (strstr(vendor, "Intel") != NULL) {
       cpu_manufacturer = 3;
+      strcpy(vendor, "Intel");
     } else {
       g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
       g_print("*************************************\n\n");
       cpu_manufacturer = 0;
+      strcpy(vendor, "Unknown");
     }
 
 // Print mfgs

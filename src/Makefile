@@ -1,7 +1,7 @@
 # MAKEFILE FOR LPIH
 #  Run "make" in your terminal from this file's directory to execute the build/compile instructions in here.
 
-CC = gcc
+CC = clang
 CFLAGS = -Wall -g -Wextra -Werror -I../include -Iinclude
 LIBS = -lGL
 TARGET = lpih
@@ -34,7 +34,7 @@ $(TARGET): $(SRC)
 
 install-dependencies:
 ifeq ($(DISTRO),Debian)
-	sudo apt-get install -y $(DEPENDENCIES)
+	sudo apt install -y $(DEPENDENCIES)
 else ifeq ($(DISTRO),Fedora)
 	sudo dnf install -y $(DEPENDENCIES)
 endif

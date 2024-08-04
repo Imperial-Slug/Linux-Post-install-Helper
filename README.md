@@ -36,5 +36,13 @@ This project is far from finished and will eventually support other distribution
 
 Currently, the project is in a perfectly useful form, but could use some quality-of-life improvements for the user, like more error handling in the bash script generated and especially populating the TIPS windows with more tips and information for new/curious GNU/Linux desktop users. The "TIPS" sections will be more functional and useful in forthcoming releases.
 
+Debian users who want to compile the code themselves will need to make sure the following dependencies are installed:
+
+sudo apt install libgtk-4-1 libgtk-4-dev clang pkg-config
+
+Similarly, for Fedora users:
+
+sudo dnf install gtk4 gtk4-devel mesa-libGL-devel clang pkg-config
+
 
 
