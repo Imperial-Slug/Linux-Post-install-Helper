@@ -3,11 +3,14 @@
 
 		gcc $(pkg-config --cflags gtk4) -o lpih lpih-main.c $(pkg-config --libs gtk4) -lGL
 
-# If it doesn't compile, here are the packages you might be missing by distro type, 
-# as per the GTK4 documentation: https://www.gtk.org/docs/installations/linux:
+ If it doesn't compile, here are the packages you might be missing by distro type, 
+ as per the GTK4 documentation: https://www.gtk.org/docs/installations/linux:
 
-# Arch:	gtk4
-# Debian/Ubuntu:	libgtk-4-1 libgtk-4-dev	gtk-4-examples  <--- (GTK examples optional)
-# Fedora:	gtk4	gtk4-devel   	mesa-libGL-devel        <--- (for -lGL opengl C headers)
+ Arch:	gtk4
+ Debian/Ubuntu:	libgtk-4-1 libgtk-4-dev	gtk-4-examples  <--- (GTK examples optional)
+ Fedora:	gtk4	gtk4-devel   	mesa-libGL-devel        <--- (for -lGL opengl C headers)
 
+Use this for debugging from the terminal: 
+
+G_MESSAGES_DEBUG=all ./lpih
 
