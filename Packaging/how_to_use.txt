@@ -4,6 +4,12 @@ Run it only if you don't need the current .deb and .rpm files supplied in the ma
 
 Just drag the new binary you compile into the bin directory.  The compile command is in another text file -- you probably already saw it.
 
+FOR DEBIAN PACKAGES
+
+To uninstall the .deb:
+ sudo dpkg -r LPIH
+ 
+ 
 FOR FEDORA RPM PACKAGING
 
 rpmbuild -ba lpih.spec

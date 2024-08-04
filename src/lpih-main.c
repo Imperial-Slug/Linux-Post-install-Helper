@@ -116,7 +116,7 @@
       gpu_manufacturer = 3;
  
     }  else {
-      g_print("******ERROR: The GPU vendor could not be determined for this GPU.******\n");
+      g_print("The GPU vendor could not be determined for this GPU. If this is a VM, it will likely be using it's own graphics drivers unless you are using pass-through. \n");
       gpu_manufacturer = 0;
     }
 
@@ -134,7 +134,7 @@
     fedora_gpu_command = debian_gpu_command;
    
   } else if (gpu_manufacturer == 0) {
-    debian_gpu_command = "******ERROR: The GPU vendor could not be determined for this GPU.******\n";
+    debian_gpu_command = "  # The GPU vendor could not be determined for this GPU. If this is a VM, it will likely be using it's own graphics drivers unless you are using pass-through.\n";
     fedora_gpu_command = debian_gpu_command;
    
 }

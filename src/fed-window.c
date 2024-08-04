@@ -90,7 +90,12 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
     if (g_file_get_contents("../Resources/fed-text.txt", &tips_spiel_fedora, &length, &error)) {
     gtk_text_buffer_set_text(buffer, tips_spiel_fedora, -1);
     g_free(tips_spiel_fedora);
-      } else {
+      }  else if (g_file_get_contents("/usr/share/LPIH/text_files/fed-text.txt", &tips_spiel_fedora, &length, &error)) {
+    
+    gtk_text_buffer_set_text(buffer, tips_spiel_fedora, -1);
+    g_free(tips_spiel_fedora); 
+    
+    } else {
             g_print("Failed to load Fedora tips file: %s\n", error->message);
             g_error_free(error);
         }

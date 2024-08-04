@@ -6,12 +6,12 @@
 # Delete previous .deb and .rpm from current directory:
 rm -r LPIH.deb LPIH*.rpm && sudo rm -r LPIH.deb LPIH*.rpm || echo "Error deleting old packaging files.";
 # Uninstall the previous version from dev computer.
-sudo dpkg --purge LPIH;
+sudo dpkg -r LPIH;
 # Build the .deb
-dpkg-deb --build LPIH
+dpkg-deb --build LPIH-0.2
+
+# Install the new .deb to the system.  Use the .rpm on Fedora
+sudo dpkg -i LPIH.deb || echo "Error: the new build wasn't installed.";
+
 # For creating the rpm
 # rpmbuild -ba --nodebuginfo lpih.spec;
-# Install the new .deb to the system.  Use the .rpm on Fedora
-sudo dpkg -i LPIH.deb || echo "Error: the new build wasn't able to be installed.";
-
-

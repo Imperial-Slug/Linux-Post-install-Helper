@@ -99,8 +99,16 @@ int on_deb_tips_window_destroy() {
 
     if (g_file_get_contents("../Resources/deb-text.txt", &tips_spiel_debian, &length, &error)) {
     gtk_text_buffer_set_text(buffer, tips_spiel_debian, -1);
-    g_free(tips_spiel_debian);
-      } else {
+    g_free(tips_spiel_debian); 
+      }
+    
+    else if (g_file_get_contents("/usr/share/LPIH/text_files/deb-text.txt", &tips_spiel_debian, &length, &error)) {
+    
+    gtk_text_buffer_set_text(buffer, tips_spiel_debian, -1);
+    g_free(tips_spiel_debian); 
+    
+    }
+       else {
             g_print("Failed to load Debian tips file: %s\n", error->message);
             g_error_free(error);
         }
