@@ -1,3 +1,4 @@
+**** IN DEVELOPMENT ****
 
 Who is this program for?
 
@@ -5,14 +6,11 @@ It is specifically targeted at new Debian and Fedora Linux users who may not kno
 
 Experienced users may find it useful as a "quick and easy" way to get all of the basics installed as well.
 
-        ___________________DETAILS___________________
-        
-
-        MAIN GOAL
+DETAILS:
 
 The entire goal of the project is to make it easier for new Linux users to get their freshly installed systems going with key software and functionality installed that might otherwise take a while to figure out for new users. 
 
-         INSTALLING THE .deb or .rpm
+INSTALLING THE .deb or .rpm:
 
 Linux-Post-install-Helper: to install, download the zip (or just the Build_Directory_Template) and within Build_Directory_Template you will find the .deb and .rpm for installing on Debian or Fedora respectively, with:
 
@@ -20,7 +18,6 @@ Linux-Post-install-Helper: to install, download the zip (or just the Build_Direc
         # or
         sudo rpm -i LPIH*.rpm;  # (For Fedora)
 
-**** IN DEVELOPMENT ****
 
 Started as my project for a programming language research project at my college in the final semester, but is intended to be free and open source, with many useful new features planned to be added.
 

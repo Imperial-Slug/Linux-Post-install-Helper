@@ -73,7 +73,7 @@ int on_deb_tips_window_destroy() {
     gtk_widget_add_css_class(deb_info_window, "deb_info_window");
     gtk_window_set_title(GTK_WINDOW(deb_info_window), "Debian: tips");
     gtk_window_set_resizable(GTK_WINDOW(deb_info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(deb_info_window), 600, 700);
+    gtk_window_set_default_size(GTK_WINDOW(deb_info_window), 900, 720);
 
     GtkWidget* view;
     GtkTextBuffer* buffer;
@@ -84,7 +84,9 @@ int on_deb_tips_window_destroy() {
     // Create a scrolled window and set the size
     GtkWidget* scroll_info_window = gtk_scrolled_window_new();
 
-    gtk_widget_set_size_request(scroll_info_window, 600, 700);
+    gtk_widget_set_size_request(scroll_info_window, 900, 720);
+    gtk_widget_set_vexpand(scroll_info_window, TRUE);
+    gtk_widget_set_hexpand(scroll_info_window, TRUE);    
 
     view = gtk_text_view_new();
     gtk_widget_set_opacity(view, 0.9);
@@ -146,6 +148,8 @@ void debian_window() {
     gtk_window_set_resizable(GTK_WINDOW(deb_window), TRUE);
     gtk_window_set_default_size(GTK_WINDOW(deb_window), 800, 700);
     gtk_widget_set_can_focus(GTK_WIDGET(deb_window), TRUE);
+    gtk_widget_set_vexpand(deb_window, TRUE);
+    gtk_widget_set_hexpand(deb_window, TRUE);  
 
     GtkWidget* view;
     GtkTextBuffer* buffer;
@@ -156,7 +160,7 @@ void debian_window() {
 
     // CHECKBOXES //////////
 
-    deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using steam?");
+    deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using Steam?");
     gtk_box_append(GTK_BOX(deb_box), deb_steam_check);
 
     deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
@@ -187,6 +191,8 @@ void debian_window() {
     GtkWidget* scroll_window = gtk_scrolled_window_new();
 
     gtk_widget_set_size_request(scroll_window, 200, 200);
+    gtk_widget_set_vexpand(scroll_window, TRUE);
+    gtk_widget_set_hexpand(scroll_window, TRUE);  
     gtk_widget_set_can_focus(GTK_WIDGET(scroll_window), TRUE);
 
     view = gtk_text_view_new();
