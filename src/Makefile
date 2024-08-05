@@ -29,32 +29,13 @@ endif
 
 all: $(TARGET)
 ifeq ($(DISTRO),debian)
+	sudo apt install -y $(DEPENDENCIES)
 	@echo ""
-	@echo "Checking for required packages..."
-	@for pkg in $(DEPENDENCIES); do \
-	    dpkg-query -W -f='${Status}' $$pkg 2>/dev/null | grep -q "install ok installed" || { echo "$$pkg is not installed. Installing..."; sudo apt install -y $$pkg; }; \
-	done
-	@echo ""
-else ifeq ($(DISTRO),ubuntu)
-	@echo ""
-	@echo "Checking for required packages..."
-	@for pkg in $(DEPENDENCIES); do \
-	    dpkg-query -W -f='${Status}' $$pkg 2>/dev/null | grep -q "install ok installed" || { echo "$$pkg is not installed. Installing..."; sudo apt install -y $$pkg; }; \
-	done
-	@echo ""
+	
 else ifeq ($(DISTRO),fedora)
-	@echo ""
-	@echo "Checking for required packages..."
-	@for pkg in $(DEPENDENCIES); do \
-	    rpm -q $$pkg >/dev/null 2>&1 || { echo "$$pkg is not installed. Installing..."; sudo dnf install -y $$pkg; }; \
-	done
-	@echo ""
-else
-	@echo ""
-	@echo "This distro does not look like Debian or Fedora. If you want to compile this, you will need to install the GTK4 development libraries for your distro."
+	sudo dnf install -y $(DEPENDENCIES)
 	@echo ""
 endif
-
 
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
