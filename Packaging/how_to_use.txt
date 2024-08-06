@@ -1,10 +1,14 @@
 This is a directory organized to suit the script written to rebuild the installer packages and reinstall them to the developer's machine for testing immediately.  
 
-Run it only if you don't need the current .deb and .rpm files supplied in the master LPIH repo and are working on changes to the application or otherwise experimenting with the code.
-
-Just drag the new binary you compile into the bin directory.  The compile command is in another text file -- you probably already saw it.
-
+Run it only if you don't need the current .deb and .rpm files supplied under "releases" in the LPIH github and are working on changes to the application or otherwise experimenting with the code.
+ 
 FOR DEBIAN PACKAGES
+
+The debian file directory structure for the construction of a .deb package is in the Linux-Post-install-Helper/Packaging/LPIH-0.X directory.  For the deb package, the compiled binary and the resource files need to be copied into the appropriate directory in Packaging/LPIH-0.X.  Automation will continue to be improved for these trivial packaging tasks.
+
+Use the dpkg-deb command to create the .deb once all files are updated.
+
+dpkg-deb LPIH-0.X
 
 To uninstall the .deb:
  sudo dpkg -r LPIH
@@ -12,6 +16,13 @@ To uninstall the .deb:
  
 FOR FEDORA RPM PACKAGING
 
+Similarly, the rpmbuild directory holds the necessary files and setup to create a new .rpm package.  It needs to be copied to your home directory before you run the final command. Here you will need to replace all new source and resource files in the rpmbuild/SOURCES/LPIH-0.X directory, then compress them into a tar ball (using the one-line shell script in that directory if you like.) 
+
+If files are being added or removed from the configuration, you will need to regenerate the config.ac files and such.  Automation is coming for this to make things simpler.
+
+Once your tar ball has been made, run this from the rpmbuild/SPECS directory to create the .rpm using the .spec provided (it may need to be modified if files are being added or removed):
+
 rpmbuild -ba lpih.spec
+
 copy rpmbuild dir to your home dir on fedora
 Copy rpmbuild to your homedir while making a new RPM package.

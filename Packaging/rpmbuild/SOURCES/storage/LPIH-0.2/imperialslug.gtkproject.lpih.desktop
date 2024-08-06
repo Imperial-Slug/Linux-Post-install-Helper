@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Linux Post-install Helper
+Comment=Aid in post-install Linux Desktop activities: check off the functionalities you need and run the resulting bash script in your terminal
+Exec=/bin/lpih
+Icon=/usr/share/icons/hicolor/512x512/apps/imperialslug.gtkproject.lpih.png
+Terminal=false
+Type=Application
+Categories=GTK;

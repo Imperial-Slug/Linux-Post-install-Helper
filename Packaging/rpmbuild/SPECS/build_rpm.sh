@@ -1,1 +1,1 @@
-rpmbuild -ba --nodebuginfo lpih.spec
+rpmbuild -ba --nodebuginfo LPIH.spec

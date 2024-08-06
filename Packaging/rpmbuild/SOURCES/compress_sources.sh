@@ -1,1 +1,1 @@
-tar -czvf lpih-1.0.tar.gz lpih-1.0
+tar -czvf LPIH-0.2.tar.gz LPIH-0.2
