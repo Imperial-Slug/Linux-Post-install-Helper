@@ -10,7 +10,7 @@ desktop_file_dir="${sources_dir}/share/applications"
 icon_dir="${sources_dir}/share/icons/hicolor/512x512/apps"
 css_dir="${sources_dir}/share/LPIH/css"
 text_file_dir="${sources_dir}/share/LPIH/text_files"
-packaging_root=".."
+packaging_root=$(realpath ../)
 deb_structure_root="/home/${USER}/Linux-Post-install-Helper/Packaging/LPIH-${version}"
 deb_file="../LPIH-${version}.deb"
 

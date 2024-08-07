@@ -3,6 +3,7 @@
 version='0.2'
 sources_dir="/home/${USER}/rpmbuild/SOURCES/LPIH-${version}"
 spec_dir="/home/${USER}/rpmbuild/SPECS"
+starting_dir=$(realpath ../)
 
 check_complete() {
 if [ $? != 0 ]; then
