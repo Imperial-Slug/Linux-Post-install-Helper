@@ -1,0 +1,41 @@
+LIST OF PLANNED FEATURES FOR 0.3 RELEASE
+
+Now that the code has been fixed up into a sane configuration, the next release will be heavily focused on adding functionality imortant to Linux Desktop noobs, and making the program more versatile in derivatives of Debian.  Coding improvements are still planned, however: and this list may change as development creeps along.
+
+--------------
+1) - first, implement use of actual memory management and distinct C-style programming to leverage C's strengths.
+   - make further improvements to the basic layout and structure of the code before adding too many more features.
+
+--------------
+2) New Checkboxes:
+
+- add 3rd party repos to debian sources.list file: (contrib non-free)
+- add libreoffice install for both
+- add Xournal for both
+- gimp for both (krita too?)
+- geary email desktop for both
+- lm-sensors for both
+- git, gh both
+- firewalld (exclusive ufw or firewalld)
+
+--------------
+3) Extra functionality
+
+- add functionality/error handling in scipt and generation of script
+- add bash functions (installed in own dir in packaging)
+- functionality for checking whether packages are already installed
+
+--------------
+Tips Sections:
+
+- give a more comrehensive introduction to using a Linux desktop system for noobs.
+- add instructions for gaming and using Steam/proton
+- add basic instructions for using ufw, firewalld, github CLI and more
+
+--------------
+MAYBE
+
+- test with other desktop environments: KDE & Cinnamon first.  Add some handling for it.
+- test with Ubuntu and derivatives, add some handling for it.
+
+

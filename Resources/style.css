@@ -49,52 +49,64 @@ button:hover {
   color: YELLOW;
 }
 
+/*Opening menu Debian button */
 .deb {
   background: #980001;
   color: YELLOW;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid black;
+  border-radius: 16px;
 }
 
+/*Opening menu Debian button on-hover*/
 .deb:hover {
   background: blue;
   color: yellow;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid yellow;
+  border-radius: 16px;
 }
 
+/*Opening menu Fedora button */
 .fed {
   background: teal;
   color: YELLOW;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid black;
+  border-radius: 16px;
 }
 
+/*Opening menu Fedora button on-hover*/
 .fed:hover {
   background: blue;
   color: yellow;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid yellow;
+  border-radius: 16px;
 }
 
+/*Opening menu Quit button */
 .quit {
   background: #312e39;
   color: YELLOW;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid black;
+  border-radius: 16px;
 }
 
+/*Opening menu Quit button on-hover */
 .quit:hover {
   background: blue;
   color: YELLOW;
   font-family: "Cantarell";
-  font-size: 24px;
+  font-size: 30px;
   border: 3px solid yellow;
+  border-radius: 16px;
 }
 
 

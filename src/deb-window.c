@@ -154,38 +154,54 @@ void debian_window() {
     GtkWidget* view;
     GtkTextBuffer* buffer;
 
+    GtkWidget* checkbox_scroll_window = gtk_scrolled_window_new();
+    gtk_widget_set_size_request(checkbox_scroll_window, 300, 200);
+    gtk_widget_set_vexpand(checkbox_scroll_window, TRUE);
+    gtk_widget_set_hexpand(checkbox_scroll_window, TRUE);  
+    gtk_widget_set_can_focus(GTK_WIDGET(checkbox_scroll_window), TRUE);
+    
     deb_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child(GTK_WINDOW(deb_window), deb_box);
     gtk_widget_set_can_focus(GTK_WIDGET(deb_box), TRUE);
+    
+
+    // DEBIAN CHECKBOXES //
+
+    // Create a box to contain checkboxes
+    GtkWidget* checkbox_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+
+    // Add the box to the scrolled window
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(checkbox_scroll_window), checkbox_box);
 
     // CHECKBOXES //////////
-
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using Steam?");
-    gtk_box_append(GTK_BOX(deb_box), deb_steam_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_steam_check);
 
     deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
-    gtk_box_append(GTK_BOX(deb_box), deb_game_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_game_check);
 
     deb_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
-    gtk_box_append(GTK_BOX(deb_box), deb_flatpak_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_flatpak_check);
 
     deb_microcode_check = gtk_check_button_new_with_label("  Install your processor's latest microcode?");
-    gtk_box_append(GTK_BOX(deb_box), deb_microcode_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_microcode_check);
 
     deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?");
-    gtk_box_append(GTK_BOX(deb_box), deb_fonts_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_fonts_check);
     
     deb_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
-    gtk_box_append(GTK_BOX(deb_box), deb_ufw_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_ufw_check);
 
     deb_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
-    gtk_box_append(GTK_BOX(deb_box), deb_tlp_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_tlp_check);
 
     deb_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
-    gtk_box_append(GTK_BOX(deb_box), deb_vlc_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_vlc_check);
 
     deb_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
-    gtk_box_append(GTK_BOX(deb_box), deb_gpu_check);
+    gtk_box_append(GTK_BOX(checkbox_box), deb_gpu_check);
+    
+    gtk_box_append(GTK_BOX(deb_box), checkbox_scroll_window); 
 
     // Create a scrolled window and set the size
     GtkWidget* scroll_window = gtk_scrolled_window_new();
@@ -194,7 +210,7 @@ void debian_window() {
     gtk_widget_set_vexpand(scroll_window, TRUE);
     gtk_widget_set_hexpand(scroll_window, TRUE);  
     gtk_widget_set_can_focus(GTK_WIDGET(scroll_window), TRUE);
-
+    
     view = gtk_text_view_new();
     gtk_widget_set_opacity(view, 0.9);
     gtk_widget_add_css_class(view, "deb_view");
@@ -202,6 +218,7 @@ void debian_window() {
     gtk_text_buffer_set_text(buffer, DEBIAN_OPENER, -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
+   
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_window), view);
     gtk_box_append(GTK_BOX(deb_box), scroll_window);
 
@@ -213,7 +230,7 @@ void debian_window() {
 
     deb_info_button = gtk_button_new_with_label("Tips");
     gtk_widget_add_css_class(view, "deb_info_button");
-    gtk_widget_set_size_request(deb_info_button, 100, 100);
+    gtk_widget_set_size_request(deb_info_button, 64, 64);
     gtk_widget_add_css_class(deb_info_button, "deb_info_button");
     gtk_box_append(GTK_BOX(deb_info_box), deb_info_button);
 

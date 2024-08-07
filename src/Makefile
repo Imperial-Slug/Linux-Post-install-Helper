@@ -13,15 +13,15 @@ DISTRO := $(shell grep '^ID=' /etc/os-release | cut -d'=' -f2)
 ifeq ($(DISTRO),debian)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)
-    DEPENDENCIES = libgtk-4-1 libgtk-4-dev
+   # DEPENDENCIES = libgtk-4-1 libgtk-4-dev
 else ifeq ($(DISTRO),ubuntu)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)
-    DEPENDENCIES = libgtk-4-1 libgtk-4-dev
+   # DEPENDENCIES = libgtk-4-1 libgtk-4-dev
 else ifeq ($(DISTRO),fedora)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)
-    DEPENDENCIES = gtk4 gtk4-devel mesa-libGL-devel 
+   # DEPENDENCIES = gtk4 gtk4-devel mesa-libGL-devel 
 else ifneq ($(DISTRO),fedora)
     CFLAGS += $(shell pkg-config --cflags gtk4)
     LIBS += $(shell pkg-config --libs gtk4)

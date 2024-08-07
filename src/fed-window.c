@@ -149,38 +149,58 @@ void fedora_window() {
 
     GtkWidget* view;
     GtkTextBuffer* buffer;
+    
+    GtkWidget* checkbox_scroll_window = gtk_scrolled_window_new();
+    gtk_widget_set_size_request(checkbox_scroll_window, 300, 200);
+    gtk_widget_set_vexpand(checkbox_scroll_window, TRUE);
+    gtk_widget_set_hexpand(checkbox_scroll_window, TRUE);  
+    gtk_widget_set_can_focus(GTK_WIDGET(checkbox_scroll_window), TRUE);
 
     fed_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_window_set_child(GTK_WINDOW(fed_window), fed_box);
+    gtk_widget_set_can_focus(GTK_WIDGET(fed_box), TRUE);
+
+    // Create a box to contain checkboxes
+    GtkWidget* checkbox_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+
+    // Add the box to the scrolled window
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(checkbox_scroll_window), checkbox_box);
 
     // FEDORA CHECKBOXES //////////
 
     fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
-    gtk_box_append(GTK_BOX(fed_box), fed_dnf_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_dnf_check);
 
     fed_repo_check = gtk_check_button_new_with_label("  Enable RPM-fusion repositories for wider range of software?");
-    gtk_box_append(GTK_BOX(fed_box), fed_repo_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_repo_check);
 
     fed_steam_check = gtk_check_button_new_with_label("  Do you plan on using Steam?");
-    gtk_box_append(GTK_BOX(fed_box), fed_steam_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_steam_check);
 
     fed_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
-    gtk_box_append(GTK_BOX(fed_box), fed_flatpak_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_flatpak_check);
 
     fed_customization_check = gtk_check_button_new_with_label("  Install gnome-tweaks and gnome-extensions for desktop customization?");
-    gtk_box_append(GTK_BOX(fed_box), fed_customization_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_customization_check);
 
     fed_codecs_check = gtk_check_button_new_with_label("  Do you want to install multimedia codecs for unsupported media formats?");
-    gtk_box_append(GTK_BOX(fed_box), fed_codecs_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_codecs_check);
 
     fed_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
-    gtk_box_append(GTK_BOX(fed_box), fed_tlp_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_tlp_check);
 
     fed_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
-    gtk_box_append(GTK_BOX(fed_box), fed_vlc_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_vlc_check);
 
     fed_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
-    gtk_box_append(GTK_BOX(fed_box), fed_gpu_check);
+    gtk_box_append(GTK_BOX(checkbox_box), fed_gpu_check);
+    
+    
+    
+    
+    
+    gtk_box_append(GTK_BOX(fed_box), checkbox_scroll_window); 
+    
 
     // Create a scrolled window and set the size
     GtkWidget* scroll_window = gtk_scrolled_window_new();
@@ -210,7 +230,7 @@ void fedora_window() {
 
     fed_info_button = gtk_button_new_with_label("Tips");
     gtk_widget_add_css_class(view, "fed_info_button");
-    gtk_widget_set_size_request(fed_info_button, 100, 100);
+    gtk_widget_set_size_request(fed_info_button, 64, 64);
     gtk_widget_add_css_class(fed_info_button, "fed_info_button");
     gtk_box_append(GTK_BOX(fed_info_box), fed_info_button);
 

@@ -62,8 +62,8 @@
 
     gtk_widget_add_css_class(window, "main_window");
     gtk_window_set_title(GTK_WINDOW(window), "Linux Post-install Helper For Debian and Fedora");
-    gtk_widget_set_size_request(window, 444, 444);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    gtk_widget_set_size_request(window, 512, 256);
+    gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -78,14 +78,14 @@
 
     deb_button = gtk_button_new_with_label("DEBIAN");
     gtk_widget_add_css_class(deb_button, "deb");
-    gtk_widget_set_size_request(deb_button, 100, 50);
+    gtk_widget_set_size_request(deb_button, 128, 64);
     g_signal_connect(deb_button, "clicked", G_CALLBACK(debian_window), NULL);
 
     gtk_grid_attach(GTK_GRID(grid), deb_button, 0, 0, 1, 1);
 
     fed_button = gtk_button_new_with_label("FEDORA");
     gtk_widget_add_css_class(fed_button, "fed");
-    gtk_widget_set_size_request(fed_button, 100, 50);
+    gtk_widget_set_size_request(fed_button, 128, 64);
     g_signal_connect(fed_button, "clicked", G_CALLBACK(fedora_window), NULL);
 
     gtk_grid_attach(GTK_GRID(grid), fed_button, 1, 0, 1, 1);
@@ -93,7 +93,7 @@
     quit_button = gtk_button_new_with_label("QUIT");
     gtk_widget_add_css_class(quit_button, "quit");
     gtk_widget_set_name(quit_button, "quit");
-    gtk_widget_set_size_request(quit_button, 100, 50);
+    gtk_widget_set_size_request(quit_button, 128, 64);
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(gtk_window_destroy), window);
 
     gtk_grid_attach(GTK_GRID(grid), quit_button, 0, 1, 2, 1);
