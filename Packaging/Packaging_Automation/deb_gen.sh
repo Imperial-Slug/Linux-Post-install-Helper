@@ -3,15 +3,17 @@
 # Meant to be run from the LPIH project structure root dir.
 
 version='0.2'
-sources_dir="../Packaging/LPIH-${version}/usr"
+sources_dir="../LPIH-${version}/usr"
 bin_dir="${sources_dir}/bin"
+resource_dir="../../Resources"
 desktop_file_dir="${sources_dir}/share/applications"
 icon_dir="${sources_dir}/share/icons/hicolor/512x512/apps"
 css_dir="${sources_dir}/share/LPIH/css"
 text_file_dir="${sources_dir}/share/LPIH/text_files"
-packaging_root="../Packaging"
-deb_structure_root="${packaging_root}/LPIH-${version}"
-deb_file="${packaging_root}/LPIH-${version}.deb"
+packaging_root=".."
+deb_structure_root="/home/${USER}/Linux-Post-install-Helper/Packaging/LPIH-${version}"
+deb_file="../LPIH-${version}.deb"
+
 
 
 check_complete() {
@@ -23,13 +25,12 @@ echo "Copied ${1} to .deb directory structure."
 fi
 }
 
-
 # Copies the up-to-date source code and resource files to the .deb packaging dir structure.
 
-cp ../src/lpih ${bin_dir}
+cp ../../src/lpih ${bin_dir}
 # If the binary file is copied, then echo success message, else try to compile the binary.  If the compilation fails, try installing the dependencies.  Otherwise, carry on.
 if [ $? != 0 ]; then
-   make -C ../src
+   make -C ../../src
 
 	if [ $? != 0 ]; then
 	   echo "There was a problem compiling the LPIH binary."
@@ -40,31 +41,33 @@ if [ $? != 0 ]; then
 	   	   echo "Dependency installation failed or cancelled.  Exiting."
 	   	   exit 0
 	   	   fi
-	   		make -C ../src
+	   		make -C ../../src
 				if [ $? != 0 ]; then
+				   echo ""
 				   echo "Failed to compile LPIH after installing dependencies.  Giving up."
 			           exit 0
 		                   fi
 	else
+	echo ""
 	echo "LPIH binary compiled successfully."
 	fi
 
    else
-   echo "LPIH binary copied to .deb directory structure."
    echo ""
+   echo "LPIH binary copied to .deb directory structure."
    fi
 
 
-cp ../Resources/*.css ${css_dir}
+cp ${resource_dir}/*.css ${css_dir}
 check_complete "CSS file"
 
-cp ../Resources/*.txt ${text_file_dir}
+cp ${resource_dir}/*.txt ${text_file_dir}
 check_complete "text files"
 
-cp ../Resources/*.desktop ${desktop_file_dir}
+cp ${resource_dir}/*.desktop ${desktop_file_dir}
 check_complete "desktop file"
 
-cp ../Resources/*.png ${icon_dir}
+cp ${resource_dir}/*.png ${icon_dir}
 check_complete "icon"
 
 cd ${packaging_root}
