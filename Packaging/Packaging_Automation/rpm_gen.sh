@@ -5,7 +5,6 @@ sources_dir="/home/${USER}/rpmbuild/SOURCES/LPIH-${version}"
 spec_dir="/home/${USER}/rpmbuild/SPECS"
 
 check_complete() {
-local arg="$1"
 if [ $? != 0 ]; then
 echo "**************"
 echo "Failed to copy ${1}. "
