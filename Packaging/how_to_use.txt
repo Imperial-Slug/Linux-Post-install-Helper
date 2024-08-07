@@ -4,7 +4,7 @@ Run it only if you don't need the current .deb and .rpm files supplied under "re
  
  
  
- USE THE BUILD AUTOMATION (SIMPLEST OPTION)
+ USE THE PACKAGING AUTOMATION (SIMPLEST OPTION)
  
  Go to Build Automation and run one of the deb_gen.sh or rpm_gen.sh shell scripts, depending on which distro you are on.
  

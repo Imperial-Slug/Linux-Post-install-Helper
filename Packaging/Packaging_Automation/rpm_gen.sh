@@ -1,24 +1,40 @@
 #!/bin/bash
 
-# Meant to be run from the LPIH project structure root dir.
-
 version='0.2'
 sources_dir="/home/${USER}/rpmbuild/SOURCES/LPIH-${version}"
 spec_dir="/home/${USER}/rpmbuild/SPECS"
 
+check_complete() {
+local arg="$1"
+if [ $? != 0 ]; then
+echo "**************"
+echo "Failed to copy ${1}. "
+else
+echo "Copied ${1} to ${sources_dir}"
+fi
+}
+
 echo "Ensure that SOURCES/LPIH-${version}/makefile.am has all the most up-to-date source code files added to it, and that the LPIH.spec file has been updated accordingly for all additional source code and resource files."
 echo "*****************************"
-echo ""
 
 # Moves the rpmbuild dir structure from the Linux-Post-install-Helper project root dir to the home dir so it can be used properly.
 
-cp ../Packaging/rpmbuild ~/rpmbuild
+cp -r ../rpmbuild /home/${USER}/
+if [ $? != 0 ]; then
+echo "**************"
+echo "Failed to copy rpmbuild directory to home directory."
+else
+echo "Copied rpm structure to home directory."
+fi
 
 # Copies the up-to-date source code and resource files to the rpmbuild /SOURCES/LPIH-${version} directory.
 
-cp ../src/lpih ${sources_dir}
-cp ../src/*.c ${sources_dir}
-cp ../Resources/* ${sources_dir}
+cp ../../src/lpih ${sources_dir}
+check_complete "lpih binary"
+cp ../../src/*.c ${sources_dir}
+check_complete "source code files"
+cp ../../Resources/* ${sources_dir}
+check_complete "resource files"
 
 cd ${sources_dir}
 :
@@ -35,5 +51,12 @@ cd ${spec_dir}
 :
 rpmbuild -ba --nodebuginfo LPIH.spec
 
+if [ $? != 0 ]; then
+echo "**************"
+echo "Failed to create .rpm for LPIH."
+else
+echo "Successfully created .rpm for LPIH.  Find it in /home/${USER}/rpmbuild"
 
+
+fi
 

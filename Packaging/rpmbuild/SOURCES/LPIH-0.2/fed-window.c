@@ -63,7 +63,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
     fed_info_window = gtk_window_new();
     gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: tips");
     gtk_window_set_resizable(GTK_WINDOW(fed_info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(fed_info_window), 900, 720);
+    gtk_window_set_default_size(GTK_WINDOW(fed_info_window), 800, 700);
 
     GtkWidget* view;
     GtkTextBuffer* buffer;
@@ -74,7 +74,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
     // Create a scrolled window and set the size
     GtkWidget* scroll_info_window = gtk_scrolled_window_new();
 
-    gtk_widget_set_size_request(scroll_info_window, 900, 720);
+    gtk_widget_set_size_request(scroll_info_window, 800, 700);
 
     gtk_widget_set_vexpand(scroll_info_window, TRUE);
     gtk_widget_set_hexpand(scroll_info_window, TRUE);  
@@ -142,7 +142,7 @@ void fedora_window() {
     gtk_widget_add_css_class(fed_window, "fed_window");
     gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
     gtk_window_set_resizable(GTK_WINDOW(fed_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(fed_window), 900, 720);
+    gtk_window_set_default_size(GTK_WINDOW(fed_window), 800, 700);
     gtk_widget_set_can_focus(GTK_WIDGET(fed_window), TRUE);
     gtk_widget_set_vexpand(fed_window, TRUE);
     gtk_widget_set_hexpand(fed_window, TRUE);  
