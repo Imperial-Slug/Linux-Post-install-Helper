@@ -1,12 +1,6 @@
-This is a directory organized to suit the script written to rebuild the installer packages and reinstall them to the developer's machine for testing immediately.  
-
-Run it only if you don't need the current .deb and .rpm files supplied under "releases" in the LPIH github and are working on changes to the application or otherwise experimenting with the code.
- 
- 
- 
  USE THE PACKAGING AUTOMATION (SIMPLEST OPTION)
  
- Go to Build Automation and run one of the deb_gen.sh or rpm_gen.sh shell scripts, depending on which distro you are on.
+ Go to Packaging_Automation and run deb_gen.sh or rpm_gen.sh, depending on which distro you are on.
  
  Manual steps:
  
