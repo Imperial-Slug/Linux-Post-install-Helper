@@ -14,8 +14,8 @@
  gboolean fed_tlp_toggled(GtkWidget * widget, gpointer data);
  gboolean fed_vlc_toggled(GtkWidget * widget, gpointer data);
  gboolean on_fed_window_destroy();
- void fedora_window(void);
- void on_fed_tips_window_destroy();
+ gboolean fedora_window(void);
+ gboolean on_fed_tips_window_destroy();
 
 // GLOBAL VARIABLES
 

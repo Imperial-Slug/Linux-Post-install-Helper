@@ -1,5 +1,6 @@
 # MAKEFILE FOR LPIH
 #  Run "make" in your terminal from this file's directory to execute the build/compile instructions in here.
+# -fsanitize=address
 
 CC = clang
 CFLAGS = -Wall -g -Wextra -Werror -I../include -Iinclude

@@ -93,28 +93,24 @@ gboolean init_css_provider() {
   return (char*)glGetString(GL_VENDOR);
 }
 
+// Function that uses inline assembly to get the vendor string of the CPU
 gboolean get_cpu_vendor(gchar* vendor) {
-  unsigned int eax, ebx, ecx, edx;
+    // Use inline assembly to execute the cpuid instruction
+    __asm__ volatile (
+        "cpuid" // Execute the cpuid instruction
+        : "=b"(((unsigned int*)vendor)[0]), // Output ebx directly into vendor[0-3]
+          "=d"(((unsigned int*)vendor)[1]), // Output edx directly into vendor[4-7]
+          "=c"(((unsigned int*)vendor)[2])  // Output ecx directly into vendor[8-11]
+        : "a"(0)                            // Input: Set eax to 0 to get vendor string
+    );
 
-  // Call cpuid with input 0 to get vendor string
-  __asm__("cpuid": "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx): "a"(0));
+    vendor[12] = '\0'; // Null-terminate the vendor string at the 13th position
 
-  // Copy the vendor string to the output buffer
-  ((int* ) vendor)[0] = ebx;
-  ((int* ) vendor)[1] = edx;
-  ((int* ) vendor)[2] = ecx;
-  vendor[12] = '\0';
-  
-  if (vendor != NULL) {
     g_print("CPU vendor loaded.\n");
     return TRUE;
-  } 
-  
-  else {
-  g_print("*********ERROR: Problem getting cpu vendor info.*****\n\n");
-  return FALSE;
-  }
-  
 }
+
+  
+
 
  

@@ -35,13 +35,13 @@
  const gchar* debian_gpu_command;
  const gchar* debian_microcode_command;
 
-  enum manufacturer { AMD = 1, Intel = 2, Nvidia = 3, Unknown = 4};
-  enum manufacturer cpu_manufacturer;
-  enum manufacturer gpu_manufacturer;
+  enum vendor_name { AMD = 1, Intel = 2, Nvidia = 3, Unknown = 4};
+  void* cpu_vendor_name = NULL;
+  void* gpu_vendor_name = NULL;
+
   
  // For keeping track of single-instance windows.
  gboolean lpih_instance_running = FALSE;
- 
  
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
@@ -108,57 +108,60 @@
     // Automatically establishing the user's GPU vendor on init of the program.       
      char* gpu_vendor = getGraphicsCardVendor();
 
-    if (strstr(gpu_vendor, "NVIDIA") != NULL) {
-      gpu_manufacturer = Nvidia;
-      debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-      fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-    } else if (strstr(gpu_vendor, "AMD") != NULL) {
-      gpu_manufacturer = AMD;
-      debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-      fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-    } else if (strstr(gpu_vendor, "Intel") != NULL) {
-      gpu_manufacturer = Intel;
-      debian_gpu_command = "  # Intel GPU drivers already installed. \n";
-      fedora_gpu_command = debian_gpu_command;
-    }  else {
-      g_print("The GPU vendor could not be determined for this GPU. If this is a VM, it will likely be using it's own graphics drivers unless you are using pass-through. \n");
-      gpu_manufacturer = Unknown;
-    }
+   cpu_vendor_name = malloc(sizeof(enum vendor_name));
+   gpu_vendor_name = malloc(sizeof(enum vendor_name));
 
+if (strstr(gpu_vendor, "NVIDIA") != NULL) {
+    *(enum vendor_name*)gpu_vendor_name = Nvidia;
+    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+} else if (strstr(gpu_vendor, "AMD") != NULL) {
+    *(enum vendor_name*)gpu_vendor_name = AMD;
+    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+} else if (strstr(gpu_vendor, "Intel") != NULL) {
+    *(enum vendor_name*)gpu_vendor_name = Intel;
+    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+} else {
+    *(enum vendor_name*)gpu_vendor_name = Unknown;
+}
 
     gchar vendor[13];
     get_cpu_vendor(vendor);
 
     if (strstr(vendor, "AMD") != NULL) {
-      cpu_manufacturer = AMD;
+      *(enum vendor_name*)cpu_vendor_name = AMD;
 
     } else if (strstr(vendor, "Intel") != NULL) {
-      cpu_manufacturer = Intel;
+      *(enum vendor_name*)cpu_vendor_name = Intel;
 
     } else {
       g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
       g_print("*************************************\n\n");
-      cpu_manufacturer = Unknown;
+      *(enum vendor_name*)cpu_vendor_name = Unknown;
 
     }
 
 // Print mfgs
-    g_print("The GPU manufacturer for this machine is %s.\n", gpu_vendor);
-    g_print("The CPU manufacturer for this machine is %s.\n", vendor);
+    g_print("The GPU vendor for this machine is %s.\n", gpu_vendor);
+    g_print("The CPU vendor for this machine is %s.\n", vendor);
     g_print("*************************************\n\n");
 
+   g_free(gpu_vendor_name);
+
 // Determine Debian microcode command
- if (cpu_manufacturer == AMD) {
+ if (*(enum vendor_name*)cpu_vendor_name == AMD) {
     debian_microcode_command = "  sudo apt install amd64-microcode;\n";
-  } else if (cpu_manufacturer == Intel) {
+  } else if (*(enum vendor_name*)cpu_vendor_name == Intel) {
     debian_microcode_command = "  sudo apt install intel-microcode;\n";
   } else {
-    g_print("*****ERROR: Something went wrong trying to get the cpu manufacturer.*****\n");
+    g_print("*****ERROR: Something went wrong trying to get the cpu vendor_name.*****\n");
   }
 
   } else {
     g_print("Error: instance of LPIH is already running!\n");
-  }
+  }  
+  
+  g_free(cpu_vendor_name);
+
 }
 
  void on_quit() {
@@ -184,6 +187,5 @@ gboolean main(int argc,
   return status;
 }
 
+
 ///////////// END OF FILE /////////////
-
-

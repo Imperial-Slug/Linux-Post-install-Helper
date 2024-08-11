@@ -54,7 +54,7 @@ gboolean on_deb_tips_window_destroy() {
     g_print("debian_tips_open set to FALSE.\n");
     return TRUE;
   } else {
-            g_print("debian_tips_open is NULL.  Failed to set to FALSE.\n");
+            g_print("debian_tips_open: Failed to set to FALSE.\n");
             return FALSE;
             }
 }
@@ -138,7 +138,7 @@ gboolean on_deb_tips_window_destroy() {
 
 GtkWidget* deb_window; 
 
-void debian_window() {
+gboolean debian_window() {
 
   if (debian_window_open != TRUE) {
 
@@ -255,16 +255,19 @@ void debian_window() {
     gtk_window_present(GTK_WINDOW(deb_window));
 
     ///////////////////////
-    if (gtk_widget_is_visible(deb_window)) {
+   
+    ///////////////////////
+     
+  
+  } 
+   if (gtk_widget_is_visible(deb_window)) {
       debian_window_open = TRUE;
+      return TRUE;
 
     } else {
       g_print("Debian LPIH window failed to open.");
-     
+     return FALSE;
     }
-    ///////////////////////
-  }
-  
 }
 
 

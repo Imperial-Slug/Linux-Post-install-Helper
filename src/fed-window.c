@@ -122,8 +122,15 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
 }
 
- void on_fed_tips_window_destroy() {
+ gboolean on_fed_tips_window_destroy() {
   fedora_tips_open = FALSE;
+   if(fedora_tips_open == FALSE){
+    g_print("fedora_tips_open set to FALSE.\n");
+    return TRUE;
+  } else {
+            g_print("fedora_tips_open: Failed to set to FALSE.\n");
+            return FALSE;
+            }
 }
 
 //////////////////////////////////////////
@@ -134,7 +141,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
 GtkWidget* fed_window;
 
-void fedora_window() {
+gboolean fedora_window() {
 
   if (fedora_window_open != TRUE) {
 
@@ -248,14 +255,17 @@ void fedora_window() {
 
     gtk_widget_set_visible(fed_window, TRUE);
 
-    if (gtk_widget_is_visible(fed_window)) {
-      fedora_window_open = FALSE;
+    
+  }
+  if (gtk_widget_is_visible(fed_window)) {
+      fedora_window_open = TRUE;
+      return TRUE;
 
     } else {
       g_print("Fedora window failed to open.");
-
+      return FALSE;
     }
-  }
+  
 }
 
 

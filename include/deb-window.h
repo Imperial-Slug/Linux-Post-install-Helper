@@ -12,7 +12,7 @@
  gboolean deb_tlp_toggled(GtkWidget * widget, gpointer data);
  gboolean deb_vlc_toggled(GtkWidget * widget, gpointer data);
  gboolean on_deb_window_destroy(void);
- void debian_window(void);
+ gboolean debian_window(void);
  int on_deb_tips_window_destroy(void);
  
  // GLOBAL VARIABLES
