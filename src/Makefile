@@ -36,4 +36,6 @@ clean:
 	rm -f $(TARGET)
 
 
+# For hunting memory leaks, run the binary with:
+# G_SLICE=debug-blocks valgrind --tool=memcheck --leak-check=full ./lpih
     

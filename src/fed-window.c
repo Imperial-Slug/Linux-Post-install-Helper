@@ -112,7 +112,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
     g_signal_connect(fed_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
 
-    gtk_widget_set_visible(fed_info_window, TRUE);
+    gtk_window_present(GTK_WINDOW(fed_info_window));
 
   } else {
     g_print("Error: Fedora Tips already open.");
@@ -136,8 +136,8 @@ void fedora_window() {
 
   if (fedora_window_open != 1) {
 
-    GtkWidget* fed_window;
-    GtkWidget* fed_box,* fed_gpu_check,* fed_steam_check,* fed_dnf_check,* fed_flatpak_check,* fed_repo_check,* fed_customization_check,* fed_codecs_check,* fed_tlp_check,* fed_vlc_check,* fed_info_button;
+
+    GtkWidget* fed_window, *fed_box, *fed_gpu_check, *fed_steam_check, *fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check, *fed_info_button;
     fed_window = gtk_window_new();
     gtk_widget_add_css_class(fed_window, "fed_window");
     gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
@@ -194,10 +194,6 @@ void fedora_window() {
 
     fed_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_gpu_check);
-    
-    
-    
-    
     
     gtk_box_append(GTK_BOX(fed_box), checkbox_scroll_window); 
     

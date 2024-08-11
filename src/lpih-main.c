@@ -103,7 +103,7 @@
     gtk_widget_set_can_focus(GTK_WIDGET(window), TRUE);
     gtk_widget_set_can_focus(GTK_WIDGET(grid), TRUE);
 
-    gtk_widget_set_visible(window, TRUE);
+  gtk_window_present (GTK_WINDOW (window));
 
     // Automatically establishing the user's GPU vendor on init of the program.       
     const char* gpu_vendor = getGraphicsCardVendor();
@@ -139,7 +139,7 @@
    
 }
 
-    char vendor[12];
+    char vendor[13];
     get_cpu_vendor(vendor);
 
     if (strstr(vendor, "AMD") != NULL) {
@@ -172,17 +172,19 @@
   } else {
     g_print("Error: instance of LPIH is already running!\n");
   }
+  
 
 }
+
+
 
  void on_quit() {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = 0;
+  
 
 }
-
-
 
 
 
@@ -192,10 +194,10 @@ int main(int argc,
   GtkApplication* app;
   int status;
   app = gtk_application_new("imperialslug.gtkproject.lpih", G_APPLICATION_DEFAULT_FLAGS);
-  g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
-  g_signal_connect(app, "shutdown", G_CALLBACK(on_quit), NULL);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  g_signal_connect (app, "shutdown", G_CALLBACK(on_quit), NULL);
   status = g_application_run(G_APPLICATION(app), argc, argv);
-  g_object_unref(app);
+  g_object_unref (app);
 
   return status;
 }

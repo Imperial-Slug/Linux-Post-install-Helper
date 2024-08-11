@@ -8,10 +8,6 @@ If it doesn't compile, here are the packages you might be missing by distro type
  Fedora:	gtk4	gtk4-devel   	mesa-libGL-devel        <--- (for -lGL opengl C headers)
  Arch:	gtk4
 
-Use this execution option for extra debugging from the terminal: 
-
-G_MESSAGES_DEBUG=all ./lpih
-
 To install all dependencies compiling this on Debian, run:
 
 sudo apt install make clang libgtk-4-1 libgtk-4-dev
@@ -22,5 +18,7 @@ To install all dependencies compiling this on Fedora, run:
 sudo dnf install make clang gtk4 gtk4-devel mesa-libGL-devel
 
 
+Use this execution option for extra debugging from the terminal: 
 
+G_MESSAGES_DEBUG=all ./lpih
 

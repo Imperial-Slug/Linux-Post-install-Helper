@@ -140,7 +140,8 @@ void debian_window() {
 
   if (debian_window_open != 1) {
 
-    GtkWidget* deb_window,* deb_box,* deb_gpu_check,* deb_steam_check,* deb_game_check,* deb_flatpak_check,* deb_microcode_check,* deb_fonts_check,* deb_ufw_check,* deb_tlp_check,* deb_vlc_check,* deb_info_button;
+    GtkWidget* deb_window, *deb_box, *deb_gpu_check, *deb_steam_check, *deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check, *deb_info_button;
+
 
     deb_window = gtk_window_new();
     gtk_widget_add_css_class(deb_window, "deb_window");
@@ -249,7 +250,7 @@ void debian_window() {
     g_signal_connect(G_OBJECT(deb_vlc_check), "toggled", G_CALLBACK(deb_vlc_toggled), buffer);
     g_signal_connect(deb_window, "destroy", G_CALLBACK(on_deb_window_destroy), NULL);
 
-    gtk_widget_set_visible(deb_window, TRUE);
+    gtk_window_present(GTK_WINDOW(deb_window));
 
     ///////////////////////
     if (gtk_widget_is_visible(deb_window)) {
@@ -263,6 +264,8 @@ void debian_window() {
   }
   
 }
+
+
 
 ////////// DEBIAN GPU DRIVERS CHECKBOX ///////////////
 gboolean deb_gpu_toggled(GtkWidget* widget, gpointer data) {
