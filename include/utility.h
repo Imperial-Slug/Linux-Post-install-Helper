@@ -12,10 +12,10 @@
 #include "utility.h"
 
  // Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
- int get_cpu_vendor(char * vendor);
- int init_css_provider();
+ gboolean get_cpu_vendor(char * vendor);
+ gboolean init_css_provider();
  gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpointer data);
- const char * getGraphicsCardVendor(void);
- int get_cpu_vendor(char* vendor);
+ char * getGraphicsCardVendor(void);
+
 
 #endif // UTILITY_H

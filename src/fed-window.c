@@ -45,8 +45,8 @@ const gchar* FEDORA_TLP = "  sudo dnf install tlp; \n";
 const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
  const gchar* fedora_gpu_command;
- int fedora_window_open = 0;
- int fedora_tips_open = 0;
+ gboolean fedora_window_open = FALSE;
+ gboolean fedora_tips_open = FALSE;
  
  /////////////////////////////////////////////////////
 // INFORMATIONAL WINDOW: FEDORA /////////////////////
@@ -54,7 +54,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
  void fedora_info_window() {
 
-  if (fedora_tips_open != 1) {
+  if (fedora_tips_open != TRUE) {
 
     GtkWidget* fed_info_window;
     GtkWidget* fed_info_box;
@@ -118,12 +118,12 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
     g_print("Error: Fedora Tips already open.");
   }
 
-  fedora_tips_open = 1;
+  fedora_tips_open = TRUE;
 
 }
 
  void on_fed_tips_window_destroy() {
-  fedora_tips_open = 0;
+  fedora_tips_open = FALSE;
 }
 
 //////////////////////////////////////////
@@ -132,12 +132,14 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 //                                     || 
 //////////////////////////////////////////
 
+GtkWidget* fed_window;
+
 void fedora_window() {
 
-  if (fedora_window_open != 1) {
+  if (fedora_window_open != TRUE) {
 
 
-    GtkWidget* fed_window, *fed_box, *fed_gpu_check, *fed_steam_check, *fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check, *fed_info_button;
+    GtkWidget *fed_box, *fed_gpu_check, *fed_steam_check, *fed_dnf_check, *fed_flatpak_check, *fed_repo_check, *fed_customization_check, *fed_codecs_check, *fed_tlp_check, *fed_vlc_check, *fed_info_button;
     fed_window = gtk_window_new();
     gtk_widget_add_css_class(fed_window, "fed_window");
     gtk_window_set_title(GTK_WINDOW(fed_window), "Linux Post-install Helper: Fedora");
@@ -247,7 +249,7 @@ void fedora_window() {
     gtk_widget_set_visible(fed_window, TRUE);
 
     if (gtk_widget_is_visible(fed_window)) {
-      fedora_window_open = 1;
+      fedora_window_open = FALSE;
 
     } else {
       g_print("Fedora window failed to open.");
@@ -305,7 +307,15 @@ gboolean fed_vlc_toggled(GtkWidget* widget, gpointer data) {
   return TRUE;
 }
 
- void on_fed_window_destroy() {
-  fedora_window_open = 0;
+ gboolean on_fed_window_destroy() {
+    if (gtk_widget_is_visible(fed_window)) {
+        g_print("Fedora LPIH window failed to close.\n");
+         return FALSE;
+
+    } else {
+      
+      g_print("Fedora LPIH window closed successfully.\n");
+      return TRUE;
+    }
 }
 

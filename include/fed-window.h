@@ -4,16 +4,16 @@
 
 
 //\\//\\//\\//\\//\\// FEDORA-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//||||||||||
- int fed_gpu_toggled(GtkWidget * widget, gpointer data);
- int fed_steam_toggled(GtkWidget * widget, gpointer data);
- int fed_dnf_toggled(GtkWidget * widget, gpointer data);
- int fed_flatpak_toggled(GtkWidget * widget, gpointer data);
- int fed_repo_toggled(GtkWidget * widget, gpointer data);
- int fed_customization_toggled(GtkWidget * widget, gpointer data);
- int fed_codecs_toggled(GtkWidget * widget, gpointer data);
- int fed_tlp_toggled(GtkWidget * widget, gpointer data);
- int fed_vlc_toggled(GtkWidget * widget, gpointer data);
- void on_fed_window_destroy();
+ gboolean fed_gpu_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_steam_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_dnf_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_flatpak_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_repo_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_customization_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_codecs_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_tlp_toggled(GtkWidget * widget, gpointer data);
+ gboolean fed_vlc_toggled(GtkWidget * widget, gpointer data);
+ gboolean on_fed_window_destroy();
  void fedora_window(void);
  void on_fed_tips_window_destroy();
 

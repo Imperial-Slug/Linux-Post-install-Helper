@@ -35,21 +35,21 @@
  const gchar* debian_gpu_command;
  const gchar* debian_microcode_command;
 
-// 1 = AMD, 2 = Intel, 3 = Nvidia.
- int cpu_manufacturer = 0;
- int gpu_manufacturer = 0;
-
+  enum manufacturer { AMD = 1, Intel = 2, Nvidia = 3, Unknown = 4};
+  enum manufacturer cpu_manufacturer;
+  enum manufacturer gpu_manufacturer;
+  
  // For keeping track of single-instance windows.
- int lpih_instance_running = 0;
+ gboolean lpih_instance_running = FALSE;
  
  
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 
  void activate(GtkApplication* app) {
 
-  if (lpih_instance_running != 1) {
+  if (lpih_instance_running != TRUE) {
 
-    lpih_instance_running = 1;
+    lpih_instance_running = TRUE;
 
     GtkWidget* window;
     GtkWidget* grid;
@@ -106,64 +106,51 @@
   gtk_window_present (GTK_WINDOW (window));
 
     // Automatically establishing the user's GPU vendor on init of the program.       
-    const char* gpu_vendor = getGraphicsCardVendor();
+     char* gpu_vendor = getGraphicsCardVendor();
 
     if (strstr(gpu_vendor, "NVIDIA") != NULL) {
-      gpu_manufacturer = 1;
+      gpu_manufacturer = Nvidia;
+      debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+      fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
     } else if (strstr(gpu_vendor, "AMD") != NULL) {
-      gpu_manufacturer = 2;
+      gpu_manufacturer = AMD;
+      debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+      fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
     } else if (strstr(gpu_vendor, "Intel") != NULL) {
-      gpu_manufacturer = 3;
- 
+      gpu_manufacturer = Intel;
+      debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+      fedora_gpu_command = debian_gpu_command;
     }  else {
       g_print("The GPU vendor could not be determined for this GPU. If this is a VM, it will likely be using it's own graphics drivers unless you are using pass-through. \n");
-      gpu_manufacturer = 0;
+      gpu_manufacturer = Unknown;
     }
 
 
-    if (gpu_manufacturer == 1) {
-    debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
-    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-   
-  } else if (gpu_manufacturer == 2) {
-    debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-   
-  } else if (gpu_manufacturer == 3) {
-    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
-    fedora_gpu_command = debian_gpu_command;
-   
-  } else if (gpu_manufacturer == 0) {
-    debian_gpu_command = "  # The GPU vendor could not be determined for this GPU. If this is a VM, it will likely be using it's own graphics drivers unless you are using pass-through.\n";
-    fedora_gpu_command = debian_gpu_command;
-   
-}
-
-    char vendor[13];
+    gchar vendor[13];
     get_cpu_vendor(vendor);
 
     if (strstr(vendor, "AMD") != NULL) {
-      cpu_manufacturer = 2;
-      strcpy(vendor, "AMD");
+      cpu_manufacturer = AMD;
+
     } else if (strstr(vendor, "Intel") != NULL) {
-      cpu_manufacturer = 3;
-      strcpy(vendor, "Intel");
+      cpu_manufacturer = Intel;
+
     } else {
       g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
       g_print("*************************************\n\n");
-      cpu_manufacturer = 0;
-      strcpy(vendor, "Unknown");
+      cpu_manufacturer = Unknown;
+
     }
 
 // Print mfgs
-    g_print("The GPU manufacturer for this machine is %d, %s.\n", gpu_manufacturer, gpu_vendor);
-    g_print("The CPU manufacturer for this machine is %d, %s.\n", cpu_manufacturer, vendor);
+    g_print("The GPU manufacturer for this machine is %s.\n", gpu_vendor);
+    g_print("The CPU manufacturer for this machine is %s.\n", vendor);
     g_print("*************************************\n\n");
 
 // Determine Debian microcode command
- if (cpu_manufacturer == 2) {
+ if (cpu_manufacturer == AMD) {
     debian_microcode_command = "  sudo apt install amd64-microcode;\n";
-  } else if (cpu_manufacturer == 3) {
+  } else if (cpu_manufacturer == Intel) {
     debian_microcode_command = "  sudo apt install intel-microcode;\n";
   } else {
     g_print("*****ERROR: Something went wrong trying to get the cpu manufacturer.*****\n");
@@ -172,27 +159,22 @@
   } else {
     g_print("Error: instance of LPIH is already running!\n");
   }
-  
-
 }
-
-
 
  void on_quit() {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
-  lpih_instance_running = 0;
+  lpih_instance_running = FALSE;
   
 
 }
 
 
-
-int main(int argc,
+gboolean main(int argc,
   char** argv) {
 
   GtkApplication* app;
-  int status;
+  gboolean status;
   app = gtk_application_new("imperialslug.gtkproject.lpih", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
   g_signal_connect (app, "shutdown", G_CALLBACK(on_quit), NULL);

@@ -27,9 +27,9 @@
 #include "utility.h"
 
 // This function is used to add and remove the commands from the GUI based on the status of the checkboxes. 
-gboolean check_box_state(const gchar* command_string, GtkWidget* widget, gpointer data) {
+gboolean check_box_state(const gchar* command_string, GtkWidget* checkbox, gpointer data) {
 
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(widget));
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
   GtkTextBuffer* buffer = GTK_TEXT_BUFFER(data);
 
   GtkTextIter iter;
@@ -51,13 +51,13 @@ gboolean check_box_state(const gchar* command_string, GtkWidget* widget, gpointe
 }
 
 
-int init_css_provider() {
+gboolean init_css_provider() {
 
   GtkCssProvider* provider = gtk_css_provider_new();
 
-  const char* cssFilePathDecided;
-  const char* cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
-  const char* cssPathForAppInSrc = "../Resources/style.css";
+   gchar* cssFilePathDecided;
+   gchar* cssPathForAppInstalled = "/usr/share/LPIH/css/style.css";
+   gchar* cssPathForAppInSrc = "../Resources/style.css";
 
   FILE* cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
   FILE* cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
@@ -80,21 +80,20 @@ int init_css_provider() {
 
   if (provider != NULL) {
     g_print("The CSS provider has found the CSS file.  \n");
-    return 0;
+    return TRUE;
 
   } else {
     g_print("******ERROR: CSS provider failed to find the CSS file in function gtk_css_provider_load_from_path(). \n");
-    return 2;
+    return FALSE;
   }
-
 }
 
 // Function to get the graphics card vendor of the user.
-const char* getGraphicsCardVendor() {
-  return (const char* ) glGetString(GL_VENDOR);
+ char* getGraphicsCardVendor() {
+  return (char*)glGetString(GL_VENDOR);
 }
 
-int get_cpu_vendor(char* vendor) {
+gboolean get_cpu_vendor(gchar* vendor) {
   unsigned int eax, ebx, ecx, edx;
 
   // Call cpuid with input 0 to get vendor string
@@ -108,12 +107,12 @@ int get_cpu_vendor(char* vendor) {
   
   if (vendor != NULL) {
     g_print("CPU vendor loaded.\n");
-    return 0;
+    return TRUE;
   } 
   
   else {
   g_print("*********ERROR: Problem getting cpu vendor info.*****\n\n");
-  return 1;
+  return FALSE;
   }
   
 }

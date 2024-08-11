@@ -40,22 +40,22 @@ const gchar* DEBIAN_TLP = "  sudo apt install tlp; \n";
 const gchar* DEBIAN_VLC = "  sudo apt install vlc; \n";
 
 
- int debian_window_open = 0;
- int debian_tips_open = 0;
+ gboolean debian_window_open = FALSE;
+ gboolean debian_tips_open = FALSE;
  
   ////////////////////////////////////////////
  ///// INFORMATIONAL WINDOW: DEBIAN /////////
 ///////////////////////////////////////////
 
-int on_deb_tips_window_destroy() {
-  debian_tips_open = 0;
+gboolean on_deb_tips_window_destroy() {
+  debian_tips_open = FALSE;
   
-  if(debian_tips_open == 0){
-    g_print("debian_tips_open set to 0.\n");
-    return 0;
+  if(debian_tips_open == FALSE){
+    g_print("debian_tips_open set to FALSE.\n");
+    return TRUE;
   } else {
-            g_print("debian_tips_open is NULL.  Failed to set to 0.\n");
-            return 1;
+            g_print("debian_tips_open is NULL.  Failed to set to FALSE.\n");
+            return FALSE;
             }
 }
 
@@ -63,7 +63,7 @@ int on_deb_tips_window_destroy() {
 
  void debian_info_window() {
 
-  if (debian_tips_open != 1) {
+  if (debian_tips_open != TRUE) {
 
     GtkWidget* deb_info_window;
     GtkWidget* deb_info_box;
@@ -132,15 +132,17 @@ int on_deb_tips_window_destroy() {
 
   }
 
-  debian_tips_open = 1;
+  debian_tips_open = TRUE;
 
 }
 
+GtkWidget* deb_window; 
+
 void debian_window() {
 
-  if (debian_window_open != 1) {
+  if (debian_window_open != TRUE) {
 
-    GtkWidget* deb_window, *deb_box, *deb_gpu_check, *deb_steam_check, *deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check, *deb_info_button;
+    GtkWidget *deb_box, *deb_gpu_check, *deb_steam_check, *deb_game_check, *deb_flatpak_check, *deb_microcode_check, *deb_fonts_check, *deb_ufw_check, *deb_tlp_check, *deb_vlc_check, *deb_info_button;
 
 
     deb_window = gtk_window_new();
@@ -254,7 +256,7 @@ void debian_window() {
 
     ///////////////////////
     if (gtk_widget_is_visible(deb_window)) {
-      debian_window_open = 1;
+      debian_window_open = TRUE;
 
     } else {
       g_print("Debian LPIH window failed to open.");
@@ -316,6 +318,17 @@ gboolean deb_vlc_toggled(GtkWidget* widget, gpointer data) {
 ///// Do this when the main window is closed. ////////
 gboolean on_deb_window_destroy(void) {
   debian_window_open = FALSE;
-  return TRUE;
+  
+  if (gtk_widget_is_visible(deb_window)) {
+        g_print("Debian LPIH window failed to close.\n");
+         return FALSE;
+
+    } else {
+      
+      g_print("Debian LPIH window closed successfully.\n");
+      return TRUE;
+    }
+  
+
 }
 
