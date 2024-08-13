@@ -39,6 +39,8 @@ const gchar* DEBIAN_UFW = "  sudo apt install ufw; sudo ufw enable; \n";
 const gchar* DEBIAN_TLP = "  sudo apt install tlp; \n";
 const gchar* DEBIAN_VLC = "  sudo apt install vlc; \n";
 
+// const gchar* DEBIAN_CONTRIB_NONFREE = "sudo sh -c 'if test -f /etc/apt/sources.list; then echo "contrib non-free" >> /etc/apt/sources.list; fi'"
+
 
  gboolean debian_window_open = FALSE;
  gboolean debian_tips_open = FALSE;

@@ -34,10 +34,11 @@
 
  const gchar* debian_gpu_command;
  const gchar* debian_microcode_command;
+ 
 
   enum vendor_name { AMD = 1, Intel = 2, Nvidia = 3, Unknown = 4};
-  void* cpu_vendor_name = NULL;
-  void* gpu_vendor_name = NULL;
+  gpointer cpu_vendor_name = NULL;
+  gpointer gpu_vendor_name = NULL;
 
   
  // For keeping track of single-instance windows.
@@ -114,12 +115,15 @@
 if (strstr(gpu_vendor, "NVIDIA") != NULL) {
     *(enum vendor_name*)gpu_vendor_name = Nvidia;
     debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+    fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
 } else if (strstr(gpu_vendor, "AMD") != NULL) {
     *(enum vendor_name*)gpu_vendor_name = AMD;
     debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+    fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
 } else if (strstr(gpu_vendor, "Intel") != NULL) {
     *(enum vendor_name*)gpu_vendor_name = Intel;
     debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+    fedora_gpu_command = debian_gpu_command;
 } else {
     *(enum vendor_name*)gpu_vendor_name = Unknown;
 }

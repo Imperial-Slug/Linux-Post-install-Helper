@@ -44,7 +44,7 @@ const gchar* FEDORA_TLP = "  sudo dnf install tlp; \n";
 
 const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
- const gchar* fedora_gpu_command;
+ const gchar* fedora_gpu_command = "";
  gboolean fedora_window_open = FALSE;
  gboolean fedora_tips_open = FALSE;
  
