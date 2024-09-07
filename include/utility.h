@@ -16,6 +16,6 @@
  gboolean init_css_provider();
  gboolean check_box_state(const gchar * command_string, GtkWidget* widget, gpointer data);
  char * getGraphicsCardVendor(void);
-
+void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2);
 
 #endif // UTILITY_H

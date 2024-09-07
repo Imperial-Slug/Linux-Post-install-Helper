@@ -94,23 +94,84 @@ gboolean init_css_provider() {
 }
 
 // Function that uses inline assembly to get the vendor string of the CPU
+// The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
 gboolean get_cpu_vendor(gchar* vendor) {
     // Use inline assembly to execute the cpuid instruction
     __asm__ volatile (
         "cpuid" // Execute the cpuid instruction
-        : "=b"(((unsigned int*)vendor)[0]), // Output ebx directly into vendor[0-3]
-          "=d"(((unsigned int*)vendor)[1]), // Output edx directly into vendor[4-7]
-          "=c"(((unsigned int*)vendor)[2])  // Output ecx directly into vendor[8-11]
-        : "a"(0)                            // Input: Set eax to 0 to get vendor string
+        : "=b"(((unsigned int*)vendor)[0]), 
+          "=d"(((unsigned int*)vendor)[1]), 
+          "=c"(((unsigned int*)vendor)[2])  
+        : "a"(0)                            
     );
 
-    vendor[12] = '\0'; // Null-terminate the vendor string at the 13th position
-
+    vendor[13] = '\0'; 
     g_print("CPU vendor loaded.\n");
+    
+    if (vendor != NULL) {
     return TRUE;
+    }
+    else { return FALSE; }
 }
 
   
 
+void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2) {
 
+    GtkWidget* view;
+    GtkTextBuffer* buffer;
+    GtkWidget* scroll_info_window = gtk_scrolled_window_new();
+    
+    gtk_widget_set_size_request(scroll_info_window, 800, 700);
+    gtk_widget_set_vexpand(scroll_info_window, TRUE);
+    gtk_widget_set_hexpand(scroll_info_window, TRUE);  
+    
+    view = gtk_text_view_new();
+    gtk_widget_set_opacity(view, 0.9);
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
+    gtk_widget_add_css_class(view, view_css_label);
+    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+
+    GtkWidget* tab_label_view;
+    GtkTextBuffer* tab_buffer;
+
+    tab_label_view = gtk_text_view_new();
+    gtk_widget_add_css_class(tab_label_view, tab_css_label);
+    tab_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tab_label_view));
+    gtk_text_buffer_set_text(tab_buffer, tab_label, -1);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW(tab_label_view), FALSE);
+    gtk_widget_set_vexpand(tab_label_view, TRUE);
+    gtk_widget_set_hexpand(tab_label_view, TRUE); 
+
+
+    gchar *tab_text = NULL;
+    gsize length = 0;
+    GError *error = NULL;
+
+    if (g_file_get_contents(res_path1, &tab_text, &length, &error)) {
+    gtk_text_buffer_set_text(buffer, tab_text, -1);
+    g_free(tab_text); 
+      }
+    
+    else if (g_file_get_contents(res_path2, &tab_text, &length, &error)) {
+    
+    gtk_text_buffer_set_text(buffer, tab_text, -1);
+    g_free(tab_text); 
+    
+    }
+       else {
+            g_print("Failed to load info file: %s\n", error->message);
+            g_error_free(error);
+        }
+
+    gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW(view), FALSE);
+    gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
+    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
+    gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
+    
+        gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_info_window, tab_label_view);
+
+}
  

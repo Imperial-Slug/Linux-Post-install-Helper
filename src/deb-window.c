@@ -25,7 +25,7 @@
 #include "utility.h"
 #include "deb-window.h"
 
-const gchar* DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'tips' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
+const gchar* DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'info' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
 
 const gchar* DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
 
@@ -68,65 +68,29 @@ gboolean on_deb_tips_window_destroy() {
   if (debian_tips_open != TRUE) {
 
     GtkWidget* deb_info_window;
-    GtkWidget* deb_info_box;
+  //  GtkWidget* deb_info_box;
   
 
     deb_info_window = gtk_window_new();
     gtk_widget_add_css_class(deb_info_window, "deb_info_window");
-    gtk_window_set_title(GTK_WINDOW(deb_info_window), "Debian: tips");
+    gtk_window_set_title(GTK_WINDOW(deb_info_window), "Debian: info");
     gtk_window_set_resizable(GTK_WINDOW(deb_info_window), TRUE);
     gtk_window_set_default_size(GTK_WINDOW(deb_info_window), 800, 700);
 
-    GtkWidget* view;
-    GtkTextBuffer* buffer;
-
-    deb_info_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_window_set_child(GTK_WINDOW(deb_info_window), deb_info_box);
-
-    // Create a scrolled window and set the size
-    GtkWidget* scroll_info_window = gtk_scrolled_window_new();
-
-    gtk_widget_set_size_request(scroll_info_window, 800, 700);
-    gtk_widget_set_vexpand(scroll_info_window, TRUE);
-    gtk_widget_set_hexpand(scroll_info_window, TRUE);    
-
-    view = gtk_text_view_new();
-    gtk_widget_set_opacity(view, 0.9);
-    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
-    gtk_widget_add_css_class(view, "deb_info_view");
-    buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+    GtkWidget* deb_notebook;
+    deb_notebook = gtk_notebook_new();
     
-    // Load text file.
-    gchar*tips_spiel_debian = NULL;
-    gsize length = 0;
-    GError*error = NULL;
-
-    if (g_file_get_contents("../Resources/deb-text.txt", &tips_spiel_debian, &length, &error)) {
-    gtk_text_buffer_set_text(buffer, tips_spiel_debian, -1);
-    g_free(tips_spiel_debian); 
-      }
-    
-    else if (g_file_get_contents("/usr/share/LPIH/text_files/deb-text.txt", &tips_spiel_debian, &length, &error)) {
-    
-    gtk_text_buffer_set_text(buffer, tips_spiel_debian, -1);
-    g_free(tips_spiel_debian); 
-    
-    }
-       else {
-            g_print("Failed to load Debian tips file: %s\n", error->message);
-            g_error_free(error);
-        }
-
-    gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-    gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
-    gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
-    gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
-    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
-
-    gtk_box_append(GTK_BOX(deb_info_box), scroll_info_window);
+    create_notebook_tab(deb_notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
+    create_notebook_tab(deb_notebook, "deb_tab_view2", "tab2", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
 
     g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
+
+    
+    
+    gtk_window_set_child(GTK_WINDOW(deb_info_window), GTK_WIDGET(deb_notebook));
+    
+    
     gtk_widget_set_visible(deb_info_window, TRUE);
 
   } else {
@@ -233,7 +197,7 @@ gboolean debian_window() {
     gtk_box_append(GTK_BOX(deb_box), deb_info_box);
     // create info button for Debian window //
 
-    deb_info_button = gtk_button_new_with_label("Tips");
+    deb_info_button = gtk_button_new_with_label("Info");
     gtk_widget_add_css_class(view, "deb_info_button");
     gtk_widget_set_size_request(deb_info_button, 64, 64);
     gtk_widget_add_css_class(deb_info_button, "deb_info_button");
@@ -271,8 +235,6 @@ gboolean debian_window() {
      return FALSE;
     }
 }
-
-
 
 ////////// DEBIAN GPU DRIVERS CHECKBOX ///////////////
 gboolean deb_gpu_toggled(GtkWidget* widget, gpointer data) {

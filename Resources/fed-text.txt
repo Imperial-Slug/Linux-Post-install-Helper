@@ -1,6 +1,8 @@
    ======================================
       LINUX POST-INSTALL HELPER: FEDORA
    ======================================
+   
+   TO UNINSTALL the LPIH.rpm PACKAGE: sudo dnf remove LPIH
 
 This is a simple program geared towards helping new Fedora and Debian Linux GNOME users set up their systems following a fresh install. Eventually it will act as a singular, cohesive source of information that provides an auto-generated custom bash script unique to each user's unique use-case. It's currently not very impressive and in development, but it has the basic functionality of providing the user with the auto-generation of a series of Linux commands that will let them install specific packages for specific functionality if they are not sure where to start after installing their operating system.
 

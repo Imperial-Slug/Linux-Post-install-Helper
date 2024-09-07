@@ -107,9 +107,8 @@
   gtk_window_present (GTK_WINDOW (window));
 
     // Automatically establishing the user's GPU vendor on init of the program.       
-     char* gpu_vendor = getGraphicsCardVendor();
-
-   cpu_vendor_name = malloc(sizeof(enum vendor_name));
+  char* gpu_vendor = getGraphicsCardVendor();
+  cpu_vendor_name = malloc(sizeof(enum vendor_name));
 
 
 if (strstr(gpu_vendor, "NVIDIA") != NULL) {
@@ -122,7 +121,7 @@ if (strstr(gpu_vendor, "NVIDIA") != NULL) {
     fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
 } else if (strstr(gpu_vendor, "Intel") != NULL) {
 
-    debian_gpu_command = "  # Intel GPU drivers already installed. \n";
+    debian_gpu_command = "  # Intel GPU drivers should already be installed. \n";
     fedora_gpu_command = debian_gpu_command;
 } 
 

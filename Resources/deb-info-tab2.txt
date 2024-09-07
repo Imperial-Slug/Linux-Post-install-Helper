@@ -1,0 +1,23 @@
+______________________________________________________________________
+
+SOFTWARE MANAGEMENT IN LINUX VS OTHER OPERATING SYSTEMS
+
+Linux operating systems manage their software differently than other OSs like Windows and MacOS. Instead of using standalone executable files, installer-wizard prompts, bundled dependencies, and individual update mechanisms per application, Linux uses a "package manager" to access and manage software pulled from centralized repositories where software "packages" are stored and maintained. This includes the code for the GNU/Linux-based operating system itself as well as most of the applications used on it, depending on the distro and more so the user's individual choice.
+
+Standalone packages can still be downloaded from the internet for Linux. They will often be packaged in .tar.gz compressed "tar balls" which need to be decompressed and either compiled or, more commonly, have an executable in them run. If you do end up using a tar ball from the internet, make sure it is from a reputable source.
+
+THE "APT" PACKAGE MANAGER
+
+Debian has its own packaging type called ".deb". You will see these as .deb extension files, which are software packages you can install with the command:
+
+sudo dpkg -i deb_filename_here.deb
+
+If you find it troublesome to install .deb packages from the CLI (command line interface), feel free to install a GUI program like Synaptic to do so.
+
+______________________________________________________________________
+TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN
+
+Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: "You have held broken packages." This can be fixed much of the time by following up with the following 2 commands:
+
+sudo apt --fix-broken install
+sudo apt install name_of_package.deb

@@ -25,8 +25,7 @@
 #include "utility.h"
 #include "fed-window.h"
 
-const gchar* FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update; sudo dnf upgrade; \n";
-
+const gchar* FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
 
 const gchar* FEDORA_REP = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n";
 
@@ -61,7 +60,7 @@ const gchar* FEDORA_VLC = "  sudo dnf install vlc; \n";
 
 
     fed_info_window = gtk_window_new();
-    gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: tips");
+    gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: info");
     gtk_window_set_resizable(GTK_WINDOW(fed_info_window), TRUE);
     gtk_window_set_default_size(GTK_WINDOW(fed_info_window), 800, 700);
 
@@ -233,7 +232,7 @@ gboolean fedora_window() {
     
     // create info button for Fedora window //
 
-    fed_info_button = gtk_button_new_with_label("Tips");
+    fed_info_button = gtk_button_new_with_label("Info");
     gtk_widget_add_css_class(view, "fed_info_button");
     gtk_widget_set_size_request(fed_info_button, 64, 64);
     gtk_widget_add_css_class(fed_info_button, "fed_info_button");
