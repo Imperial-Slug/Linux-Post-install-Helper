@@ -28,24 +28,16 @@ cp lpih %{buildroot}/%{_bindir}/lpih
 cp style.css %{buildroot}/%{_datadir}/LPIH/css/style.css
 cp imperialslug.gtkproject.lpih.png %{buildroot}/%{_datadir}/icons/hicolor/512x512/apps/imperialslug.gtkproject.lpih.png
 cp imperialslug.gtkproject.lpih.desktop %{buildroot}/%{_datadir}/applications/imperialslug.gtkproject.lpih.desktop
-cp fed-info-tab1.txt %{buildroot}/%{_datadir}/LPIH/text_files/fed-info-tab1.txt
-cp fed-info-tab2.txt %{buildroot}/%{_datadir}/LPIH/text_files/fed-info-tab2.txt
-cp deb-info-tab1.txt %{buildroot}/%{_datadir}/LPIH/text_files/deb-info-tab1.txt
-cp deb-info-tab2.txt %{buildroot}/%{_datadir}/LPIH/text_files/deb-info-tab2.txt
-cp set_static_ip3.txt %{buildroot}/%{_datadir}/LPIH/text_files/set_static_ip3.txt
-
+cp fed-text.txt %{buildroot}/%{_datadir}/LPIH/text_files/fed-text.txt
+cp deb-text.txt %{buildroot}/%{_datadir}/LPIH/text_files/deb-text.txt
 
 %files
 %{_bindir}/lpih
 %{_datadir}/LPIH/css/style.css
 %{_datadir}/icons/hicolor/512x512/apps/imperialslug.gtkproject.lpih.png
 %{_datadir}/applications/imperialslug.gtkproject.lpih.desktop
-%{_datadir}/LPIH/text_files/fed-info-tab1.txt
-%{_datadir}/LPIH/text_files/fed-info-tab2.txt
-%{_datadir}/LPIH/text_files/deb-info-tab1.txt
-%{_datadir}/LPIH/text_files/deb-info-tab2.txt
-%{_datadir}/LPIH/text_files/set_static_ip3.txt
-
+%{_datadir}/LPIH/text_files/fed-text.txt
+%{_datadir}/LPIH/text_files/deb-text.txt
 
 %changelog
 * Fri Jun 7 2024 Sam
