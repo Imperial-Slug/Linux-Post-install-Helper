@@ -18,4 +18,6 @@
  char * getGraphicsCardVendor(void);
 void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2);
 
+GtkWidget * make_info_window(gchar * info_window_name, gchar * info_window_title, gchar * notebook_css_name, int distro, gboolean tips_open );
+
 #endif // UTILITY_H

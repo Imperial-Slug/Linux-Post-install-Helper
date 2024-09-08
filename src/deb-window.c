@@ -67,37 +67,18 @@ gboolean on_deb_tips_window_destroy() {
 
 void debian_info_window() {
 
-  if (debian_tips_open != TRUE) {
+  gchar * info_window_name; 
+info_window_name = "deb_info_window";
+gchar * info_window_title; 
+info_window_title = "Debian: info";
+gchar * notebook_css_name;
+notebook_css_name =  "deb_notebook";
 
-    GtkWidget * deb_info_window;
+GtkWidget * debian_info_window;
 
-    deb_info_window = gtk_window_new();
-    gtk_widget_add_css_class(deb_info_window, "deb_info_window");
-    gtk_window_set_title(GTK_WINDOW(deb_info_window), "Debian: info");
-    gtk_window_set_resizable(GTK_WINDOW(deb_info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(deb_info_window), 700, 700);
-    gtk_widget_set_vexpand(deb_info_window, TRUE);
-    gtk_widget_set_hexpand(deb_info_window, TRUE);
+debian_info_window = make_info_window(info_window_name, info_window_title, notebook_css_name, 2, debian_tips_open);
 
-    GtkWidget * deb_notebook;
-    deb_notebook = gtk_notebook_new();
-    gtk_widget_add_css_class(deb_notebook, "deb_notebook");
-
-    create_notebook_tab(deb_notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
-    create_notebook_tab(deb_notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
-    create_notebook_tab(deb_notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-
-    g_signal_connect(deb_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
-    gtk_window_set_child(GTK_WINDOW(deb_info_window), GTK_WIDGET(deb_notebook));
-
-    gtk_widget_set_visible(deb_info_window, TRUE);
-
-  } else {
-    g_print("debian_tips window is already open.");
-
-  }
-
-  debian_tips_open = TRUE;
+g_signal_connect(debian_info_window, "destroy", G_CALLBACK(on_deb_tips_window_destroy), NULL);
 
 }
 

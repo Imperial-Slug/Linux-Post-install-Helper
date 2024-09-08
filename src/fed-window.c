@@ -58,36 +58,18 @@ gboolean fedora_tips_open = FALSE;
 
 void fedora_info_window() {
 
-  if (fedora_tips_open != TRUE) {
+gchar * info_window_name; 
+info_window_name = "fed_info_window";
+gchar * info_window_title; 
+info_window_title = "Fedora: info";
+gchar * notebook_css_name;
+notebook_css_name =  "fed_notebook";
 
-    GtkWidget * fed_info_window;
+GtkWidget * fedora_info_window;
 
-    fed_info_window = gtk_window_new();
-    gtk_widget_add_css_class(fed_info_window, "fed_info_window");
-    gtk_window_set_title(GTK_WINDOW(fed_info_window), "Fedora: info");
-    gtk_window_set_resizable(GTK_WINDOW(fed_info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(fed_info_window), 700, 700);
-    gtk_widget_set_vexpand(fed_info_window, TRUE);
-    gtk_widget_set_hexpand(fed_info_window, TRUE);
+fedora_info_window = make_info_window(info_window_name, info_window_title, notebook_css_name, 2, fedora_tips_open);
 
-    GtkWidget * fed_notebook;
-    fed_notebook = gtk_notebook_new();
-    gtk_widget_add_css_class(fed_notebook, "fed_notebook");
-
-    create_notebook_tab(fed_notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
-    create_notebook_tab(fed_notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
-    create_notebook_tab(fed_notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-
-    g_signal_connect(fed_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
-    gtk_window_set_child(GTK_WINDOW(fed_info_window), GTK_WIDGET(fed_notebook));
-
-    gtk_widget_set_visible(fed_info_window, TRUE);
-
-  } else {
-    g_print("Error: Fedora Tips already open.");
-  }
-
-  fedora_tips_open = TRUE;
+g_signal_connect(fedora_info_window, "destroy", G_CALLBACK(on_fed_tips_window_destroy), NULL);
 
 }
 

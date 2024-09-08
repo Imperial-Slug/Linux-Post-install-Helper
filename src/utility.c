@@ -32,6 +32,8 @@
 
 #include "utility.h"
 
+#include "fed-window.h"
+
 // This function is used to add and remove the commands from the GUI based on the status of the checkboxes. 
 gboolean check_box_state(const gchar * command_string, GtkWidget * checkbox, gpointer data) {
 
@@ -172,5 +174,57 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
   gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
 
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_info_window, tab_label_view);
+
+}
+
+GtkWidget * make_info_window(gchar * info_window_name, gchar * info_window_title, gchar * notebook_css_name, int distro, gboolean tips_open ) {
+
+ if (tips_open != TRUE) {
+
+    GtkWidget * info_window;
+
+    info_window = gtk_window_new();
+    gtk_widget_add_css_class(info_window, info_window_name);
+    gtk_window_set_title(GTK_WINDOW(info_window), info_window_title);
+    gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
+    gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
+    gtk_widget_set_vexpand(info_window, TRUE);
+    gtk_widget_set_hexpand(info_window, TRUE);
+
+    GtkWidget * notebook;
+    notebook = gtk_notebook_new();
+    gtk_widget_add_css_class(notebook, notebook_css_name);
+
+    
+    if (distro == 1) {
+    create_notebook_tab(notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
+    create_notebook_tab(notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
+    create_notebook_tab(notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
+    
+    
+}
+else if (distro == 2) {
+ create_notebook_tab(notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
+    create_notebook_tab(notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
+    create_notebook_tab(notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
+
+} else {
+
+g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
+} 
+   
+gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
+    gtk_widget_set_visible(info_window, TRUE);
+      tips_open = TRUE;
+      g_print("Info window created.  \n");
+      
+      return info_window;
+
+  } else {
+    g_print("This info window is already open.");
+    return NULL;
+  }
+
+
 
 }
