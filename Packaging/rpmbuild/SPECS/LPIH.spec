@@ -1,6 +1,6 @@
 Name:		LPIH
-Version:	0.2
-Release:	0.2%{?dist}
+Version:	0.2.1
+Release:	0.2.1%{?dist}
 Summary:        Linux post-install Helper
 License:	GPL 3.0
 

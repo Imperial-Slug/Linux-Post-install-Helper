@@ -94,6 +94,7 @@ GtkWidget * fed_window;
 
 gboolean fedora_window() {
 
+
   if (fedora_window_open != TRUE) {
 
     GtkWidget * fed_box, * fed_gpu_check, * fed_steam_check, * fed_dnf_check, * fed_flatpak_check, * fed_repo_check, * fed_customization_check, * fed_codecs_check, * fed_tlp_check, * fed_vlc_check, * fed_info_button;
@@ -205,6 +206,7 @@ gboolean fedora_window() {
   } else {
     g_print("fedora_window_open is still set to TRUE.");
 
+    return FALSE;
   }
 
   if (gtk_widget_is_visible(fed_window)) {
