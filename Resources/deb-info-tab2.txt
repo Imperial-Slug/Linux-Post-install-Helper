@@ -21,3 +21,16 @@ Occasionally, when trying to install software with apt on Debian, you may encoun
 
 sudo apt --fix-broken install
 sudo apt install name_of_package.deb
+
+_________________________________________________________
+OPEN SOURCE SOFTWARE VS THIRD-PARTY PROPRIETARY SOFTWARE
+
+Debian is all about free, open sourced software (FOSS), so third-party software (like Steam) is kept in seperate repositories from the open sourced software. If you want to access software from the non-free repositories, you need to edit your sources.list file, which tells APT which software repositories to use.  You can do this by following these steps:
+
+Open your sources.list file in a terminal by entering this in the terminal:
+
+sudo nano /etc/apt/sources.list
+
+
+
+The RPM Fusion repos can be enabled using this application by checking the associated checkbox and pasting the resulting command.  Unless you are very serious about using only open source software, it is recommended to enable RPM Fusion repos so you have access to as much software as possible.
