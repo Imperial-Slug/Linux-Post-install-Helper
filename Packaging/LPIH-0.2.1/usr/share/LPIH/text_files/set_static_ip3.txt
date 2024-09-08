@@ -1,55 +1,3 @@
-   ======================================
-      LINUX POST-INSTALL HELPER: DEBIAN		
-   ======================================
-   
-   TO UNINSTALL LPIH.deb package: sudo apt remove lpih
-   
-This is a simple program geared towards helping new Debian and Fedora Linux GNOME users set up their systems following a fresh install. Eventually it will act as a singular, cohesive source of information that provides an auto-generated custom bash script unique to each user's unique use-case. It's currently not very impressive and in development, but it has the basic functionality of providing the user with the auto-generation of a series of Linux commands that will let them install specific packages for specific functionality if they are not sure where to start after installing their operating system.
-
-___________________________________________________
-HOW TO USE THIS PROGRAM
-
-Read through the series of checkboxes that come up after choosing your distro in the main menu window. Check them off if the described functionality is something you think you need on your system. For example, for those wishing to set up a gaming system that uses Steam, you may wish to check the "Steam" and "GPU drivers" checkboxes at a bare minimum.
-
-As you check off these boxes, you will see some commands appear in the black window in green text. This text is meant to be copied and pasted into your terminal. You will need to agree to each package manager yes/no prompt as it executes.
-
-Presently, you likely won't find this TIPS section overly helpful, as the focus so far has been on getting the core functionality of the application off the ground in a reasonably functional way.
-
-___________________________________________________
-INTRODUCTION TO DEBIAN LINUX
-
-Debian GNU/Linux is one of the oldest and most popular Linux distributions, released in 1993. It is known for its stability and reliability, which is why it is often used for servers and other critical systems and serves as the base of many other distros, like Ubuntu and Linux Mint: Debian Edition (LMDE).
-
-Debian, like other Linux distributions, has a package manager which handles the installation, updating, and removal of software packages on the computer. Debian's package manager is called "apt". In order to use some apt commands, the user must use the sudo command to elevate their privileges to those of a super-user. Example: sudo apt install nvidia-driver, where "nvidia-driver" is the package you are trying to install.
-
-There are some instructions for optional basic system configuration outlined here that you might find useful, as well as some introductions to things that are different from Windows and MacOS in Linux that you will want to be aware of.
-
-______________________________________________________________________
-
-SOFTWARE MANAGEMENT IN LINUX VS OTHER OPERATING SYSTEMS
-
-Linux operating systems manage their software differently than other OSs like Windows and MacOS. Instead of using standalone executable files, installer-wizard prompts, bundled dependencies, and individual update mechanisms per application, Linux uses a "package manager" to access and manage software pulled from centralized repositories where software "packages" are stored and maintained. This includes the code for the GNU/Linux-based operating system itself as well as most of the applications used on it, depending on the distro and more so the user's individual choice.
-
-Standalone packages can still be downloaded from the internet for Linux. They will often be packaged in .tar.gz compressed "tar balls" which need to be decompressed and either compiled or, more commonly, have an executable in them run. If you do end up using a tar ball from the internet, make sure it is from a reputable source.
-
-THE "APT" PACKAGE MANAGER
-
-Debian has its own packaging type called ".deb". You will see these as .deb extension files, which are software packages you can install with the command:
-
-sudo dpkg -i deb_filename_here.deb
-
-If you find it troublesome to install .deb packages from the CLI (command line interface), feel free to install a GUI program like Synaptic to do so.
-
-______________________________________________________________________
-TROUBLESHOOTING APT PACKAGE MANAGER ON DEBIAN
-
-Occasionally, when trying to install software with apt on Debian, you may encounter an error with the message: "You have held broken packages." This can be fixed much of the time by following up with the following 2 commands:
-
-sudo apt --fix-broken install
-sudo apt install name_of_package.deb
-
-
-
 ______________________________________________________________________
 SETTING A STATIC IP IN THE GNOME DESKTOP ENVIRONMENT THROUGH THE GUI
 
@@ -86,4 +34,3 @@ The output should contain the gateway address for your network after the words "
 8. Time to choose your DNS servers. You can pick whichever one you like. Cloudflare is popular with many since it offers security features like DDoS protection, SSL encryption, and a web application firewall. You can specify 2 addresses, in case one is down (separate them with a comma in the text field). To use Cloudflare as your DNS provider, you can use the addresses 1.1.1.1, 1.0.0.1. For added malware protection, substitute the last 1 in each address with a 2. OpenDNS is another popular provider that offers its own security features and malware protection, much like Cloudflare. To use OpenDNS, use 208.67.222.222, 208.67.220.220.
 
 9. Save your new static IP address configuration with the Apply button. Go to your network settings and switch the connection off, then on again. Try to connect to a webpage. If it works, you are good to go. If not, you may have made an error in your IP configuration. If you need to go back to an automatically assigned IP you can undo the static IP settings by simply switching your connection from Manual to Automatic (DHCP) again in the settings.
-

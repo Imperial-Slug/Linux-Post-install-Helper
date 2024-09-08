@@ -1,0 +1,25 @@
+   ======================================
+      LINUX POST-INSTALL HELPER:   FEDORA
+   ======================================
+   
+   TO UNINSTALL the LPIH.rpm PACKAGE: sudo dnf remove LPIH
+
+This is a simple program geared towards helping new Fedora and Debian Linux GNOME users set up their systems following a fresh install. Eventually it will act as a singular, cohesive source of information that provides an auto-generated custom bash script unique to each user's unique use-case. It's currently not very impressive and in development, but it has the basic functionality of providing the user with the auto-generation of a series of Linux commands that will let them install specific packages for specific functionality if they are not sure where to start after installing their operating system.
+
+___________________________________________________
+HOW TO USE THIS PROGRAM
+
+Read through the series of checkboxes that come up after choosing your distro in the main menu window. Check them off if the described functionality is something you think you need on your system. For example, for those wishing to set up a gaming computer that uses Steam, you may wish to check the "Steam" and "GPU drivers" checkboxes at a bare minimum.
+
+As you check off these boxes, you will see some commands appear in the black window in green text. This text is meant to be copied and pasted into your terminal. You will need to agree to each package manager yes/no prompt as it executes.
+
+Presently, you likely won't find this TIPS section overly helpful, as the focus so far has been on getting the core functionality of the application off the ground in a reasonably functional way.
+
+___________________________________________________
+INTRODUCTION TO FEDORA LINUX
+
+Fedora Linux is a distribution backed by Red Hat, a subsidiary of IBM. It has been around since 2003 and is known for using the latest versions of software in its repositories. Fedora uses the dnf package manager, as opposed to the apt package manager in Debian. On Linux, most (if not all) of the software used is pulled from a repository specific to that Linux distro, rather than being downloaded through a web browser or as a standalone package like on Windows and macOS. Because of this, you will need to update your local repos on your computer before installing any software or updating. This ensures that you are pulling in the latest software available in your distro's repositories. On Fedora, use the command sudo dnf update to update your system's repos, so you can install the latest packages. You can also do it through the software center application. Update your Fedora system at least once a week, if not more frequently.
+
+Fedora, like other Linux distributions, has a package manager, which handles the installation, updating, and removal of software packages on the computer. Fedora's package manager is called dnf. In order to use some dnf commands, the user must use the sudo command to elevate their privileges to those of a super-user, for example: sudo dnf install mesa-vulkan-drivers, where mesa-vulkan-drivers is the package you are trying to install.
+
+There are some instructions for optional basic system configuration outlined here that you might find useful, as well as some introductions to things that are different from Windows and macOS in Linux that you will want to be aware of.

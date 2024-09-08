@@ -1,161 +1,186 @@
-.deb_info_view {
-
-  background-image: linear-gradient(180deg, black, #335CC5, navy);
-  color: yellow;
-  font-family: "Cantarell";
-
+.deb_tab_view1 {
+     background-image: linear-gradient(180deg, black, #5333C4, navy);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.fed_info_view {
-
-  background-image: linear-gradient(180deg, teal, navy);
-  color: yellow;
-  font-family: "Cantarell";
-
+ .deb_tab_view2 {
+     background-image: linear-gradient(180deg, black, #5333C4, darkblue);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.deb_info_button {
-
-  background: #FE5000;
-  color: BLACK;
-  font-family: "Cantarell";
-  margin: 12px;
-  border: 3px solid black;
-  border-radius: 25px;
-
+ .deb_tab_view3 {
+     background-image: linear-gradient(180deg, black, #5333C4, darkslategray);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.fed_info_button {
-
-  background: #FE5000;
-  color: BLACK;
-  font-family: "Cantarell";
-  margin: 12px;
-  border: 3px solid black;
-  border-radius: 25px;
-
+ .fed_tab_view1 {
+     background-image: linear-gradient(180deg, black, #5333C4, navy);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-
-button {
-  background: magenta;
-  color: chartreuse;
-  border: 2px solid black;
+ .fed_tab_view2 {
+     background-image: linear-gradient(180deg, black, #5333C4, darkblue);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-/* This one also applies to the Tips buttons*/
-button:hover {
-  background: blue;
-  color: YELLOW;
+ .fed_tab_view3 {
+     background-image: linear-gradient(180deg, black, #5333C4, darkslategray);
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.deb {
-  background: #980001;
-  color: YELLOW;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid black;
+ .deb_info_main {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.deb:hover {
-  background: blue;
-  color: yellow;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid yellow;
+ .deb_info2 {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.fed {
-  background: teal;
-  color: YELLOW;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid black;
+ .deb_info3 {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.fed:hover {
-  background: blue;
-  color: yellow;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid yellow;
+ .fed_info_main {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.quit {
-  background: #312e39;
-  color: YELLOW;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid black;
+ .fed_info2 {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-.quit:hover {
-  background: blue;
-  color: YELLOW;
-  font-family: "Cantarell";
-  font-size: 24px;
-  border: 3px solid yellow;
+ .fed_info3 {
+     background: darkslategray;
+     color: yellow;
+     font-family: "Cantarell";
 }
-
-
-.deb_window {
-  background-image: linear-gradient(180deg, black, #335CC5, navy);
-  font-family: "Cantarell";
-  border: 1px solid black;
+ .deb_notebook tab {
+     background: darkslategray;
+     color: white;
+     font-family: "Cantarell";
+     border-radius: 8px;
+     padding: 8px;
 }
-
-.fed_window {
-  background-image: linear-gradient(180deg, navy, teal);
-  color: yellow;
-  font-family: "Cantarell";
+ .fed_notebook tab {
+     background: darkslategray;
+     color: white;
+     font-family: "Cantarell";
+     border-radius: 8px;
+     padding: 8px;
 }
-
-.main_window {
-  background-image: linear-gradient(180deg, #000000, #1D1045);
-  font-family: "Cantarell";
-  border: 3px solid black;
+ .deb_info_button {
+     background: #FE5000;
+     color: BLACK;
+     font-family: "Cantarell";
+     margin: 12px;
+     border: 3px solid black;
+     border-radius: 25px;
 }
-
-
-checkbutton {
-  color: #FFFF00;
+ .fed_info_button {
+     background: #FE5000;
+     color: BLACK;
+     font-family: "Cantarell";
+     margin: 12px;
+     border: 3px solid black;
+     border-radius: 25px;
 }
-
-.deb_view {
-  background: black;
-  color: #1FFF0F;
-  font-family: "monospace";
-
+ button {
+     background: magenta;
+     color: chartreuse;
+     border: 2px solid black;
 }
-
-.fed_view {
-
-  background: black;
-  color: #1FFF0F;
-  font-family: "monospace";
-
+/* Applies to all buttons */
+ button:hover {
+     background: blue;
+     color: YELLOW;
 }
-
-.deb_info_window {
-  font-family: "Cantarell";
-
+/* Opening menu Debian button */
+ .deb {
+     background: #980001;
+     color: YELLOW;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid black;
+     border-radius: 16px;
 }
-
-.deb_copy_button {
-  background: #301934;
-  color: white;
-  font-family: "Cantarell";
-  margin: 12px;
-  border: 3px solid black;
-  border-radius: 25px;
+/* Opening menu Debian button on-hover */
+ .deb:hover {
+     background: blue;
+     color: yellow;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid yellow;
+     border-radius: 16px;
 }
-
-.fed_copy_button {
-  background: #301934;
-  color: white;
-  font-family: "Cantarell";
-  margin: 12px;
-  border: 3px solid black;
-  border-radius: 25px;
+/*Opening menu Fedora button */
+ .fed {
+     background: teal;
+     color: YELLOW;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid black;
+     border-radius: 16px;
 }
-
+/*Opening menu Fedora button on-hover*/
+ .fed:hover {
+     background: blue;
+     color: yellow;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid yellow;
+     border-radius: 16px;
+}
+/*Opening menu Quit button */
+ .quit {
+     background: #312e39;
+     color: YELLOW;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid black;
+     border-radius: 16px;
+}
+/*Opening menu Quit button on-hover */
+ .quit:hover {
+     background: blue;
+     color: YELLOW;
+     font-family: "Cantarell";
+     font-size: 30px;
+     border: 3px solid yellow;
+     border-radius: 16px;
+}
+ .deb_window {
+     background-image: linear-gradient(180deg, black, #335CC5, navy);
+     font-family: "Cantarell";
+     border: 1px solid black;
+}
+ .fed_window {
+     background-image: linear-gradient(180deg, navy, teal);
+     color: yellow;
+     font-family: "Cantarell";
+}
+ .main_window {
+     background-image: linear-gradient(180deg, #000000, #1D1045);
+     font-family: "Cantarell";
+     border: 3px solid black;
+}
+ checkbutton {
+     color: #FFFF00;
+}
+ .deb_view {
+     background: black;
+     color: #1FFF0F;
+     font-family: "monospace";
+}
+ .fed_view {
+     background: black;
+     color: #1FFF0F;
+     font-family: "monospace";
+}
+ .deb_info_window {
+     font-family: "Cantarell";
+}
+ 

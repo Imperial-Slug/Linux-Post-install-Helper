@@ -1,0 +1,20 @@
+______________________________________________________________________
+SOFTWARE MANAGEMENT IN LINUX VS OTHER OPERATING SYSTEMS
+
+Linux operating systems manage their software differently than other OSs like Windows and macOS. Instead of using standalone executable files, installer-wizard prompts, bundled dependencies, and individual update mechanisms per application, Linux uses a "package manager" to access and manage software pulled from centralized repositories where software "packages" are stored and maintained. This includes the code for the GNU/Linux-based operating system itself as well as most of the applications used on it, depending on the distro and more so the user's individual choice.
+
+Standalone packages can still be downloaded from the internet for Linux. They will often be packaged in .tar.gz compressed "tar balls" which need to be decompressed and either compiled or have an executable in them run.
+
+However, Fedora has its own packaging type called RPM. You will see these as .rpm extension files, which are software packages you can double-click on to open with Fedora's software center GUI. Alternatively, you can open a terminal and run the following command for a .rpm file with the name rpm_file_name_here.rpm:
+
+sudo dnf install rpm_file_name_here.rpm
+
+_________________________________________________________
+OPEN SOURCE SOFTWARE VS THIRD-PARTY PROPRIETARY SOFTWARE
+
+Fedora is all about free, open sourced software (FOSS), so third-party software (like Steam) is kept in seperate repositories from the open sourced software.  Although you have access to some third party software from Fedora's own repos, there is more available in the RPM Fusion repos. 
+
+The RPM Fusion repos can be enabled using this application by checking the associated checkbox and pasting the resulting command.  Unless you are very serious about using only open source software, it is recommended to enable RPM Fusion repos so you have access to as much software as possible.
+
+
+
