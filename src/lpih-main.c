@@ -52,7 +52,7 @@ gchar * css_label_debian = "deb_window";
 gchar * window_title_debian = "Linux Post-install Helper: Debian";
 gchar * view_css_class_debian = "deb_view";
 gchar * info_button_css_class_debian = "deb_info_button";
-gchar * info_window_css_class = "fed_info_button";
+gchar * info_window_css_class_debian = "fed_info_button";
 
 gchar * checkbox1_title_debian = "  Do you plan on using Steam?";
 gchar * checkbox2_title_debian = "  Do you want to use flatpak applications?";
@@ -61,8 +61,9 @@ gchar * checkbox4_title_debian = "  Install tlp for laptop power management?";
 gchar * checkbox5_title_debian = "  Install vlc to play unsupported media formats?";
 gchar * checkbox6_title_debian = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
 gchar * checkbox7_title_debian = "  Install your processor's latest microcode?";
-gchar * checkbox8_title_debian = "  Do you plan on playing video games?";
+gchar * checkbox8_title_debian = "  Do you want to install gamemode?";
 gchar * checkbox9_title_debian = "  Do you want to install ufw? (uncomplicated firewall)";
+gchar * checkbox10_title_debian = "  Do you want to install git and github command-line tools?";
 
 enum Distro distro_debian = DEBIAN;
 
@@ -84,6 +85,7 @@ gchar * checkbox6_title = "  Install restricted fonts compatibility for Microsof
 gchar * checkbox7_title = "  Install gnome-tweaks and gnome-extensions for desktop customization?";
 gchar * checkbox8_title = "  Enable RPM-fusion repositories for wider range of software?";
 gchar * checkbox9_title = "  Optimize the dnf package manager for faster downloads?";
+gchar * checkbox10_title = "  Do you want to install git and github command-line tools?";
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 // Creates the initial window where the distro is selected.
@@ -134,6 +136,7 @@ void activate(GtkApplication * app) {
     debian_window_data -> checkbox7_title = checkbox7_title_debian;
     debian_window_data -> checkbox8_title = checkbox8_title_debian;
     debian_window_data -> checkbox9_title = checkbox9_title_debian;
+    debian_window_data -> checkbox10_title = checkbox10_title_debian;
 
     fedora_window_data -> distro_id = distro;
     fedora_window_data -> css_label = css_label;
@@ -151,6 +154,7 @@ void activate(GtkApplication * app) {
     fedora_window_data -> checkbox7_title = checkbox7_title;
     fedora_window_data -> checkbox8_title = checkbox8_title;
     fedora_window_data -> checkbox9_title = checkbox9_title;
+    fedora_window_data -> checkbox10_title = checkbox10_title;
 
     grid = gtk_grid_new();
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height

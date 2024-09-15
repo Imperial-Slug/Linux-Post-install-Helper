@@ -55,6 +55,8 @@ const gchar * DEBIAN_VLC;
  const gchar* FEDORA_TLP;
  extern
  const gchar* FEDORA_VLC;
+ extern
+ const gchar * FEDORA_GH;
  
  
  typedef struct {
@@ -75,6 +77,7 @@ gchar * checkbox6_title;
 gchar * checkbox7_title;
 gchar * checkbox8_title;
 gchar * checkbox9_title;
+gchar * checkbox10_title;
 
 
 GtkWidget * checkbox1;
@@ -86,7 +89,7 @@ GtkWidget * checkbox6;
 GtkWidget * checkbox7;
 GtkWidget * checkbox8;
 GtkWidget * checkbox9;  
-
+GtkWidget * checkbox10;  
 } LpihWindowData;
 
 extern gboolean debian_window_open;

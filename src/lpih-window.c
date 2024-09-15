@@ -34,9 +34,9 @@
 
 // DEBIAN CONSTANTS // // // //
 
-const gchar * DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
+const gchar * DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers \n";
 
-const gchar * DEBIAN_GAMING = "  sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
+const gchar * DEBIAN_GAMING = "  sudo apt install gamemode;  \n";
 
 const gchar * DEBIAN_FLATPAK = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
 
@@ -45,6 +45,7 @@ const gchar * DEBIAN_MULTIMEDIA = "  sudo apt install libavcodec-extra;  \n  sud
 const gchar * DEBIAN_UFW = "  sudo apt install ufw; sudo ufw enable; \n";
 const gchar * DEBIAN_TLP = "  sudo apt install tlp; \n";
 const gchar * DEBIAN_VLC = "  sudo apt install vlc; \n";
+const gchar * DEBIAN_GH = "  sudo apt install git gh; \n";
 
 const gchar * debian_microcode_command;
 const gchar * debian_gpu_command;
@@ -68,6 +69,8 @@ const gchar * FEDORA_MULTIMEDIA = "  sudo dnf install ffmpeg --allowerasing &&  
 const gchar * FEDORA_TLP = "  sudo dnf install tlp; \n";
 
 const gchar * FEDORA_VLC = "  sudo dnf install vlc; \n";
+
+const gchar * FEDORA_GH = "  sudo dnf install git gh; \n";
 
 const gchar * fedora_gpu_command;
 
@@ -96,6 +99,7 @@ typedef struct {
   const gchar * checkbox7_text;
   const gchar * checkbox8_text;
   const gchar * checkbox9_text;
+  const gchar * checkbox10_text;
 }
 TextData;
 
@@ -268,6 +272,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
     GtkWidget * checkbox7;
     GtkWidget * checkbox8;
     GtkWidget * checkbox9;
+    GtkWidget * checkbox10;
     GtkWidget * info_button;
 
     const gchar * checkbox1_text;
@@ -279,6 +284,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
     const gchar * checkbox7_text;
     const gchar * checkbox8_text;
     const gchar * checkbox9_text;
+    const gchar * checkbox10_text;
 
   
 
@@ -314,6 +320,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
       checkbox7_text = debian_microcode_command;
       checkbox8_text = DEBIAN_GAMING;
       checkbox9_text = DEBIAN_UFW;
+      checkbox10_text = DEBIAN_GH;
 
     } else if (lpih_window_data -> distro_id == FEDORA) {
       g_print("Chose Fedora window.  Initializing...");
@@ -338,6 +345,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
       checkbox7_text = FEDORA_CUST;
       checkbox8_text = FEDORA_REP;
       checkbox9_text = FEDORA_DNF;
+      checkbox10_text = FEDORA_GH;
 
     } else {
       g_print("\nCOULDN'T INITIALIZE CHECKBOXES\n");
@@ -350,6 +358,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
       checkbox7_text = NULL;
       checkbox8_text = NULL;
       checkbox9_text = NULL;
+      checkbox10_text = NULL;
       //info_window_data = g_malloc(sizeof(InfoWindowData));
       // g_free(info_window_data);
 
@@ -470,6 +479,13 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
     CheckboxData * checkbox9_data = g_malloc(sizeof(CheckboxData));
     checkbox9_data -> shared_buffer = buffer;
     checkbox9_data -> associated_command = checkbox9_text;
+    
+     checkbox10 = gtk_check_button_new_with_label(lpih_window_data -> checkbox10_title);
+    gtk_box_append(GTK_BOX(checkbox_box), checkbox10);
+    CheckboxData * checkbox10_data = g_malloc(sizeof(CheckboxData));
+    checkbox10_data -> shared_buffer = buffer;
+    checkbox10_data -> associated_command = checkbox10_text;
+
 
     lpih_window_data -> checkbox1 = checkbox1;
     lpih_window_data -> checkbox2 = checkbox2;
@@ -480,6 +496,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
     lpih_window_data -> checkbox7 = checkbox7;
     lpih_window_data -> checkbox8 = checkbox8;
     lpih_window_data -> checkbox9 = checkbox9;
+    lpih_window_data -> checkbox10 = checkbox10;
 
     // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
     g_signal_connect(info_button, "clicked", G_CALLBACK(make_info_window), info_window_data);
@@ -493,6 +510,7 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
     g_signal_connect(G_OBJECT(checkbox7), "toggled", G_CALLBACK(check_box_state), checkbox7_data);
     g_signal_connect(G_OBJECT(checkbox8), "toggled", G_CALLBACK(check_box_state), checkbox8_data);
     g_signal_connect(G_OBJECT(checkbox9), "toggled", G_CALLBACK(check_box_state), checkbox9_data);
+    g_signal_connect(G_OBJECT(checkbox10), "toggled", G_CALLBACK(check_box_state), checkbox10_data);
 
     g_signal_connect(window, "destroy", G_CALLBACK(on_lpih_window_destroy), lpih_window_data);
 
