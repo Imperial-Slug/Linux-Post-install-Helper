@@ -30,32 +30,43 @@
 
 #include <GL/gl.h>
 
+#include "lpih-window.h"
+
+#include "lpih-main.h"
+
 #include "utility.h"
 
-#include "fed-window.h"
 
-// This function is used to add and remove the commands from the GUI based on the status of the checkboxes. 
-gboolean check_box_state(const gchar * command_string, GtkWidget * checkbox, gpointer data) {
 
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(data);
+gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
+
+//Instantiate checkbox data struct and its members.
+CheckboxData *checkbox_data = (CheckboxData *)data;
+const gchar * command_string = checkbox_data->associated_command;
+g_print("Trying to print %s\n", command_string);
+GtkTextBuffer * buffer = GTK_TEXT_BUFFER(checkbox_data->shared_buffer);
+
+gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
+
 
   GtkTextIter iter;
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, command_string, -1);
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, command_string, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
     const gchar * search_string = command_string;
 
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
 
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
+    if (gtk_text_iter_forward_search( &start, search_string, 0, &match_start, &match_end, NULL)) {
+      gtk_text_buffer_delete(buffer, &match_start, &match_end);
     }
   }
+   // g_free(checkbox_data);
   return TRUE;
+
 }
 
 gboolean init_css_provider() {
@@ -96,13 +107,13 @@ gboolean init_css_provider() {
 }
 
 // Function to get the graphics card vendor of the user.
-char * getGraphicsCardVendor() {
-  return (char * ) glGetString(GL_VENDOR);
+const char* getGraphicsCardVendor() {
+  return (const char *)glGetString(GL_VENDOR);
 }
 
 // Function that uses inline assembly to get the vendor string of the CPU
 // The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
-gboolean get_cpu_vendor(gchar * vendor) {
+void get_cpu_vendor(gchar * vendor) {
   // Use inline assembly to execute the cpuid instruction
   __asm__ volatile(
     "cpuid" // Execute the cpuid instruction
@@ -113,118 +124,8 @@ gboolean get_cpu_vendor(gchar * vendor) {
 
   vendor[13] = '\0';
 
-  if (vendor != NULL) {
-    g_print("CPU vendor loaded.\n");
-    return TRUE;
-  } else {
-    g_print("CPU vendor loaded.\n");
-    return FALSE;
-  }
-}
-
-void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * tab_label, gchar * tab_css_label, gchar * res_path1, gchar * res_path2) {
-
-  GtkWidget * view;
-  GtkTextBuffer * buffer;
-  GtkWidget * scroll_info_window = gtk_scrolled_window_new();
-
-  gtk_widget_set_size_request(scroll_info_window, 300, 200);
-  gtk_widget_set_vexpand(scroll_info_window, TRUE);
-  gtk_widget_set_hexpand(scroll_info_window, TRUE);
-
-  view = gtk_text_view_new();
-  gtk_widget_set_opacity(view, 0.9);
-  gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
-  gtk_widget_add_css_class(view, view_css_label);
-  buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-
-  GtkWidget * tab_label_view;
-  GtkTextBuffer * tab_buffer;
-
-  tab_label_view = gtk_text_view_new();
-  gtk_widget_add_css_class(tab_label_view, tab_css_label);
-  tab_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tab_label_view));
-  gtk_text_buffer_set_text(tab_buffer, tab_label, -1);
-  gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(tab_label_view), FALSE);
-  gtk_widget_set_vexpand(tab_label_view, TRUE);
-  gtk_widget_set_hexpand(tab_label_view, TRUE);
-
-  gchar * tab_text = NULL;
-  gsize length = 0;
-  GError * error = NULL;
-
-  if (g_file_get_contents(res_path1, & tab_text, & length, & error)) {
-    gtk_text_buffer_set_text(buffer, tab_text, -1);
-    g_free(tab_text);
-  } else if (g_file_get_contents(res_path2, & tab_text, & length, & error)) {
-
-    gtk_text_buffer_set_text(buffer, tab_text, -1);
-    g_free(tab_text);
-
-  } else {
-    g_print("Failed to load info file: %s\n", error -> message);
-    g_error_free(error);
-  }
-
-  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-  gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
-  gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
-  gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
-  gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
-  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
-
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_info_window, tab_label_view);
 
 }
 
-GtkWidget * make_info_window(gchar * info_window_name, gchar * info_window_title, gchar * notebook_css_name, int distro, gboolean tips_open ) {
-
- if (tips_open != TRUE) {
-
-    GtkWidget * info_window;
-
-    info_window = gtk_window_new();
-    gtk_widget_add_css_class(info_window, info_window_name);
-    gtk_window_set_title(GTK_WINDOW(info_window), info_window_title);
-    gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
-    gtk_widget_set_vexpand(info_window, TRUE);
-    gtk_widget_set_hexpand(info_window, TRUE);
-
-    GtkWidget * notebook;
-    notebook = gtk_notebook_new();
-    gtk_widget_add_css_class(notebook, notebook_css_name);
-
-    
-    if (distro == 1) {
-    create_notebook_tab(notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
-    create_notebook_tab(notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
-    create_notebook_tab(notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-    
-    
-}
-else if (distro == 2) {
- create_notebook_tab(notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
-    create_notebook_tab(notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
-    create_notebook_tab(notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-
-} else {
-
-g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
-} 
-   
-gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
-    gtk_widget_set_visible(info_window, TRUE);
-      tips_open = TRUE;
-      g_print("Info window created.  \n");
-      
-      return info_window;
-
-  } else {
-    g_print("This info window is already open.");
-    return NULL;
-  }
 
 
-
-}

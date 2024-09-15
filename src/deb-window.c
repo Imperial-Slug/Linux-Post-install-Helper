@@ -44,6 +44,10 @@ const gchar * DEBIAN_UFW = "  sudo apt install ufw; sudo ufw enable; \n";
 const gchar * DEBIAN_TLP = "  sudo apt install tlp; \n";
 const gchar * DEBIAN_VLC = "  sudo apt install vlc; \n";
 
+const gchar * debian_gpu_command;
+const gchar * debian_microcode_command;
+
+
 // const gchar* DEBIAN_CONTRIB_NONFREE = "sudo sh -c 'if test -f /etc/apt/sources.list; then echo "contrib non-free" >> /etc/apt/sources.list; fi'"
 
 gboolean debian_window_open = FALSE;
@@ -123,18 +127,23 @@ gboolean debian_window() {
     // CHECKBOXES //////////
     deb_steam_check = gtk_check_button_new_with_label("  Do you plan on using Steam?");
     gtk_box_append(GTK_BOX(checkbox_box), deb_steam_check);
+    
+    deb_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
+    gtk_box_append(GTK_BOX(checkbox_box), deb_flatpak_check);
 
     deb_game_check = gtk_check_button_new_with_label("  Do you plan on playing video games?");
     gtk_box_append(GTK_BOX(checkbox_box), deb_game_check);
 
-    deb_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
-    gtk_box_append(GTK_BOX(checkbox_box), deb_flatpak_check);
+    
 
     deb_microcode_check = gtk_check_button_new_with_label("  Install your processor's latest microcode?");
     gtk_box_append(GTK_BOX(checkbox_box), deb_microcode_check);
 
     deb_fonts_check = gtk_check_button_new_with_label("  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?");
     gtk_box_append(GTK_BOX(checkbox_box), deb_fonts_check);
+
+    deb_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
+    gtk_box_append(GTK_BOX(checkbox_box), deb_gpu_check);
 
     deb_ufw_check = gtk_check_button_new_with_label("  Do you want to install ufw? (uncomplicated firewall)");
     gtk_box_append(GTK_BOX(checkbox_box), deb_ufw_check);
@@ -144,9 +153,6 @@ gboolean debian_window() {
 
     deb_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
     gtk_box_append(GTK_BOX(checkbox_box), deb_vlc_check);
-
-    deb_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
-    gtk_box_append(GTK_BOX(checkbox_box), deb_gpu_check);
 
     gtk_box_append(GTK_BOX(deb_box), checkbox_scroll_window);
 

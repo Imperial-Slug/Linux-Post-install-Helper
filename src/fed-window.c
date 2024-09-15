@@ -128,17 +128,23 @@ gboolean fedora_window() {
 
     // FEDORA CHECKBOXES //////////
 
-    fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
-    gtk_box_append(GTK_BOX(checkbox_box), fed_dnf_check);
-
-    fed_repo_check = gtk_check_button_new_with_label("  Enable RPM-fusion repositories for wider range of software?");
-    gtk_box_append(GTK_BOX(checkbox_box), fed_repo_check);
-
     fed_steam_check = gtk_check_button_new_with_label("  Do you plan on using Steam?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_steam_check);
 
     fed_flatpak_check = gtk_check_button_new_with_label("  Do you want to use flatpak applications?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_flatpak_check);
+    
+    fed_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
+    gtk_box_append(GTK_BOX(checkbox_box), fed_gpu_check);
+    
+    fed_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
+    gtk_box_append(GTK_BOX(checkbox_box), fed_tlp_check);
+
+    fed_dnf_check = gtk_check_button_new_with_label("  Optimize the dnf package manager for faster downloads?");
+    gtk_box_append(GTK_BOX(checkbox_box), fed_dnf_check);
+
+    fed_repo_check = gtk_check_button_new_with_label("  Enable RPM-fusion repositories for wider range of software?");
+    gtk_box_append(GTK_BOX(checkbox_box), fed_repo_check);
 
     fed_customization_check = gtk_check_button_new_with_label("  Install gnome-tweaks and gnome-extensions for desktop customization?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_customization_check);
@@ -146,14 +152,11 @@ gboolean fedora_window() {
     fed_codecs_check = gtk_check_button_new_with_label("  Do you want to install multimedia codecs for unsupported media formats?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_codecs_check);
 
-    fed_tlp_check = gtk_check_button_new_with_label("  Install tlp for laptop power management?");
-    gtk_box_append(GTK_BOX(checkbox_box), fed_tlp_check);
-
+    
     fed_vlc_check = gtk_check_button_new_with_label("  Install vlc to play unsupported media formats?");
     gtk_box_append(GTK_BOX(checkbox_box), fed_vlc_check);
 
-    fed_gpu_check = gtk_check_button_new_with_label("  Install applicable GPU drivers?");
-    gtk_box_append(GTK_BOX(checkbox_box), fed_gpu_check);
+    
 
     gtk_box_append(GTK_BOX(fed_box), checkbox_scroll_window);
 
