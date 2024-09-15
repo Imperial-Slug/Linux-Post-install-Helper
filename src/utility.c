@@ -37,34 +37,32 @@
 #include "utility.h"
 
 
-
 gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
 
-//Instantiate checkbox data struct and its members.
-CheckboxData *checkbox_data = (CheckboxData *)data;
-const gchar * command_string = checkbox_data->associated_command;
-g_print("Trying to print %s\n", command_string);
-GtkTextBuffer * buffer = GTK_TEXT_BUFFER(checkbox_data->shared_buffer);
+  //Instantiate checkbox data struct and its members.
+  CheckboxData * checkbox_data = (CheckboxData * ) data;
+  const gchar * command_string = checkbox_data -> associated_command;
+  g_print("Trying to print %s\n", command_string);
+  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(checkbox_data -> shared_buffer);
 
-gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
-
+  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
 
   GtkTextIter iter;
   if (state) {
-    gtk_text_buffer_get_end_iter(buffer, &iter);
-    gtk_text_buffer_insert(buffer, &iter, command_string, -1);
+    gtk_text_buffer_get_end_iter(buffer, & iter);
+    gtk_text_buffer_insert(buffer, & iter, command_string, -1);
   } else {
     GtkTextIter start, end, match_start, match_end;
     const gchar * search_string = command_string;
 
-    gtk_text_buffer_get_start_iter(buffer, &start);
-    gtk_text_buffer_get_end_iter(buffer, &end);
+    gtk_text_buffer_get_start_iter(buffer, & start);
+    gtk_text_buffer_get_end_iter(buffer, & end);
 
-    if (gtk_text_iter_forward_search( &start, search_string, 0, &match_start, &match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, &match_start, &match_end);
+    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
+      gtk_text_buffer_delete(buffer, & match_start, & match_end);
     }
   }
-   // g_free(checkbox_data);
+
   return TRUE;
 
 }
@@ -107,8 +105,8 @@ gboolean init_css_provider() {
 }
 
 // Function to get the graphics card vendor of the user.
-const char* getGraphicsCardVendor() {
-  return (const char *)glGetString(GL_VENDOR);
+const char * getGraphicsCardVendor() {
+  return (const char * ) glGetString(GL_VENDOR);
 }
 
 // Function that uses inline assembly to get the vendor string of the CPU
@@ -124,8 +122,6 @@ void get_cpu_vendor(gchar * vendor) {
 
   vendor[13] = '\0';
 
-
 }
-
 
 

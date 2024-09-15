@@ -32,11 +32,11 @@
 
 #include "lpih-window.h"
 
- // DEBIAN CONSTANTS // // // //
+// DEBIAN CONSTANTS // // // //
 
 const gchar * DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; \n";
 
-const gchar * DEBIAN_GAMING = "  sudo apt install nvidia-driver-libs:i386 mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
+const gchar * DEBIAN_GAMING = "  sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers gamemode;  \n";
 
 const gchar * DEBIAN_FLATPAK = "  sudo apt install flatpak gnome-software-plugin-flatpak; \n  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo; \n";
 
@@ -46,16 +46,12 @@ const gchar * DEBIAN_UFW = "  sudo apt install ufw; sudo ufw enable; \n";
 const gchar * DEBIAN_TLP = "  sudo apt install tlp; \n";
 const gchar * DEBIAN_VLC = "  sudo apt install vlc; \n";
 
-const gchar *debian_microcode_command;
-const gchar *debian_gpu_command;
-
-
+const gchar * debian_microcode_command;
+const gchar * debian_gpu_command;
 
 // const gchar* DEBIAN_CONTRIB_NONFREE = "sudo sh -c 'if test -f /etc/apt/sources.list; then echo "contrib non-free" >> /etc/apt/sources.list; fi'"
 
-
 // FEDORA CONSTANTS // // //
-
 
 const gchar * FEDORA_REP = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n";
 
@@ -81,121 +77,117 @@ gboolean fedora_info_open = FALSE;
 
 typedef struct {
 
-  enum Distro distro_id; 
+  enum Distro distro_id;
   gchar * info_window_name;
   gchar * info_window_title;
-  gchar * notebook_css_name; 
+  gchar * notebook_css_name;
   gboolean info_open_flag;
 
- } InfoWindowData;
-
-
+}
+InfoWindowData;
 
 typedef struct {
-const gchar * checkbox1_text;
-const gchar * checkbox2_text;
-const gchar * checkbox3_text;
-const gchar * checkbox4_text;
-const gchar * checkbox5_text;
-const gchar * checkbox6_text;
-const gchar * checkbox7_text;
-const gchar * checkbox8_text;
-const gchar * checkbox9_text;
-} TextData;
+  const gchar * checkbox1_text;
+  const gchar * checkbox2_text;
+  const gchar * checkbox3_text;
+  const gchar * checkbox4_text;
+  const gchar * checkbox5_text;
+  const gchar * checkbox6_text;
+  const gchar * checkbox7_text;
+  const gchar * checkbox8_text;
+  const gchar * checkbox9_text;
+}
+TextData;
 
 ////////////////////////////////////////////
 ///// INFORMATIONAL WINDOW:  /////////
 ///////////////////////////////////////////
 
-gboolean on_info_window_destroy(GtkWidget *widget, gpointer data) {
-  if(widget != NULL){g_print("info_window NOT NULL.\n");}
-  InfoWindowData * info_window_data = (InfoWindowData * )data;
+gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
+  if (widget != NULL) {
   
-  info_window_data->info_open_flag = FALSE;
+  InfoWindowData * info_window_data = (InfoWindowData * ) data;
 
-  if (info_window_data->info_open_flag == FALSE) {
-    g_print("info_open_flag for %s set to FALSE.\n", info_window_data->info_window_name);
-   // g_free(info_window_data);
+  info_window_data -> info_open_flag = FALSE;
+
+  if (info_window_data -> info_open_flag == FALSE) {
+    g_print("info_open_flag for %s set to FALSE.\n", info_window_data -> info_window_name);
+
     return TRUE;
   } else {
-    g_print("%s info_open_flag: Failed to set to FALSE.\n", info_window_data->info_window_name);
+    g_print("%s info_open_flag: Failed to set to FALSE.\n", info_window_data -> info_window_name);
     return FALSE;
   }
-
+} else { g_print("on_info_window_destroy: Widget is NULL.\n"); 
+    return FALSE;
+    }
 }
 
-  ///////////////////////////////////////////
- ///////// INFORMATIONAL WINDOW:  //////////
+///////////////////////////////////////////
+///////// INFORMATIONAL WINDOW:  //////////
 ///////////////////////////////////////////
 
-void make_info_window(GtkWidget *widget, gpointer data) {
-if(widget != NULL){g_print("info_button NOT NULL.\n");}
-InfoWindowData *info_window_data = (InfoWindowData *)data;
+void make_info_window(GtkWidget * widget, gpointer data) {
+  if (widget != NULL) {
+  
+  InfoWindowData * info_window_data = (InfoWindowData * ) data;
 
- if (info_window_data->info_open_flag != TRUE) {
-g_print("Line 132 Creating info window...\n");
+  if (info_window_data -> info_open_flag != TRUE) {
+
+    g_print("Line 132 Creating info window...\n");
     GtkWidget * info_window;
 
     info_window = gtk_window_new();
-    if(info_window != NULL){g_print("info_window created \n");} else {g_print("Info window creation failed!\n");}
-    g_print("line 137 -------------------- \n");
-    // PROBLEMS HERE
-    g_print("line 143 info_window_name is: %s",     info_window_data->info_window_name);
-    g_print("**************************************");
-   
-   
-    gtk_widget_add_css_class(info_window, info_window_data->info_window_name);
-    
-                                                                                                          g_print("line 140 \n");
-    gtk_window_set_title(GTK_WINDOW(info_window), info_window_data->info_window_title);
-                                                                                                        g_print("line 142 \n");
+    if (info_window != NULL) {
+      g_print("info_window created \n");
+    } else {
+      g_print("Info window creation failed!\n");
+    }
+
+    gtk_widget_add_css_class(info_window, info_window_data -> info_window_name);
+    gtk_window_set_title(GTK_WINDOW(info_window), info_window_data -> info_window_title);
     gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
-                                                                                                           g_print("line 144 \n");
     gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
-                                                                                                           g_print("line 146 \n");
     gtk_widget_set_vexpand(info_window, TRUE);
-                                                                                                   g_print("line 148 \n");
     gtk_widget_set_hexpand(info_window, TRUE);
-    //
-    
-    g_print("line 160 Start creating notebook.\n");
+
     GtkWidget * notebook;
     notebook = gtk_notebook_new();
-    if(notebook != NULL){g_print("Notebook created. \n");} else {g_print("Notebook is NULL!");}
+    if (notebook != NULL) {
+      g_print("Notebook created. \n");
+    } else {
+      g_print("Notebook is NULL!");
+    }
 
-    gtk_widget_add_css_class(notebook, info_window_data->notebook_css_name);
+    gtk_widget_add_css_class(notebook, info_window_data -> notebook_css_name);
 
-    if (info_window_data->distro_id == DEBIAN) {
-    g_print("Creating debian notebook\n");
-    create_notebook_tab(notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
-    create_notebook_tab(notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
-    create_notebook_tab(notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-        g_print("Finished creating Debian notebook.\n");
-    
-}
-else if (info_window_data->distro_id == FEDORA) {
- create_notebook_tab(notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
-    create_notebook_tab(notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
-    create_notebook_tab(notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-        g_print("Finished creating Fedora notebook.\n");
-} else {
+    if (info_window_data -> distro_id == DEBIAN) {
+      g_print("Creating debian notebook\n");
+      create_notebook_tab(notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
+      create_notebook_tab(notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
+      create_notebook_tab(notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
+      g_print("Finished creating Debian notebook.\n");
 
-g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
-} 
-   
-gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
-g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
+    } else if (info_window_data -> distro_id == FEDORA) {
+      create_notebook_tab(notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
+      create_notebook_tab(notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
+      create_notebook_tab(notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
+      g_print("Finished creating Fedora notebook.\n");
+    } else {
+      g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
+    }
+
+    gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
+    g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
     gtk_widget_set_visible(info_window, TRUE);
-      info_window_data->info_open_flag = TRUE;
-      g_print("Info window created!  \n");
-      
-
+    info_window_data -> info_open_flag = TRUE;
+    g_print("Info window created!  \n");
 
   } else {
-    g_print("This info window is already open.");
+    g_print("This info window is already open.\n");
 
   }
-
+} else { g_print("make_info_window: info_button caller widget is NULL.\n");}
 }
 
 void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * tab_label, gchar * tab_css_label, gchar * res_path1, gchar * res_path2) {
@@ -254,121 +246,118 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
 }
 
 // Declare info_window struct member values.
-     gchar * info_window_name_debian = "deb_info_window";
-     gchar * info_window_title_debian = "LPIH: Debian Info";
-     gchar * notebook_css_debian = "deb_notebook";
-
-     enum Distro info_distro_debian = DEBIAN;
-
-     gchar * info_window_name = "fed_info_window";
-     gchar * info_window_title = "LPIH: Fedora Info";
-     gchar * notebook_css = "fed_notebook";
-     enum Distro info_distro_fedora = FEDORA;     
-     
 
 void lpih_window(GtkWidget * widget, gpointer window_data) {
 
-if(widget != NULL){g_print("Button clicked.\n");}
+  if (widget != NULL) {
+    g_print("info_button clicked.  Executing lpih_window.\n");
+  }
 
-LpihWindowData *lpih_window_data = (LpihWindowData *)window_data;
+  LpihWindowData * lpih_window_data = (LpihWindowData * ) window_data;
 
+  if (lpih_window_data -> window_open_flag != TRUE) {
 
-  if (lpih_window_data->window_open_flag != TRUE) {
+    GtkWidget * window;
+    GtkWidget * box;
+    GtkWidget * checkbox1;
+    GtkWidget * checkbox2;
+    GtkWidget * checkbox3;
+    GtkWidget * checkbox4;
+    GtkWidget * checkbox5;
+    GtkWidget * checkbox6;
+    GtkWidget * checkbox7;
+    GtkWidget * checkbox8;
+    GtkWidget * checkbox9;
+    GtkWidget * info_button;
+
+    const gchar * checkbox1_text;
+    const gchar * checkbox2_text;
+    const gchar * checkbox3_text;
+    const gchar * checkbox4_text;
+    const gchar * checkbox5_text;
+    const gchar * checkbox6_text;
+    const gchar * checkbox7_text;
+    const gchar * checkbox8_text;
+    const gchar * checkbox9_text;
+
   
-      GtkWidget * window;
-      GtkWidget * box; 
-      GtkWidget * checkbox1;
-      GtkWidget * checkbox2;
-      GtkWidget * checkbox3;
-      GtkWidget * checkbox4;
-      GtkWidget * checkbox5;
-      GtkWidget * checkbox6;
-      GtkWidget * checkbox7;
-      GtkWidget * checkbox8;
-      GtkWidget * checkbox9;
-      GtkWidget * info_button;
+
+  
+
+    InfoWindowData * info_window_data;
+
+    info_window_data = g_malloc(sizeof(InfoWindowData));
+    if (info_window_data != NULL) {
+      g_print("info_window_data memory initalized. \n");
+    } else { g_print("info_window_data failed to initialize.");}
+
+    if (lpih_window_data -> distro_id == DEBIAN) {
+      g_print("Chose Debian window.\n");
+
+      gchar * info_window_name_debian = "deb_info_window";
+      gchar * info_window_title_debian = "LPIH: Debian Info";
+      gchar * notebook_css_debian = "deb_notebook";
+      enum Distro info_distro_debian = DEBIAN;
       
-      const gchar * checkbox1_text;
-      const gchar * checkbox2_text;
-      const gchar * checkbox3_text;
-      const gchar * checkbox4_text;
-      const gchar * checkbox5_text;
-      const gchar * checkbox6_text;
-      const gchar * checkbox7_text;
-      const gchar * checkbox8_text;
-      const gchar * checkbox9_text;
+      info_window_data -> info_window_name = info_window_name_debian;
+      info_window_data -> info_window_title = info_window_title_debian;
+      info_window_data -> notebook_css_name = notebook_css_debian;
+      info_window_data -> distro_id = info_distro_debian;
+      info_window_data -> info_open_flag = debian_info_open;
 
-      InfoWindowData * info_window_data;
+      checkbox1_text = DEBIAN_STEAM;
+      checkbox2_text = DEBIAN_FLATPAK;
+      checkbox3_text = debian_gpu_command;
+      checkbox4_text = DEBIAN_TLP;
+      checkbox5_text = DEBIAN_VLC;
+      checkbox6_text = DEBIAN_MULTIMEDIA;
+      checkbox7_text = debian_microcode_command;
+      checkbox8_text = DEBIAN_GAMING;
+      checkbox9_text = DEBIAN_UFW;
 
-     info_window_data = g_malloc(sizeof(InfoWindowData));
-     if(info_window_data != NULL){g_print("info_window_data memory initalized. \n");}
-     
-    if (lpih_window_data->distro_id == DEBIAN){
-     g_print("Chose Debian window.\n");
+    } else if (lpih_window_data -> distro_id == FEDORA) {
+      g_print("Chose Fedora window.  Initializing...");
 
+      gchar * info_window_name = "fed_info_window";
+      gchar * info_window_title = "LPIH: Fedora Info";
+      gchar * notebook_css = "fed_notebook";
+      enum Distro info_distro_fedora = FEDORA;
+      
+      info_window_data -> info_window_name = info_window_name;
+      info_window_data -> info_window_title = info_window_title;
+      info_window_data -> notebook_css_name = notebook_css;
+      info_window_data -> distro_id = info_distro_fedora;
+      info_window_data -> info_open_flag = fedora_info_open;
 
-info_window_data->info_window_name = info_window_name_debian;
-g_print("line 314: info_window_data->info_window_name = %s \n", info_window_data->info_window_name );
-info_window_data->info_window_title = info_window_title_debian;
-g_print("line 314: info_window_data->info_window_title = %s \n", info_window_data->info_window_title );
-info_window_data->notebook_css_name = notebook_css_debian;
-g_print("line 314: info_window_data->notebook_css_name = %s \n", info_window_data->notebook_css_name );
-info_window_data->distro_id = info_distro_debian;
-g_print("line 314: info_window_data->distro_id = %d \n", info_window_data->distro_id );
-info_window_data->info_open_flag = debian_info_open;
-g_print("line 307: info_window_data initialized.\n");
-
-checkbox1_text = DEBIAN_STEAM;
-checkbox2_text = DEBIAN_FLATPAK;
-checkbox3_text = debian_gpu_command;
-checkbox4_text = DEBIAN_TLP;
-checkbox5_text = DEBIAN_VLC;
-checkbox6_text = DEBIAN_MULTIMEDIA;
-checkbox7_text = debian_microcode_command;
-checkbox8_text = DEBIAN_GAMING;
-checkbox9_text = DEBIAN_UFW;
-
-    
-    } else if (lpih_window_data->distro_id == FEDORA) {
-     g_print("Chose Fedora window.  Initializing...");
-     
-
-  
-info_window_data->info_window_name = info_window_name;
-info_window_data->info_window_title = info_window_title;
-info_window_data->notebook_css_name = notebook_css;
-info_window_data->distro_id = info_distro_fedora;
-info_window_data->info_open_flag = fedora_info_open;
-     
-checkbox1_text = FEDORA_STEAM;
-checkbox2_text = FEDORA_FLATPAK;
-checkbox3_text = fedora_gpu_command;
-checkbox4_text = FEDORA_TLP;
-checkbox5_text = FEDORA_VLC;
-checkbox6_text = FEDORA_MULTIMEDIA;
-checkbox7_text = FEDORA_CUST;
-checkbox8_text = FEDORA_REP;
-checkbox9_text = FEDORA_DNF;
+      checkbox1_text = FEDORA_STEAM;
+      checkbox2_text = FEDORA_FLATPAK;
+      checkbox3_text = fedora_gpu_command;
+      checkbox4_text = FEDORA_TLP;
+      checkbox5_text = FEDORA_VLC;
+      checkbox6_text = FEDORA_MULTIMEDIA;
+      checkbox7_text = FEDORA_CUST;
+      checkbox8_text = FEDORA_REP;
+      checkbox9_text = FEDORA_DNF;
 
     } else {
-          g_print("\nCOULDN'T INITIALIZE CHECKBOXES\n");
-    checkbox1_text = NULL;
-checkbox2_text = NULL;
-checkbox3_text = NULL;
-checkbox4_text = NULL;
-checkbox5_text = NULL;
-checkbox6_text = NULL;
-checkbox7_text = NULL;
-checkbox8_text = NULL;
-checkbox9_text = NULL;
-                //info_window_data = g_malloc(sizeof(InfoWindowData));
-               // g_free(info_window_data);
-              
+      g_print("\nCOULDN'T INITIALIZE CHECKBOXES\n");
+      checkbox1_text = NULL;
+      checkbox2_text = NULL;
+      checkbox3_text = NULL;
+      checkbox4_text = NULL;
+      checkbox5_text = NULL;
+      checkbox6_text = NULL;
+      checkbox7_text = NULL;
+      checkbox8_text = NULL;
+      checkbox9_text = NULL;
+      //info_window_data = g_malloc(sizeof(InfoWindowData));
+      // g_free(info_window_data);
+
     }
-      
+
     window = gtk_window_new();
-    gtk_widget_add_css_class(window, lpih_window_data->css_label);
-    gtk_window_set_title(GTK_WINDOW(window), lpih_window_data->window_title);
+    gtk_widget_add_css_class(window, lpih_window_data -> css_label);
+    gtk_window_set_title(GTK_WINDOW(window), lpih_window_data -> window_title);
     gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
     gtk_window_set_default_size(GTK_WINDOW(window), 700, 700);
     gtk_widget_set_can_focus(GTK_WIDGET(window), TRUE);
@@ -377,7 +366,6 @@ checkbox9_text = NULL;
 
     GtkWidget * view;
     GtkTextBuffer * buffer;
-
 
     GtkWidget * checkbox_scroll_window = gtk_scrolled_window_new();
     gtk_widget_set_size_request(checkbox_scroll_window, 300, 200);
@@ -389,14 +377,13 @@ checkbox9_text = NULL;
     gtk_window_set_child(GTK_WINDOW(window), box);
     gtk_widget_set_can_focus(GTK_WIDGET(box), TRUE);
 
-
     // Create a box to contain the checkboxes
     GtkWidget * checkbox_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
     // Add the box to the scrolled window
     gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(checkbox_scroll_window), checkbox_box);
-// TODO: add these to an array to append them to the window/box in the future.
-  
+    // TODO: add these to an array to append them to the window/box in the future.
+
     gtk_box_append(GTK_BOX(box), checkbox_scroll_window);
 
     // Create main scrolled window and set the size
@@ -409,9 +396,9 @@ checkbox9_text = NULL;
 
     view = gtk_text_view_new();
     gtk_widget_set_opacity(view, 0.9);
-    gtk_widget_add_css_class(view, lpih_window_data->view_css_class);
+    gtk_widget_add_css_class(view, lpih_window_data -> view_css_class);
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_text_buffer_set_text(buffer, lpih_window_data->opener, -1);
+    gtk_text_buffer_set_text(buffer, lpih_window_data -> opener, -1);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
 
@@ -421,87 +408,81 @@ checkbox9_text = NULL;
     // Create separate box to hold button to solve sizing issues //////
     GtkWidget * info_button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_append(GTK_BOX(box), info_button_box);
-    
+
     // Create info button for the window //
 
     info_button = gtk_button_new_with_label("Info");
     gtk_widget_set_size_request(info_button, 64, 64);
-    gtk_widget_add_css_class(info_button, lpih_window_data->info_button_css_class);
+    gtk_widget_add_css_class(info_button, lpih_window_data -> info_button_css_class);
     gtk_box_append(GTK_BOX(info_button_box), info_button);
 
-  // CHECKBOXES //////////
-    checkbox1 = gtk_check_button_new_with_label(lpih_window_data->checkbox1_title);
+    // CHECKBOXES //////////
+    checkbox1 = gtk_check_button_new_with_label(lpih_window_data -> checkbox1_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox1);
-    CheckboxData *checkbox1_data = g_malloc(sizeof(CheckboxData));
-    checkbox1_data->shared_buffer = buffer;
-    checkbox1_data->associated_command = checkbox1_text;
+    CheckboxData * checkbox1_data = g_malloc(sizeof(CheckboxData));
+    checkbox1_data -> shared_buffer = buffer;
+    checkbox1_data -> associated_command = checkbox1_text;
 
-    checkbox2 = gtk_check_button_new_with_label(lpih_window_data->checkbox2_title);
+    checkbox2 = gtk_check_button_new_with_label(lpih_window_data -> checkbox2_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox2);
-    CheckboxData *checkbox2_data = g_malloc(sizeof(CheckboxData));
-    checkbox2_data->shared_buffer = buffer;
-    checkbox2_data->associated_command = checkbox2_text;
+    CheckboxData * checkbox2_data = g_malloc(sizeof(CheckboxData));
+    checkbox2_data -> shared_buffer = buffer;
+    checkbox2_data -> associated_command = checkbox2_text;
 
-
-    checkbox3 = gtk_check_button_new_with_label(lpih_window_data->checkbox3_title);
+    checkbox3 = gtk_check_button_new_with_label(lpih_window_data -> checkbox3_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox3);
-    CheckboxData *checkbox3_data = g_malloc(sizeof(CheckboxData));
-    checkbox3_data->shared_buffer = buffer;
-    checkbox3_data->associated_command = checkbox3_text;
+    CheckboxData * checkbox3_data = g_malloc(sizeof(CheckboxData));
+    checkbox3_data -> shared_buffer = buffer;
+    checkbox3_data -> associated_command = checkbox3_text;
 
-    checkbox4 = gtk_check_button_new_with_label(lpih_window_data->checkbox4_title);
+    checkbox4 = gtk_check_button_new_with_label(lpih_window_data -> checkbox4_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox4);
-    CheckboxData *checkbox4_data = g_malloc(sizeof(CheckboxData));
-    checkbox4_data->shared_buffer = buffer;
-    checkbox4_data->associated_command = checkbox4_text;
+    CheckboxData * checkbox4_data = g_malloc(sizeof(CheckboxData));
+    checkbox4_data -> shared_buffer = buffer;
+    checkbox4_data -> associated_command = checkbox4_text;
 
-
-    checkbox5 = gtk_check_button_new_with_label(lpih_window_data->checkbox5_title);
+    checkbox5 = gtk_check_button_new_with_label(lpih_window_data -> checkbox5_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox5);
-    CheckboxData *checkbox5_data = g_malloc(sizeof(CheckboxData));
-    checkbox5_data->shared_buffer = buffer;
-    checkbox5_data->associated_command = checkbox5_text;
+    CheckboxData * checkbox5_data = g_malloc(sizeof(CheckboxData));
+    checkbox5_data -> shared_buffer = buffer;
+    checkbox5_data -> associated_command = checkbox5_text;
 
-
-    checkbox6 = gtk_check_button_new_with_label(lpih_window_data->checkbox6_title);
+    checkbox6 = gtk_check_button_new_with_label(lpih_window_data -> checkbox6_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox6);
-    CheckboxData *checkbox6_data = g_malloc(sizeof(CheckboxData));
-    checkbox6_data->shared_buffer = buffer;
-    checkbox6_data->associated_command = checkbox6_text;
+    CheckboxData * checkbox6_data = g_malloc(sizeof(CheckboxData));
+    checkbox6_data -> shared_buffer = buffer;
+    checkbox6_data -> associated_command = checkbox6_text;
 
-    checkbox7 = gtk_check_button_new_with_label(lpih_window_data->checkbox7_title);
+    checkbox7 = gtk_check_button_new_with_label(lpih_window_data -> checkbox7_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox7);
-    CheckboxData *checkbox7_data = g_malloc(sizeof(CheckboxData));
-    checkbox7_data->shared_buffer = buffer;
-    checkbox7_data->associated_command = checkbox7_text;
+    CheckboxData * checkbox7_data = g_malloc(sizeof(CheckboxData));
+    checkbox7_data -> shared_buffer = buffer;
+    checkbox7_data -> associated_command = checkbox7_text;
 
-    checkbox8 = gtk_check_button_new_with_label(lpih_window_data->checkbox8_title);
+    checkbox8 = gtk_check_button_new_with_label(lpih_window_data -> checkbox8_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox8);
-    CheckboxData *checkbox8_data = g_malloc(sizeof(CheckboxData));
-    checkbox8_data->shared_buffer = buffer;
-    checkbox8_data->associated_command = checkbox8_text;
+    CheckboxData * checkbox8_data = g_malloc(sizeof(CheckboxData));
+    checkbox8_data -> shared_buffer = buffer;
+    checkbox8_data -> associated_command = checkbox8_text;
 
-    checkbox9 = gtk_check_button_new_with_label(lpih_window_data->checkbox9_title);
+    checkbox9 = gtk_check_button_new_with_label(lpih_window_data -> checkbox9_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox9);
-    CheckboxData *checkbox9_data = g_malloc(sizeof(CheckboxData));
-    checkbox9_data->shared_buffer = buffer;
-    checkbox9_data->associated_command = checkbox9_text;
-    
- lpih_window_data->checkbox1 = checkbox1;
-lpih_window_data->checkbox2 = checkbox2;
- lpih_window_data->checkbox3 =checkbox3;
- lpih_window_data->checkbox4 =checkbox4;
-lpih_window_data->checkbox5 = checkbox5;
-lpih_window_data->checkbox6 = checkbox6;
-lpih_window_data->checkbox7 = checkbox7;
-lpih_window_data->checkbox8 = checkbox8;
-lpih_window_data->checkbox9 = checkbox9;  
+    CheckboxData * checkbox9_data = g_malloc(sizeof(CheckboxData));
+    checkbox9_data -> shared_buffer = buffer;
+    checkbox9_data -> associated_command = checkbox9_text;
 
+    lpih_window_data -> checkbox1 = checkbox1;
+    lpih_window_data -> checkbox2 = checkbox2;
+    lpih_window_data -> checkbox3 = checkbox3;
+    lpih_window_data -> checkbox4 = checkbox4;
+    lpih_window_data -> checkbox5 = checkbox5;
+    lpih_window_data -> checkbox6 = checkbox6;
+    lpih_window_data -> checkbox7 = checkbox7;
+    lpih_window_data -> checkbox8 = checkbox8;
+    lpih_window_data -> checkbox9 = checkbox9;
 
-
-     // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
+    // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
     g_signal_connect(info_button, "clicked", G_CALLBACK(make_info_window), info_window_data);
-
 
     g_signal_connect(G_OBJECT(checkbox1), "toggled", G_CALLBACK(check_box_state), checkbox1_data);
     g_signal_connect(G_OBJECT(checkbox2), "toggled", G_CALLBACK(check_box_state), checkbox2_data);
@@ -512,23 +493,20 @@ lpih_window_data->checkbox9 = checkbox9;
     g_signal_connect(G_OBJECT(checkbox7), "toggled", G_CALLBACK(check_box_state), checkbox7_data);
     g_signal_connect(G_OBJECT(checkbox8), "toggled", G_CALLBACK(check_box_state), checkbox8_data);
     g_signal_connect(G_OBJECT(checkbox9), "toggled", G_CALLBACK(check_box_state), checkbox9_data);
-  
+
     g_signal_connect(window, "destroy", G_CALLBACK(on_lpih_window_destroy), lpih_window_data);
 
     gtk_window_present(GTK_WINDOW(window));
-lpih_window_data->window_open_flag = TRUE;
+    lpih_window_data -> window_open_flag = TRUE;
 
   } //else {  g_free(lpih_window_data); }
-  
 
 }
 
-
-
 ///// Do this when the main window is closed. ////////
 gboolean on_lpih_window_destroy(GtkWidget * window, gpointer data) {
-  LpihWindowData * window_data = (LpihWindowData *)data;
-  window_data->window_open_flag = FALSE;
+  LpihWindowData * window_data = (LpihWindowData * ) data;
+  window_data -> window_open_flag = FALSE;
 
   if (gtk_widget_is_visible(window)) {
     g_print("LPIH window failed to close.\n");

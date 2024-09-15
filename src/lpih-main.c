@@ -41,8 +41,6 @@
 gboolean debian_window_open = FALSE;
 gboolean fedora_window_open = FALSE;
 
-
-
 gpointer cpu_vendor_name = NULL;
 
 const gchar * DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'info' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
@@ -50,45 +48,42 @@ const gchar * DEBIAN_OPENER = "  # Check the boxes according to your needs and r
 gboolean lpih_instance_running = FALSE;
 const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
 //
-        gchar * css_label_debian = "deb_window";
-        gchar * window_title_debian = "Linux Post-install Helper: Debian";
-        gchar * view_css_class_debian = "deb_view";
-        gchar * info_button_css_class_debian = "deb_info_button";
-        gchar * info_window_css_class = "fed_info_button";
-        
-        gchar * checkbox1_title_debian = "  Do you plan on using Steam?";
-        gchar * checkbox2_title_debian = "  Do you want to use flatpak applications?";
-        gchar * checkbox3_title_debian = "  Install applicable GPU drivers?";
-        gchar * checkbox4_title_debian = "  Install tlp for laptop power management?";
-        gchar * checkbox5_title_debian = "  Install vlc to play unsupported media formats?";
-        gchar * checkbox6_title_debian = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
-        gchar * checkbox7_title_debian = "  Install your processor's latest microcode?";
-        gchar * checkbox8_title_debian = "  Do you plan on playing video games?";
-        gchar * checkbox9_title_debian = "  Do you want to install ufw? (uncomplicated firewall)";
-        
-        enum Distro distro_debian = DEBIAN; 
-       
-      
-        // Initialize fedora_window_data
+gchar * css_label_debian = "deb_window";
+gchar * window_title_debian = "Linux Post-install Helper: Debian";
+gchar * view_css_class_debian = "deb_view";
+gchar * info_button_css_class_debian = "deb_info_button";
+gchar * info_window_css_class = "fed_info_button";
 
-        gchar * css_label = "fed_window";
-        gchar * window_title = "Linux Post-install Helper: Fedora";
-        gchar * view_css_class = "fed_view";
-        gchar * info_button_css_class = "fed_info_button";
+gchar * checkbox1_title_debian = "  Do you plan on using Steam?";
+gchar * checkbox2_title_debian = "  Do you want to use flatpak applications?";
+gchar * checkbox3_title_debian = "  Install applicable GPU drivers?";
+gchar * checkbox4_title_debian = "  Install tlp for laptop power management?";
+gchar * checkbox5_title_debian = "  Install vlc to play unsupported media formats?";
+gchar * checkbox6_title_debian = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
+gchar * checkbox7_title_debian = "  Install your processor's latest microcode?";
+gchar * checkbox8_title_debian = "  Do you plan on playing video games?";
+gchar * checkbox9_title_debian = "  Do you want to install ufw? (uncomplicated firewall)";
 
-        enum Distro distro = FEDORA; 
+enum Distro distro_debian = DEBIAN;
 
+// Initialize fedora_window_data
 
-      gchar *  checkbox1_title = "  Do you plan on using Steam?";
-      gchar * checkbox2_title = "  Do you want to use flatpak applications?";
-      gchar * checkbox3_title = "  Install applicable GPU drivers?";
-      gchar * checkbox4_title = "  Install tlp for laptop power management?";
-      gchar * checkbox5_title = "  Install vlc to play unsupported media formats?";
-      gchar * checkbox6_title = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
-      gchar * checkbox7_title = "  Install gnome-tweaks and gnome-extensions for desktop customization?";
-      gchar * checkbox8_title = "  Enable RPM-fusion repositories for wider range of software?";
-      gchar * checkbox9_title = "  Optimize the dnf package manager for faster downloads?";
+gchar * css_label = "fed_window";
+gchar * window_title = "Linux Post-install Helper: Fedora";
+gchar * view_css_class = "fed_view";
+gchar * info_button_css_class = "fed_info_button";
 
+enum Distro distro = FEDORA;
+
+gchar * checkbox1_title = "  Do you plan on using Steam?";
+gchar * checkbox2_title = "  Do you want to use flatpak applications?";
+gchar * checkbox3_title = "  Install applicable GPU drivers?";
+gchar * checkbox4_title = "  Install tlp for laptop power management?";
+gchar * checkbox5_title = "  Install vlc to play unsupported media formats?";
+gchar * checkbox6_title = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
+gchar * checkbox7_title = "  Install gnome-tweaks and gnome-extensions for desktop customization?";
+gchar * checkbox8_title = "  Enable RPM-fusion repositories for wider range of software?";
+gchar * checkbox9_title = "  Optimize the dnf package manager for faster downloads?";
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 // Creates the initial window where the distro is selected.
@@ -97,8 +92,6 @@ void activate(GtkApplication * app) {
   if (lpih_instance_running != TRUE) {
 
     lpih_instance_running = TRUE;
-
-
 
     GtkWidget * window;
     GtkWidget * grid;
@@ -116,51 +109,49 @@ void activate(GtkApplication * app) {
 
     /////////////////////////////////////////////////////////////////////////
 
-        LpihWindowData *debian_window_data = g_malloc(sizeof(LpihWindowData));
-        
-        
-        LpihWindowData *fedora_window_data = g_malloc(sizeof(LpihWindowData));
-        
-        g_print("\nstarting creation of main data structs.\n");
-        // Initialize debian_window_data
-        
-        g_print(" .....133  \n");
-        
-      
-        debian_window_data->window_open_flag = debian_window_open;
-        debian_window_data->css_label = css_label_debian;
-        debian_window_data->window_title = window_title_debian;
-        debian_window_data->view_css_class = view_css_class_debian;
-        debian_window_data->opener = DEBIAN_OPENER;
-        debian_window_data->info_button_css_class = info_button_css_class_debian;
-        debian_window_data->distro_id = distro_debian;
-        debian_window_data->checkbox1_title = checkbox1_title_debian;
-        debian_window_data->checkbox2_title = checkbox2_title_debian;
-        debian_window_data->checkbox3_title = checkbox3_title_debian;
-        debian_window_data->checkbox4_title = checkbox4_title_debian;
-        debian_window_data->checkbox5_title = checkbox5_title_debian;
-        debian_window_data->checkbox6_title = checkbox6_title_debian;
-        debian_window_data->checkbox7_title = checkbox7_title_debian;
-        debian_window_data->checkbox8_title = checkbox8_title_debian;
-        debian_window_data->checkbox9_title = checkbox9_title_debian;
-        
-        fedora_window_data->distro_id = distro;
-        fedora_window_data->css_label = css_label;
-        fedora_window_data->window_title = window_title;
-        fedora_window_data->view_css_class = view_css_class;
-        fedora_window_data->opener = FEDORA_OPENER;
-        fedora_window_data->info_button_css_class = info_button_css_class;
-        fedora_window_data->window_open_flag = fedora_window_open;
-        fedora_window_data->checkbox1_title = checkbox1_title;
-        fedora_window_data->checkbox2_title = checkbox2_title;
-        fedora_window_data->checkbox3_title = checkbox3_title;
-        fedora_window_data->checkbox4_title = checkbox4_title;
-        fedora_window_data->checkbox5_title = checkbox5_title;
-        fedora_window_data->checkbox6_title = checkbox6_title;
-        fedora_window_data->checkbox7_title = checkbox7_title;
-        fedora_window_data->checkbox8_title = checkbox8_title;
-        fedora_window_data->checkbox9_title = checkbox9_title;
-        
+    LpihWindowData * debian_window_data = g_malloc(sizeof(LpihWindowData));
+
+    LpihWindowData * fedora_window_data = g_malloc(sizeof(LpihWindowData));
+
+    g_print("\nstarting creation of main data structs.\n");
+    // Initialize debian_window_data
+
+    g_print(" .....133  \n");
+
+    debian_window_data -> window_open_flag = debian_window_open;
+    debian_window_data -> css_label = css_label_debian;
+    debian_window_data -> window_title = window_title_debian;
+    debian_window_data -> view_css_class = view_css_class_debian;
+    debian_window_data -> opener = DEBIAN_OPENER;
+    debian_window_data -> info_button_css_class = info_button_css_class_debian;
+    debian_window_data -> distro_id = distro_debian;
+    debian_window_data -> checkbox1_title = checkbox1_title_debian;
+    debian_window_data -> checkbox2_title = checkbox2_title_debian;
+    debian_window_data -> checkbox3_title = checkbox3_title_debian;
+    debian_window_data -> checkbox4_title = checkbox4_title_debian;
+    debian_window_data -> checkbox5_title = checkbox5_title_debian;
+    debian_window_data -> checkbox6_title = checkbox6_title_debian;
+    debian_window_data -> checkbox7_title = checkbox7_title_debian;
+    debian_window_data -> checkbox8_title = checkbox8_title_debian;
+    debian_window_data -> checkbox9_title = checkbox9_title_debian;
+
+    fedora_window_data -> distro_id = distro;
+    fedora_window_data -> css_label = css_label;
+    fedora_window_data -> window_title = window_title;
+    fedora_window_data -> view_css_class = view_css_class;
+    fedora_window_data -> opener = FEDORA_OPENER;
+    fedora_window_data -> info_button_css_class = info_button_css_class;
+    fedora_window_data -> window_open_flag = fedora_window_open;
+    fedora_window_data -> checkbox1_title = checkbox1_title;
+    fedora_window_data -> checkbox2_title = checkbox2_title;
+    fedora_window_data -> checkbox3_title = checkbox3_title;
+    fedora_window_data -> checkbox4_title = checkbox4_title;
+    fedora_window_data -> checkbox5_title = checkbox5_title;
+    fedora_window_data -> checkbox6_title = checkbox6_title;
+    fedora_window_data -> checkbox7_title = checkbox7_title;
+    fedora_window_data -> checkbox8_title = checkbox8_title;
+    fedora_window_data -> checkbox9_title = checkbox9_title;
+
     grid = gtk_grid_new();
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), TRUE); // Make columns of equal width
@@ -200,12 +191,12 @@ void activate(GtkApplication * app) {
 
     gtk_window_present(GTK_WINDOW(window));
 
-    const char * gpu_vendor = getGraphicsCardVendor();     // Automatically establishing the user's GPU vendor on init of the program.       
+    const char * gpu_vendor = getGraphicsCardVendor(); // Automatically establishing the user's GPU vendor on init of the program.       
     cpu_vendor_name = g_malloc(sizeof(enum vendor_name));
 
     if (strstr(gpu_vendor, "NVIDIA") != NULL) {
 
-      debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs;\n";
+      debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs nvidia-driver-libs:i386;\n";
       fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
     } else if (strstr(gpu_vendor, "AMD") != NULL) {
 
@@ -219,7 +210,6 @@ void activate(GtkApplication * app) {
 
     gchar vendor[15];
     get_cpu_vendor(vendor);
-    
 
     if (strstr(vendor, "AMD") != NULL) {
       *(enum vendor_name * ) cpu_vendor_name = AMD;
@@ -249,16 +239,15 @@ void activate(GtkApplication * app) {
       g_print("*****ERROR: Something went wrong trying to get the cpu vendor_name.*****\n");
     }
 
-// g_free(debian_window_data);
-// g_free(fedora_window_data);
-  
+    // g_free(debian_window_data);
+    // g_free(fedora_window_data);
 
   } else {
     g_print("Error: instance of LPIH is already running!\n");
   }
 
   g_free(cpu_vendor_name);
- 
+
 }
 
 void on_quit() {
