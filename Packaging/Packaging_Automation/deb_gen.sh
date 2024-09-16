@@ -2,7 +2,7 @@
 
 # Meant to be run from the LPIH project structure root dir.
 
-version='0.2.1'
+version='0.3.0'
 sources_dir="../LPIH-${version}/usr"
 bin_dir="${sources_dir}/bin"
 resource_dir="../../Resources"

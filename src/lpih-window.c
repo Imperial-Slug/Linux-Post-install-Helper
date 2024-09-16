@@ -336,15 +336,18 @@ void lpih_window(GtkWidget * widget, gpointer window_data) {
       info_window_data -> distro_id = info_distro_fedora;
       info_window_data -> info_open_flag = fedora_info_open;
 
-      checkbox1_text = FEDORA_STEAM;
-      checkbox2_text = FEDORA_FLATPAK;
+
+
+
+      checkbox1_text = FEDORA_DNF;
+      checkbox2_text = FEDORA_REP;
       checkbox3_text = fedora_gpu_command;
       checkbox4_text = FEDORA_TLP;
       checkbox5_text = FEDORA_VLC;
       checkbox6_text = FEDORA_MULTIMEDIA;
       checkbox7_text = FEDORA_CUST;
-      checkbox8_text = FEDORA_REP;
-      checkbox9_text = FEDORA_DNF;
+      checkbox8_text = FEDORA_STEAM;
+      checkbox9_text = FEDORA_FLATPAK;
       checkbox10_text = FEDORA_GH;
 
     } else {

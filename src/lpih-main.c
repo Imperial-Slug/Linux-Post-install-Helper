@@ -69,23 +69,24 @@ enum Distro distro_debian = DEBIAN;
 
 // Initialize fedora_window_data
 
-gchar * css_label = "fed_window";
-gchar * window_title = "Linux Post-install Helper: Fedora";
-gchar * view_css_class = "fed_view";
-gchar * info_button_css_class = "fed_info_button";
+gchar * css_label_fedora = "fed_window";
+gchar * window_title_fedora = "Linux Post-install Helper: Fedora";
+gchar * view_css_class_fedora = "fed_view";
+gchar * info_button_css_class_fedora = "fed_info_button";
 
-enum Distro distro = FEDORA;
+enum Distro distro_fedora = FEDORA;
 
-gchar * checkbox1_title = "  Do you plan on using Steam?";
-gchar * checkbox2_title = "  Do you want to use flatpak applications?";
-gchar * checkbox3_title = "  Install applicable GPU drivers?";
-gchar * checkbox4_title = "  Install tlp for laptop power management?";
-gchar * checkbox5_title = "  Install vlc to play unsupported media formats?";
-gchar * checkbox6_title = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
-gchar * checkbox7_title = "  Install gnome-tweaks and gnome-extensions for desktop customization?";
-gchar * checkbox8_title = "  Enable RPM-fusion repositories for wider range of software?";
-gchar * checkbox9_title = "  Optimize the dnf package manager for faster downloads?";
-gchar * checkbox10_title = "  Do you want to install git and github command-line tools?";
+
+gchar * checkbox1_title_fedora = "  Optimize the dnf package manager for faster downloads?";
+gchar * checkbox2_title_fedora = "  Enable RPM-fusion repositories for wider range of software?";
+gchar * checkbox3_title_fedora = "  Install applicable GPU drivers?";
+gchar * checkbox4_title_fedora = "  Install tlp for laptop power management?";
+gchar * checkbox5_title_fedora = "  Install vlc to play unsupported media formats?";
+gchar * checkbox6_title_fedora = "  Install restricted fonts compatibility for Microsoft products and multimedia compatibility packages?";
+gchar * checkbox7_title_fedora = "  Install gnome-tweaks and gnome-extensions for desktop customization?";
+gchar * checkbox8_title_fedora = "  Do you plan on using Steam?";
+gchar * checkbox9_title_fedora = "  Do you want to use flatpak applications?";
+gchar * checkbox10_title_fedora = "  Do you want to install git and github command-line tools?";
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 // Creates the initial window where the distro is selected.
@@ -138,23 +139,23 @@ void activate(GtkApplication * app) {
     debian_window_data -> checkbox9_title = checkbox9_title_debian;
     debian_window_data -> checkbox10_title = checkbox10_title_debian;
 
-    fedora_window_data -> distro_id = distro;
-    fedora_window_data -> css_label = css_label;
-    fedora_window_data -> window_title = window_title;
-    fedora_window_data -> view_css_class = view_css_class;
+    fedora_window_data -> distro_id = distro_fedora;
+    fedora_window_data -> css_label = css_label_fedora;
+    fedora_window_data -> window_title = window_title_fedora;
+    fedora_window_data -> view_css_class = view_css_class_fedora;
     fedora_window_data -> opener = FEDORA_OPENER;
-    fedora_window_data -> info_button_css_class = info_button_css_class;
+    fedora_window_data -> info_button_css_class = info_button_css_class_fedora;
     fedora_window_data -> window_open_flag = fedora_window_open;
-    fedora_window_data -> checkbox1_title = checkbox1_title;
-    fedora_window_data -> checkbox2_title = checkbox2_title;
-    fedora_window_data -> checkbox3_title = checkbox3_title;
-    fedora_window_data -> checkbox4_title = checkbox4_title;
-    fedora_window_data -> checkbox5_title = checkbox5_title;
-    fedora_window_data -> checkbox6_title = checkbox6_title;
-    fedora_window_data -> checkbox7_title = checkbox7_title;
-    fedora_window_data -> checkbox8_title = checkbox8_title;
-    fedora_window_data -> checkbox9_title = checkbox9_title;
-    fedora_window_data -> checkbox10_title = checkbox10_title;
+    fedora_window_data -> checkbox1_title = checkbox1_title_fedora;
+    fedora_window_data -> checkbox2_title = checkbox2_title_fedora;
+    fedora_window_data -> checkbox3_title = checkbox3_title_fedora;
+    fedora_window_data -> checkbox4_title = checkbox4_title_fedora;
+    fedora_window_data -> checkbox5_title = checkbox5_title_fedora;
+    fedora_window_data -> checkbox6_title = checkbox6_title_fedora;
+    fedora_window_data -> checkbox7_title = checkbox7_title_fedora;
+    fedora_window_data -> checkbox8_title = checkbox8_title_fedora;
+    fedora_window_data -> checkbox9_title = checkbox9_title_fedora;
+    fedora_window_data -> checkbox10_title = checkbox10_title_fedora;
 
     grid = gtk_grid_new();
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE); // Make rows of equal height

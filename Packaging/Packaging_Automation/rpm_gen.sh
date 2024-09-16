@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version='0.2.1'
+version='0.3.0'
 sources_dir="/home/${USER}/rpmbuild/SOURCES/LPIH-${version}"
 spec_dir="/home/${USER}/rpmbuild/SPECS"
 starting_dir=$(realpath ../)

@@ -1,5 +1,5 @@
 Name:		LPIH
-Version:	0.2.1
+Version:	0.3.0
 Release:	0.2.1%{?dist}
 Summary:        Linux post-install Helper
 License:	GPL 3.0
@@ -48,6 +48,8 @@ cp set_static_ip3.txt %{buildroot}/%{_datadir}/LPIH/text_files/set_static_ip3.tx
 
 
 %changelog
+* Sun Sep 15 2024 Sam
+- Updated Version number for new package
 * Fri Jun 7 2024 Sam
 - Updated Version number for new package
 * Sat Jun 1 2024 Sam
