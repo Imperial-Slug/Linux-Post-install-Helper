@@ -211,6 +211,11 @@ void activate(GtkApplication * app) {
 
       debian_gpu_command = "  # Intel GPU drivers should already be installed. \n";
       fedora_gpu_command = debian_gpu_command;
+    } else {
+    
+    debian_gpu_command = "  # No drivers detected.  Either this is a VM or this is an error. \n";
+      fedora_gpu_command = debian_gpu_command;
+    
     }
 
     gchar vendor[15];
