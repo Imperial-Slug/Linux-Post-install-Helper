@@ -226,21 +226,23 @@ gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
   info_window_data -> info_open_flag = FALSE;
 
   if (info_window_data -> info_open_flag == FALSE) {
-    g_print("info_open_flag for %s set to FALSE.\n", info_window_data -> info_window_name);
-
+    g_print("info_open_flag for %s set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
+    g_free(info_window_data);
     return TRUE;
   } else {
-    g_print("%s info_open_flag: Failed to set to FALSE.\n", info_window_data -> info_window_name);
+    g_print("%s info_open_flag: Failed to set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
+    g_free(info_window_data);
     return FALSE;
   }
-} else { g_print("on_info_window_destroy: Widget is NULL.\n"); 
+} else { g_print("on_info_window_destroy: Widget is NULL. Freeing memory...\n"); 
+     
     return FALSE;
     }
 }
 
+
 GtkWidget * make_notebook(gpointer data) {
 InfoWindowData *info_window_data = (InfoWindowData *)data;
-
   GtkWidget * notebook;
     notebook = gtk_notebook_new();
     if (notebook != NULL) {
@@ -332,11 +334,53 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
 void make_info_window(GtkWidget * widget, gpointer data) {
   if (widget != NULL) {
   
-  InfoWindowData * info_window_data = (InfoWindowData * ) data;
+//////
+      MainWindowData *main_window_data = (MainWindowData *)data;
+    
+    InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
+    
+    if (info_window_data != NULL) {
+      g_print("info_window_data memory initalized. \n");
+    } else { g_print("info_window_data failed to initialize.");}
+    
+   if(main_window_data->distro == DEBIAN) {
+   
+   
+   
+      gchar * info_window_name_debian = "deb_info_window";
+      gchar * info_window_title_debian = "LPIH: Debian Info";
+      gchar * notebook_css_debian = "deb_notebook";
+      enum Distro info_distro_debian = DEBIAN;
+      
+      info_window_data -> info_window_name = info_window_name_debian;
+      info_window_data -> info_window_title = info_window_title_debian;
+      info_window_data -> notebook_css_name = notebook_css_debian;
+      info_window_data -> distro_id = info_distro_debian;
+      info_window_data -> info_open_flag = debian_info_open;
+      
+      }
+      
+        else if(main_window_data->distro == FEDORA) {
+      
+      gchar * info_window_name = "fed_info_window";
+      gchar * info_window_title = "LPIH: Fedora Info";
+      gchar * notebook_css = "fed_notebook";
+      enum Distro info_distro_fedora = FEDORA;
+      
+      info_window_data -> info_window_name = info_window_name;
+      info_window_data -> info_window_title = info_window_title;
+      info_window_data -> notebook_css_name = notebook_css;
+      info_window_data -> distro_id = info_distro_fedora;
+      info_window_data -> info_open_flag = fedora_info_open;
+
+} else {
+
+g_print("Couldn't get distro of info window to be created.\n");
+
+}
 
   if (info_window_data -> info_open_flag != TRUE) {
 
-    g_print("Line 132 Creating info window...\n");
     GtkWidget * info_window;
 
     info_window = gtk_window_new();
@@ -365,18 +409,18 @@ void make_info_window(GtkWidget * widget, gpointer data) {
     g_print("This info window is already open.\n");
 
   }
-} else { g_print("make_info_window: info_button caller widget is NULL.\n");}
+ } else { g_print("make_info_window: info_button caller widget is NULL.\n");}
 }
 
 
-// Declare info_window struct member values.
-
+// Creates the main Debian or Fedora windows  when clicking the buttons on the main menu.
 void lpih_window(GtkWidget * widget, gpointer data) {
 
 MainWindowData *main_window_data = (MainWindowData *)data;
 
+
   if (widget != NULL) {
-    g_print("info_button clicked.  Executing lpih_window.\n");
+    g_print("info_button clicked.  Executing lpih_window function.\n");
   }
 
   if (main_window_data -> window_open_flag != TRUE) {
@@ -405,24 +449,14 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     const gchar * checkbox8_text;
     const gchar * checkbox9_text;
     const gchar * checkbox10_text;
-
-    InfoWindowData * info_window_data;
-
-    info_window_data = g_malloc(sizeof(InfoWindowData));
-    if (info_window_data != NULL) {
-      g_print("info_window_data memory initalized. \n");
-    } else { g_print("info_window_data failed to initialize.");}
+    
+    
 
 
       LpihWindowData * window_data = g_malloc(sizeof(LpihWindowData));
 // FOR DEBIAN TYPE WINDOW // // //
     if (main_window_data->distro == DEBIAN) {
       g_print("Chose Debian window.\n");
-
-    g_print("\nstarting creation of main data structs.\n");
-    // Initialize debian_window_data
-
-    g_print(" .....133  \n");
 
     window_data -> window_open_flag = debian_window_open;
     window_data -> css_label = css_label_debian;
@@ -441,17 +475,6 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     window_data -> checkbox8_title = checkbox8_title_debian;
     window_data -> checkbox9_title = checkbox9_title_debian;
     window_data -> checkbox10_title = checkbox10_title_debian;
-
-      gchar * info_window_name_debian = "deb_info_window";
-      gchar * info_window_title_debian = "LPIH: Debian Info";
-      gchar * notebook_css_debian = "deb_notebook";
-      enum Distro info_distro_debian = DEBIAN;
-      
-      info_window_data -> info_window_name = info_window_name_debian;
-      info_window_data -> info_window_title = info_window_title_debian;
-      info_window_data -> notebook_css_name = notebook_css_debian;
-      info_window_data -> distro_id = info_distro_debian;
-      info_window_data -> info_open_flag = debian_info_open;
 
       checkbox1_text = DEBIAN_STEAM;
       checkbox2_text = DEBIAN_FLATPAK;
@@ -486,18 +509,7 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     window_data -> checkbox8_title = checkbox8_title_fedora;
     window_data -> checkbox9_title = checkbox9_title_fedora;
     window_data -> checkbox10_title = checkbox10_title_fedora;
-
-      gchar * info_window_name = "fed_info_window";
-      gchar * info_window_title = "LPIH: Fedora Info";
-      gchar * notebook_css = "fed_notebook";
-      enum Distro info_distro_fedora = FEDORA;
-      
-      info_window_data -> info_window_name = info_window_name;
-      info_window_data -> info_window_title = info_window_title;
-      info_window_data -> notebook_css_name = notebook_css;
-      info_window_data -> distro_id = info_distro_fedora;
-      info_window_data -> info_open_flag = fedora_info_open;
-
+    
       checkbox1_text = FEDORA_DNF;
       checkbox2_text = FEDORA_REP;
       checkbox3_text = fedora_gpu_command;
@@ -587,6 +599,8 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     gtk_widget_add_css_class(info_button, window_data -> info_button_css_class);
     gtk_box_append(GTK_BOX(info_button_box), info_button);
 
+
+//TODO: Create the checkbox data in the checkbox function, then destroy it when no longer needed.
     // CHECKBOXES //////////
     checkbox1 = gtk_check_button_new_with_label(window_data -> checkbox1_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox1);
@@ -661,7 +675,7 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     window_data -> checkbox10 = checkbox10;
 
     // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
-    g_signal_connect(info_button, "clicked", G_CALLBACK(make_info_window), info_window_data);
+    g_signal_connect(info_button, "clicked", G_CALLBACK(make_info_window), main_window_data);
 
     g_signal_connect(G_OBJECT(checkbox1), "toggled", G_CALLBACK(check_box_state), checkbox1_data);
     g_signal_connect(G_OBJECT(checkbox2), "toggled", G_CALLBACK(check_box_state), checkbox2_data);
@@ -689,13 +703,15 @@ gboolean on_lpih_window_destroy(GtkWidget * window, gpointer data) {
   window_data -> window_open_flag = FALSE;
 
   if (gtk_widget_is_visible(window)) {
-    g_print("LPIH window failed to close.\n");
+    g_print("LPIH window failed to close.  Freeing memory...\n");
+    g_free(window_data);
     return FALSE;
 
   } else {
 
     g_print("LPIH window closed successfully.\n");
-    //g_free(window_data);
+    g_free(window_data);
+    
     return TRUE;
   }
 

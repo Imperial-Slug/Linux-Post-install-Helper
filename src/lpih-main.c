@@ -129,6 +129,7 @@ void on_quit() {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = FALSE;
+ 
 
 }
 

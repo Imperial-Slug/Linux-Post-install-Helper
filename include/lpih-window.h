@@ -99,6 +99,8 @@ extern const gchar *debian_gpu_command;
 
 extern const gchar *fedora_gpu_command;
 
+
+
 typedef struct {
 GtkTextBuffer * shared_buffer;
 const gchar * associated_command;
@@ -111,6 +113,10 @@ gboolean window_open_flag;
 enum Distro distro;
 
  } MainWindowData;
+ 
+ 
+extern MainWindowData *deb_window_data;
+extern MainWindowData *fed_window_data;
 
 GtkWidget * make_main_window(GtkApplication *app);
 #endif // LPIH_WINDOW_H
