@@ -32,6 +32,7 @@
 
 #include "utility.h"
 
+// This file contains functions outside of the realm of window generation.  You will find in here the functions to get the checkbox handling function, the functions to identify the CPU and GPU vendors, and the css initializer function.
 
 gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
   //Instantiate checkbox data struct and its members.
@@ -101,11 +102,10 @@ void set_cpu_vendor(void){
   g_free(cpu_vendor_name);
 }
 
-
 // Function that uses inline assembly to get the vendor string of the CPU
 // The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
 void get_cpu_vendor(gchar * vendor) {
-  // Use inline assembly to execute the cpuid instruction
+  // Use inline assembly to execute the "cpuid" instruction and get the manufacturer of this machine's CPU.
   __asm__ volatile(
     "cpuid" // Execute the cpuid instruction
     : "=b"(((unsigned int * ) vendor)[0]),
@@ -113,8 +113,8 @@ void get_cpu_vendor(gchar * vendor) {
     "=c"(((unsigned int * ) vendor)[2]): "a"(0)
   );
 
+  // NULL terminate vendor string.
   vendor[13] = '\0';
-
 }
 
 
@@ -160,11 +160,13 @@ gboolean init_css_provider() {
   FILE * cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
   FILE * cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
 
+// Handling CSS file being read from source tarball / project directory:
   if (cssFileForAppInSrc) {
     g_print("The CSS file was found beside the executable.\n");
     cssFilePathDecided = cssPathForAppInSrc;
     fclose(cssFileForAppInSrc);
-
+    
+// Handling CSS file being read from the directory it gets installed to with the .deb and .rpm packages:
   } else if (cssPathForAppInstalled) {
     g_print("The CSS file was found in /usr/share/LPIH/css");
     cssFilePathDecided = cssPathForAppInstalled;
@@ -181,7 +183,7 @@ gboolean init_css_provider() {
     return TRUE;
 
   } else {
-    g_print("******ERROR: CSS provider failed to find the CSS file in function gtk_css_provider_load_from_path(). \n");
+    g_print("******ERROR: CSS provider failed to load the CSS file in function gtk_css_provider_load_from_path(). \n");
     return FALSE;
   }
 }

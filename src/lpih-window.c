@@ -1,4 +1,4 @@
-/* deb-window.c
+/* lpih-window.c
  *
  * Copyright 2023 Samuel Petch
  *
@@ -27,6 +27,8 @@
 #include <string.h>
 
 #include "utility.h"
+
+#include "info-window.h"
 
 #include "lpih-window.h"
 
@@ -94,7 +96,7 @@ gchar * checkbox10_title_debian = "  Do you want to install git and github comma
 
 enum Distro distro_debian = DEBIAN;
 
-// Initialize fedora_window_data
+// Initialize fedora_window_data.
 
 gchar * css_label_fedora = "fed_window";
 gchar * window_title_fedora = "Linux Post-install Helper: Fedora";
@@ -102,7 +104,6 @@ gchar * view_css_class_fedora = "fed_view";
 gchar * info_button_css_class_fedora = "fed_info_button";
 
 enum Distro distro_fedora = FEDORA;
-
 
 gchar * checkbox1_title_fedora = "  Optimize the dnf package manager for faster downloads?";
 gchar * checkbox2_title_fedora = "  Enable RPM-fusion repositories for wider range of software?";
@@ -118,16 +119,7 @@ gchar * checkbox10_title_fedora = "  Do you want to install git and github comma
 gboolean debian_info_open = FALSE;
 gboolean fedora_info_open = FALSE;
 
-typedef struct {
 
-  enum Distro distro_id;
-  gchar * info_window_name;
-  gchar * info_window_title;
-  gchar * notebook_css_name;
-  gboolean info_open_flag;
-
-}
-InfoWindowData;
 
 typedef struct {
   const gchar * checkbox1_text;
@@ -211,206 +203,6 @@ GtkWidget * make_main_window(GtkApplication *app){
 
 }
 
-
-///////////////////////////////////////////
-///////// INFORMATIONAL WINDOW:  //////////
-///////////////////////////////////////////
-
-
-
-gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
-  if (widget != NULL) {
-  
-  InfoWindowData * info_window_data = (InfoWindowData * ) data;
-
-  info_window_data -> info_open_flag = FALSE;
-
-  if (info_window_data -> info_open_flag == FALSE) {
-    g_print("info_open_flag for %s set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
-    g_free(info_window_data);
-    return TRUE;
-  } else {
-    g_print("%s info_open_flag: Failed to set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
-    g_free(info_window_data);
-    return FALSE;
-  }
-} else { g_print("on_info_window_destroy: Widget is NULL. Freeing memory...\n"); 
-     
-    return FALSE;
-    }
-}
-
-
-GtkWidget * make_notebook(gpointer data) {
-InfoWindowData *info_window_data = (InfoWindowData *)data;
-  GtkWidget * notebook;
-    notebook = gtk_notebook_new();
-    if (notebook != NULL) {
-      g_print("Notebook initialized. \n");
-    } else {
-      g_print("Notebook is NULL!");
-      return NULL;
-    }
-
-    gtk_widget_add_css_class(notebook, info_window_data -> notebook_css_name);
-
-    if (info_window_data -> distro_id == DEBIAN) {
-      g_print("Creating debian notebook\n");
-      create_notebook_tab(notebook, "deb_tab_view1", "Main", "deb_info_main", "../Resources/deb-info-tab1.txt", "/usr/share/LPIH/text_files/deb-info-tab1.txt");
-      create_notebook_tab(notebook, "deb_tab_view2", "Software Management", "deb_info2", "../Resources/deb-info-tab2.txt", "/usr/share/LPIH/text_files/deb-info-tab2.txt");
-      create_notebook_tab(notebook, "deb_tab_view3", "Tips", "deb_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-      g_print("Finished creating Debian notebook.\n");
-      return notebook;
-
-    } else if (info_window_data -> distro_id == FEDORA) {
-      create_notebook_tab(notebook, "fed_tab_view1", "Main", "fed_info_main", "../Resources/fed-info-tab1.txt", "/usr/share/LPIH/text_files/fed-info-tab1.txt");
-      create_notebook_tab(notebook, "fed_tab_view2", "Software Management", "fed_info2", "../Resources/fed-info-tab2.txt", "/usr/share/LPIH/text_files/fed-info-tab2.txt");
-      create_notebook_tab(notebook, "fed_tab_view3", "Tips", "fed_info3", "../Resources/set_static_ip3.txt", "/usr/share/LPIH/text_files/set_static_ip3.txt");
-      g_print("Finished creating Fedora notebook.\n");
-      return notebook;
-      
-    } else {
-      g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
-      return NULL;
-    }
-}
-
-void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * tab_label, gchar * tab_css_label, gchar * res_path1, gchar * res_path2) {
-
-  GtkWidget * view;
-  GtkTextBuffer * buffer;
-  GtkWidget * scroll_info_window = gtk_scrolled_window_new();
-
-  gtk_widget_set_size_request(scroll_info_window, 300, 200);
-  gtk_widget_set_vexpand(scroll_info_window, TRUE);
-  gtk_widget_set_hexpand(scroll_info_window, TRUE);
-
-  view = gtk_text_view_new();
-  gtk_widget_set_opacity(view, 0.9);
-  gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
-  gtk_widget_add_css_class(view, view_css_label);
-  buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-
-  GtkWidget * tab_label_view;
-  GtkTextBuffer * tab_buffer;
-
-  tab_label_view = gtk_text_view_new();
-  gtk_widget_add_css_class(tab_label_view, tab_css_label);
-  tab_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tab_label_view));
-  gtk_text_buffer_set_text(tab_buffer, tab_label, -1);
-  gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(tab_label_view), FALSE);
-  gtk_widget_set_vexpand(tab_label_view, TRUE);
-  gtk_widget_set_hexpand(tab_label_view, TRUE);
-
-  gchar * tab_text = NULL;
-  gsize length = 0;
-  GError * error = NULL;
-
-  if (g_file_get_contents(res_path1, & tab_text, & length, & error)) {
-    gtk_text_buffer_set_text(buffer, tab_text, -1);
-    g_free(tab_text);
-  } else if (g_file_get_contents(res_path2, & tab_text, & length, & error)) {
-
-    gtk_text_buffer_set_text(buffer, tab_text, -1);
-    g_free(tab_text);
-
-  } else {
-    g_print("Failed to load info file: %s\n", error -> message);
-    g_error_free(error);
-  }
-
-  gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
-  gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
-  gtk_widget_set_can_focus(GTK_WIDGET(view), TRUE);
-  gtk_text_view_set_left_margin(GTK_TEXT_VIEW(view), 13);
-  gtk_text_view_set_right_margin(GTK_TEXT_VIEW(view), 13);
-  gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroll_info_window), view);
-
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook), scroll_info_window, tab_label_view);
-
-}
-
-
-void make_info_window(GtkWidget * widget, gpointer data) {
-  if (widget != NULL) {
-  
-//////
-      MainWindowData *main_window_data = (MainWindowData *)data;
-    
-    InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
-    
-    if (info_window_data != NULL) {
-      g_print("info_window_data memory initalized. \n");
-    } else { g_print("info_window_data failed to initialize.");}
-    
-   if(main_window_data->distro == DEBIAN) {
-   
-   
-   
-      gchar * info_window_name_debian = "deb_info_window";
-      gchar * info_window_title_debian = "LPIH: Debian Info";
-      gchar * notebook_css_debian = "deb_notebook";
-      enum Distro info_distro_debian = DEBIAN;
-      
-      info_window_data -> info_window_name = info_window_name_debian;
-      info_window_data -> info_window_title = info_window_title_debian;
-      info_window_data -> notebook_css_name = notebook_css_debian;
-      info_window_data -> distro_id = info_distro_debian;
-      info_window_data -> info_open_flag = debian_info_open;
-      
-      }
-      
-        else if(main_window_data->distro == FEDORA) {
-      
-      gchar * info_window_name = "fed_info_window";
-      gchar * info_window_title = "LPIH: Fedora Info";
-      gchar * notebook_css = "fed_notebook";
-      enum Distro info_distro_fedora = FEDORA;
-      
-      info_window_data -> info_window_name = info_window_name;
-      info_window_data -> info_window_title = info_window_title;
-      info_window_data -> notebook_css_name = notebook_css;
-      info_window_data -> distro_id = info_distro_fedora;
-      info_window_data -> info_open_flag = fedora_info_open;
-
-} else {
-
-g_print("Couldn't get distro of info window to be created.\n");
-
-}
-
-  if (info_window_data -> info_open_flag != TRUE) {
-
-    GtkWidget * info_window;
-
-    info_window = gtk_window_new();
-    if (info_window != NULL) {
-      g_print("info_window created \n");
-    } else {
-      g_print("Info window creation failed!\n");
-    }
-
-    gtk_widget_add_css_class(info_window, info_window_data -> info_window_name);
-    gtk_window_set_title(GTK_WINDOW(info_window), info_window_data -> info_window_title);
-    gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
-    gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
-    gtk_widget_set_vexpand(info_window, TRUE);
-    gtk_widget_set_hexpand(info_window, TRUE);
-
-    GtkWidget * notebook = make_notebook(info_window_data);
-
-    gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
-    g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
-    gtk_widget_set_visible(info_window, TRUE);
-    info_window_data -> info_open_flag = TRUE;
-    g_print("Info window created!  \n");
-
-  } else {
-    g_print("This info window is already open.\n");
-
-  }
- } else { g_print("make_info_window: info_button caller widget is NULL.\n");}
-}
 
 
 // Creates the main Debian or Fedora windows  when clicking the buttons on the main menu.

@@ -8,6 +8,7 @@ gboolean on_info_window_destroy(GtkWidget* widget, gpointer data);
 enum Distro { DEBIAN = 1, FEDORA = 2 };
 void make_info_window(GtkWidget *widget, gpointer data);
 
+enum CheckboxNumber { CHECKBOX_1 = 1, CHECKBOX_2 = 2, CHECKBOX_3 = 3, CHECKBOX_4 = 4, CHECKBOX_5 = 5, CHECKBOX_6 = 6, CHECKBOX_7 = 7, CHECKBOX_8 = 8, CHECKBOX_9 = 9, CHECKBOX_10 = 10};
 
 void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2);
 
@@ -55,6 +56,17 @@ const gchar * DEBIAN_VLC;
  const gchar* FEDORA_VLC;
  extern
  const gchar * FEDORA_GH;
+ 
+ typedef struct {
+
+  enum Distro distro_id;
+  gchar * info_window_name;
+  gchar * info_window_title;
+  gchar * notebook_css_name;
+  gboolean info_open_flag;
+
+}
+InfoWindowData;
  
  typedef struct {
 

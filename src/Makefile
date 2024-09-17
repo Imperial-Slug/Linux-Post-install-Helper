@@ -6,7 +6,7 @@ CC = clang
 CFLAGS = -Wall -g -Wextra -Werror -flto -I../include -Iinclude
 LIBS = -lGL
 TARGET = lpih
-SRC = lpih-main.c lpih-window.c utility.c
+SRC = lpih-main.c lpih-window.c info-window.c utility.c
 
 # Check for the Linux distribution
 DISTRO := $(shell grep '^ID=' /etc/os-release | cut -d'=' -f2)

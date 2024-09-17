@@ -38,19 +38,13 @@
 //////////////////////////////
 //////////////////////////////
 
-
-
-
-
 const gchar * DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'info' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
+
 // For keeping track of single-instance lpih_window
 gboolean lpih_instance_running = FALSE;
+
 const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
 //
-
-
-
-
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
 // Creates the initial window where the distro is selected.
@@ -60,31 +54,21 @@ void activate(GtkApplication * app) {
 
     lpih_instance_running = TRUE;
 
-        GtkWidget *window = make_main_window(app);
-        gtk_window_present(GTK_WINDOW(window));
+      GtkWidget *window = make_main_window(app);
+      gtk_window_present(GTK_WINDOW(window));
 
-set_gpu_vendor();
-set_cpu_vendor();
-////// /////// ////// ///// &&&&&&&&&&&&&
+      set_gpu_vendor();
+      set_cpu_vendor();
    
-    // g_free(debian_window_data);
-    // g_free(fedora_window_data);
-
   } else {
     g_print("Error: instance of LPIH is already running!\n");
   }
-
-
-
-
 }
 
 void on_quit() {
   g_print("Exiting LPIH now.\n");
   g_print("*************************************\n");
   lpih_instance_running = FALSE;
- 
-
 }
 
 gboolean main(int argc,
