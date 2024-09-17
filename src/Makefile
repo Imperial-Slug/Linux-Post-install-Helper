@@ -3,7 +3,7 @@
 # -fsanitize=address
 
 CC = clang
-CFLAGS = -Wall -g -Wextra -Werror -I../include -Iinclude
+CFLAGS = -Wall -g -Wextra -Werror -flto -I../include -Iinclude
 LIBS = -lGL
 TARGET = lpih
 SRC = lpih-main.c lpih-window.c utility.c

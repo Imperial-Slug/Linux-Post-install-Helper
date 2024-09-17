@@ -26,13 +26,9 @@
 
 #include <string.h>
 
-#include <X11/Xlib.h>
-
 #include <GL/gl.h>
 
 #include "lpih-window.h"
-
-#include "lpih-main.h"
 
 #include "utility.h"
 

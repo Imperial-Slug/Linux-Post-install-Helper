@@ -1,21 +1,20 @@
 #ifndef LPIH_WINDOW_H
 #define LPIH_WINDOW_H
 
-//\\//\\//\\//\\//\\// LPIH-WINDOW FUNCTIONS //\\//\\//\\//\\//\\//\\//\\//|||||||||
-
 gboolean on_lpih_window_destroy(GtkWidget * widget, gpointer data);
 void lpih_window(GtkWidget * widget, gpointer window_data);
 gboolean on_info_window_destroy(GtkWidget* widget, gpointer data);
 
 enum Distro { DEBIAN = 1, FEDORA = 2 };
 void make_info_window(GtkWidget *widget, gpointer data);
-// GLOBAL VARIABLES
+
+
 void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2);
-extern
-const gchar * debian_gpu_command;
+
+// GLOBAL VARIABLES // // //
 
 extern
-const gchar * debian_tips_spiel;
+const gchar * debian_gpu_command;
 extern
 const gchar * DEBIAN_OPENER;
 extern
@@ -35,8 +34,7 @@ const gchar * DEBIAN_VLC;
 
  extern 
  const gchar* fedora_gpu_command;
- extern 
- const gchar* fedora_tips_spiel;
+
  extern
  const gchar* FEDORA_OPENER;
  extern 
@@ -58,7 +56,6 @@ const gchar * DEBIAN_VLC;
  extern
  const gchar * FEDORA_GH;
  
- 
  typedef struct {
 
 enum Distro distro_id;
@@ -78,7 +75,6 @@ gchar * checkbox7_title;
 gchar * checkbox8_title;
 gchar * checkbox9_title;
 gchar * checkbox10_title;
-
 
 GtkWidget * checkbox1;
 GtkWidget * checkbox2;
@@ -110,4 +106,11 @@ const gchar * associated_command;
 } CheckboxData;
 
 
+typedef struct {
+gboolean window_open_flag;
+enum Distro distro;
+
+ } MainWindowData;
+
+GtkWidget * make_main_window(GtkApplication *app);
 #endif // LPIH_WINDOW_H
