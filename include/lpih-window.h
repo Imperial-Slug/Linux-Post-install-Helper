@@ -96,7 +96,6 @@ extern gboolean fedora_info_open;
 
 extern const gchar *debian_microcode_command;
 extern const gchar *debian_gpu_command;
-
 extern const gchar *fedora_gpu_command;
 
 

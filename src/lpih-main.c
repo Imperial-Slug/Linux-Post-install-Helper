@@ -40,13 +40,16 @@
 
 
 
-gpointer cpu_vendor_name = NULL;
+
 
 const gchar * DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'info' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
 // For keeping track of single-instance lpih_window
 gboolean lpih_instance_running = FALSE;
 const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
 //
+
+
+
 
 
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
@@ -60,59 +63,10 @@ void activate(GtkApplication * app) {
         GtkWidget *window = make_main_window(app);
         gtk_window_present(GTK_WINDOW(window));
 
-    const char * gpu_vendor = getGraphicsCardVendor(); // Automatically establishing the user's GPU vendor on init of the program.       
-    cpu_vendor_name = g_malloc(sizeof(enum vendor_name));
-
-    if (strstr(gpu_vendor, "NVIDIA") != NULL) {
-
-      debian_gpu_command = "  sudo apt install nvidia-driver nvidia-driver-libs nvidia-driver-libs:i386;\n";
-      fedora_gpu_command = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-    } else if (strstr(gpu_vendor, "AMD") != NULL) {
-
-      debian_gpu_command = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-      fedora_gpu_command = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-    } else if (strstr(gpu_vendor, "Intel") != NULL) {
-
-      debian_gpu_command = "  # Intel GPU drivers should already be installed. \n";
-      fedora_gpu_command = debian_gpu_command;
-    } else {
-    
-    debian_gpu_command = "  # No drivers detected.  Either this is a VM or this is an error. \n";
-      fedora_gpu_command = debian_gpu_command;
-    
-    }
-
-    gchar vendor[15];
-    get_cpu_vendor(vendor);
-
-    if (strstr(vendor, "AMD") != NULL) {
-      *(enum vendor_name * ) cpu_vendor_name = AMD;
-
-    } else if (strstr(vendor, "Intel") != NULL) {
-      *(enum vendor_name * ) cpu_vendor_name = Intel;
-
-    } else {
-      g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
-      g_print("*************************************\n\n");
-      *(enum vendor_name * ) cpu_vendor_name = Unknown;
-
-    }
-
-    // Print mfgs
-    g_print("The GPU vendor for this machine is %s.\n", gpu_vendor);
-    g_print("The CPU vendor for this machine is %s.\n", vendor);
-    g_print("*************************************\n\n");
-
-    // Determine Debian microcode command
-    if ( * (enum vendor_name * ) cpu_vendor_name == AMD) {
-      debian_microcode_command = "  sudo apt install amd64-microcode;\n";
-    } else if ( * (enum vendor_name * ) cpu_vendor_name == Intel) {
-      debian_microcode_command = "  sudo apt install intel-microcode;\n";
-      g_print("Debian microcode command is: %s", debian_microcode_command);
-    } else {
-      g_print("*****ERROR: Something went wrong trying to get the cpu vendor_name.*****\n");
-    }
-
+set_gpu_vendor();
+set_cpu_vendor();
+////// /////// ////// ///// &&&&&&&&&&&&&
+   
     // g_free(debian_window_data);
     // g_free(fedora_window_data);
 
@@ -120,7 +74,7 @@ void activate(GtkApplication * app) {
     g_print("Error: instance of LPIH is already running!\n");
   }
 
-  g_free(cpu_vendor_name);
+
 
 
 }

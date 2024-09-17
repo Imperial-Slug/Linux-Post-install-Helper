@@ -34,7 +34,6 @@
 
 
 gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
-
   //Instantiate checkbox data struct and its members.
   CheckboxData * checkbox_data = (CheckboxData * ) data;
   const gchar * command_string = checkbox_data -> associated_command;
@@ -61,6 +60,93 @@ gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
 
   return TRUE;
 
+}
+
+
+void set_cpu_vendor(void){
+
+    gpointer cpu_vendor_name = NULL;
+    gchar vendor[15];
+    get_cpu_vendor(vendor);
+    cpu_vendor_name = g_malloc(15);
+    
+    if (strstr(vendor, "AMD") != NULL) {
+      *(enum vendor_name * ) cpu_vendor_name = AMD;
+
+    } else if (strstr(vendor, "Intel") != NULL) {
+      *(enum vendor_name * ) cpu_vendor_name = Intel;
+
+    } else {
+      g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
+      g_print("*************************************\n\n");
+      *(enum vendor_name * ) cpu_vendor_name = Unknown;
+
+    }
+
+    // Print mfgs
+
+    g_print("The CPU vendor for this machine is %s.\n", vendor);
+    g_print("*************************************\n\n");
+
+    // Determine Debian microcode command
+    if ( * (enum vendor_name * ) cpu_vendor_name == AMD) {
+      debian_microcode_command = "  sudo apt install amd64-microcode;\n";
+    } else if ( * (enum vendor_name * ) cpu_vendor_name == Intel) {
+      debian_microcode_command = "  sudo apt install intel-microcode;\n";
+      g_print("Debian microcode command is: %s", debian_microcode_command);
+    } else {
+      g_print("*****ERROR: Something went wrong trying to get the cpu vendor_name.*****\n");
+    }
+
+  g_free(cpu_vendor_name);
+}
+
+
+// Function that uses inline assembly to get the vendor string of the CPU
+// The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
+void get_cpu_vendor(gchar * vendor) {
+  // Use inline assembly to execute the cpuid instruction
+  __asm__ volatile(
+    "cpuid" // Execute the cpuid instruction
+    : "=b"(((unsigned int * ) vendor)[0]),
+    "=d"(((unsigned int * ) vendor)[1]),
+    "=c"(((unsigned int * ) vendor)[2]): "a"(0)
+  );
+
+  vendor[13] = '\0';
+
+}
+
+
+void set_gpu_vendor(void) {
+    
+    const char * gpu_vendor = (const char *)glGetString(GL_VENDOR);      
+    const gchar * deb_nvidia_gpu = "  sudo apt install nvidia-driver nvidia-driver-libs nvidia-driver-libs:i386;\n";
+    const gchar * fed_nvidia_gpu = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
+    const gchar * fed_amd_gpu = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
+    const gchar * deb_amd_gpu = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+    const gchar * deb_intel_gpu = "  # Intel GPU drivers should already be installed. \n";
+  //  gchar * fed_intel_gpu = "  # Intel GPU drivers should already be installed. \n";
+
+    if (strstr(gpu_vendor, "NVIDIA") != NULL) {
+
+      debian_gpu_command = deb_nvidia_gpu;
+      fedora_gpu_command = fed_nvidia_gpu;
+    } else if (strstr(gpu_vendor, "AMD") != NULL) {
+
+      debian_gpu_command = deb_amd_gpu;
+      fedora_gpu_command = fed_amd_gpu;
+    } else if (strstr(gpu_vendor, "Intel") != NULL) {
+
+      debian_gpu_command = deb_intel_gpu;
+      fedora_gpu_command = debian_gpu_command;
+    } else {
+    
+      debian_gpu_command = deb_intel_gpu;
+      fedora_gpu_command = deb_intel_gpu;
+    
+    }
+    g_print("The GPU vendor for this machine is %s.\n", gpu_vendor);
 }
 
 gboolean init_css_provider() {
@@ -100,24 +186,6 @@ gboolean init_css_provider() {
   }
 }
 
-// Function to get the graphics card vendor of the user.
-const char * getGraphicsCardVendor() {
-  return (const char * ) glGetString(GL_VENDOR);
-}
 
-// Function that uses inline assembly to get the vendor string of the CPU
-// The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
-void get_cpu_vendor(gchar * vendor) {
-  // Use inline assembly to execute the cpuid instruction
-  __asm__ volatile(
-    "cpuid" // Execute the cpuid instruction
-    : "=b"(((unsigned int * ) vendor)[0]),
-    "=d"(((unsigned int * ) vendor)[1]),
-    "=c"(((unsigned int * ) vendor)[2]): "a"(0)
-  );
-
-  vendor[13] = '\0';
-
-}
 
 
