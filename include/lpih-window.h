@@ -13,7 +13,7 @@ enum CheckboxNumber { CHECKBOX_1 = 1, CHECKBOX_2 = 2, CHECKBOX_3 = 3, CHECKBOX_4
 void create_notebook_tab(GtkWidget* notebook, gchar* view_css_label, gchar* tab_label, gchar* tab_css_label, gchar* res_path1, gchar* res_path2);
 
 // GLOBAL VARIABLES // // //
-
+gboolean check_box_state(GtkWidget *checkbox, gpointer data);
 extern
 const gchar * debian_gpu_command;
 extern
@@ -109,12 +109,12 @@ extern gboolean fedora_info_open;
 extern const gchar *debian_microcode_command;
 extern const gchar *debian_gpu_command;
 extern const gchar *fedora_gpu_command;
-
+gboolean check_box_state(GtkWidget * checkbox, gpointer data);
 
 
 typedef struct {
 GtkTextBuffer * shared_buffer;
-const gchar * associated_command;
+enum Distro distro;
 
 } CheckboxData;
 

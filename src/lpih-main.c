@@ -40,14 +40,14 @@
 
 const gchar * DEBIAN_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Debian system.  You may need to enable non-free  \n  # repositories by editing your '/etc/apt/sources.list' file if some of the proprietary packages  \n  # like Steam and GPU drivers don't install.  See 'info' for details.  \n\n  sudo apt update; sudo apt upgrade;  \n  sudo apt install build-essential dkms linux-headers-$(uname -r); \n";
 
+const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
+
 // For keeping track of single-instance lpih_window
 gboolean lpih_instance_running = FALSE;
 
-const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
-//
-
 ////// INITIAL WINDOW ////////////////////////////////////////////////////
-// Creates the initial window where the distro is selected.
+///// Creates the initial window where the distro is selected. //////////
+
 void activate(GtkApplication * app) {
 
   if (lpih_instance_running != TRUE) {
@@ -85,4 +85,4 @@ gboolean main(int argc,
   return status;
 }
 
-///////////// END OF FILE /////////////
+// // // // // // END OF FILE // // // // // //

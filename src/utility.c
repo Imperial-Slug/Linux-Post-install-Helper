@@ -34,34 +34,6 @@
 
 // This file contains functions outside of the realm of window generation.  You will find in here the functions to get the checkbox handling function, the functions to identify the CPU and GPU vendors, and the css initializer function.
 
-gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
-  //Instantiate checkbox data struct and its members.
-  CheckboxData * checkbox_data = (CheckboxData * ) data;
-  const gchar * command_string = checkbox_data -> associated_command;
-  g_print("Trying to print %s\n", command_string);
-  GtkTextBuffer * buffer = GTK_TEXT_BUFFER(checkbox_data -> shared_buffer);
-
-  gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
-
-  GtkTextIter iter;
-  if (state) {
-    gtk_text_buffer_get_end_iter(buffer, & iter);
-    gtk_text_buffer_insert(buffer, & iter, command_string, -1);
-  } else {
-    GtkTextIter start, end, match_start, match_end;
-    const gchar * search_string = command_string;
-
-    gtk_text_buffer_get_start_iter(buffer, & start);
-    gtk_text_buffer_get_end_iter(buffer, & end);
-
-    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
-      gtk_text_buffer_delete(buffer, & match_start, & match_end);
-    }
-  }
-
-  return TRUE;
-
-}
 
 
 void set_cpu_vendor(void){

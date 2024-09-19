@@ -24,15 +24,15 @@
 
 #include <stdlib.h>
 
-#include <string.h>
+#include <stdint.h>
 
 #include "utility.h"
 
-#include "info-window.h"
-
 #include "lpih-window.h"
 
-// DEBIAN CONSTANTS // // // //
+#include "info-window.h"
+
+// DEBIAN CONSTANTS // // // // // // // // // // // // // // // // // // // // //
 
 const gchar * DEBIAN_STEAM = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers \n";
 
@@ -55,7 +55,7 @@ const gchar * debian_gpu_command;
 
 // const gchar* DEBIAN_CONTRIB_NONFREE = "sudo sh -c 'if test -f /etc/apt/sources.list; then echo "contrib non-free" >> /etc/apt/sources.list; fi'"
 
-// FEDORA CONSTANTS // // //
+// FEDORA CONSTANTS // // // // // // // // // // // // // // // // // // // // //
 
 const gchar * FEDORA_REP = "  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm;  \n  sudo dnf update; \n";
 
@@ -77,6 +77,10 @@ const gchar * FEDORA_GH = "  sudo dnf install git gh; \n";
 
 const gchar * fedora_gpu_command;
 
+// // // // // // // // // // // // // // // // // // // // //
+
+enum Distro distro_debian = DEBIAN;
+
 gchar * css_label_debian = "deb_window";
 gchar * window_title_debian = "Linux Post-install Helper: Debian";
 gchar * view_css_class_debian = "deb_view";
@@ -94,9 +98,7 @@ gchar * checkbox8_title_debian = "  Do you want to install gamemode?";
 gchar * checkbox9_title_debian = "  Do you want to install ufw? (uncomplicated firewall)";
 gchar * checkbox10_title_debian = "  Do you want to install git and github command-line tools?";
 
-enum Distro distro_debian = DEBIAN;
-
-// Initialize fedora_window_data.
+// // // // // // // // // // // // // // // // // // // // //
 
 gchar * css_label_fedora = "fed_window";
 gchar * window_title_fedora = "Linux Post-install Helper: Fedora";
@@ -115,25 +117,262 @@ gchar * checkbox7_title_fedora = "  Install gnome-tweaks and gnome-extensions fo
 gchar * checkbox8_title_fedora = "  Do you plan on using Steam?";
 gchar * checkbox9_title_fedora = "  Do you want to use flatpak applications?";
 gchar * checkbox10_title_fedora = "  Do you want to install git and github command-line tools?";
-// Keeping track of whether the Fedora or Debian window is open.
+
+// Keeping track of whether the Fedora and Debian windows are open.
 gboolean debian_info_open = FALSE;
 gboolean fedora_info_open = FALSE;
 
+enum CheckboxNumber get_number_from_checkbox_label(gchar *checkbox_label, enum Distro distro) {
+   
+   if (distro == DEBIAN) { 
+      enum CheckboxNumber checkbox_number;
+
+   g_print("Line 141 lpih-window: checkbox_label = %s", checkbox_label);
+
+ if (strstr(checkbox_label, "Steam") != NULL) {
+  checkbox_number = 1;
+  g_print("Checkbox1 clicked.\n");
+  return checkbox_number;
+ } else  if (strstr(checkbox_label, "flatpak") != NULL)  {
+  checkbox_number = 2;
+  g_print("Checkbox2 clicked.\n");
+  return checkbox_number;
+ } else  if (strstr(checkbox_label, "GPU") != NULL) { 
+  checkbox_number = 3;
+  g_print("Checkbox3 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "power") != NULL) { 
+  checkbox_number = 4;
+  g_print("Checkbox4clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "unsupported media") != NULL) {
+  checkbox_number = 5;
+  g_print("Checkbox5 clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "compatibility") != NULL) {
+  checkbox_number = 6;
+  g_print("Checkbox6 clicked.\n");
+  return checkbox_number;
+ }else if  (strstr(checkbox_label, "microcode") != NULL) {
+  checkbox_number = 7;
+  g_print("Checkbox7 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "gamemode") != NULL) {
+  checkbox_number = 8;
+  g_print("Checkbox8 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "ufw") != NULL) {
+  checkbox_number = 9;
+  g_print("Checkbox9 clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "github") != NULL) {
+  checkbox_number = 10;
+  g_print("Checkbox10 clicked.\n");
+  return checkbox_number;
+ } else { g_print("***********ERROR: Failed to identify the checkbox that was clicked.\n"); }
+
+    } else if (distro == FEDORA){
+    
+       enum CheckboxNumber checkbox_number;
+       
+    if (strstr(checkbox_label, "dnf") != NULL) {
+  checkbox_number = 1;
+  g_print("Checkbox1 clicked.\n");
+  return checkbox_number;
+ } else  if (strstr(checkbox_label, "RPM") != NULL)  {
+  checkbox_number = 2;
+  g_print("Checkbox2 clicked.\n");
+  return checkbox_number;
+ } else  if (strstr(checkbox_label, "GPU") != NULL) { 
+  checkbox_number = 3;
+  g_print("Checkbox3 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "power") != NULL) { 
+  checkbox_number = 4;
+  g_print("Checkbox4clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "unsupported") != NULL) {
+  checkbox_number = 5;
+  g_print("Checkbox5 clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "compatibility") != NULL) {
+  checkbox_number = 6;
+  g_print("Checkbox6 clicked.\n");
+  return checkbox_number;
+ }else if  (strstr(checkbox_label, "gnome-tweaks") != NULL) {
+  checkbox_number = 7;
+  g_print("Checkbox7 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "Steam") != NULL) {
+  checkbox_number = 8;
+  g_print("Checkbox8 clicked.\n");
+  return checkbox_number;
+ } else if (strstr(checkbox_label, "flatpak") != NULL) {
+  checkbox_number = 9;
+  g_print("Checkbox9 clicked.\n");
+  return checkbox_number;
+ }else if (strstr(checkbox_label, "github") != NULL) {
+  checkbox_number = 10;
+  g_print("Checkbox10 clicked.\n");
+  return checkbox_number;
+ } else { g_print("***********ERROR: Failed to identify the checkbox that was clicked.\n"); }
+    }
+    
+  return 0;
+ }
 
 
-typedef struct {
-  const gchar * checkbox1_text;
-  const gchar * checkbox2_text;
-  const gchar * checkbox3_text;
-  const gchar * checkbox4_text;
-  const gchar * checkbox5_text;
-  const gchar * checkbox6_text;
-  const gchar * checkbox7_text;
-  const gchar * checkbox8_text;
-  const gchar * checkbox9_text;
-  const gchar * checkbox10_text;
+// Drill up through the widgets until we get to the nth one.  Return its title.
+const gchar* get_nth_parent_window_title(GtkWidget *checkbox, uint8_t nth_parent){
+// parent holds the widget the loop has drilled up to.
+ uint8_t increment = 0;
+ GtkWidget *current_parent = checkbox;
+ 
+ // Get the next parent of the widget until we get to one that we can get a title from.
+while (increment <= nth_parent) {
+ current_parent = gtk_widget_get_parent(GTK_WIDGET(current_parent));  
+ increment++; 
+    
+  }
+ 
+ 
+  const gchar *nth_parent_title = gtk_window_get_title(GTK_WINDOW(current_parent));
+  
+
+  
+  return nth_parent_title;
+ 
 }
-TextData;
+
+
+enum Distro get_distro_from_parent_title(GtkWidget *widget) {
+ 
+ const gchar *fifth_parent_title = get_nth_parent_window_title(widget, 4);
+ 
+ g_print("The fifth_parent_title of this window is %s \n", fifth_parent_title);
+ 
+ if (strstr(fifth_parent_title, "Debian") != NULL) {
+ enum Distro debian = DEBIAN;  
+ return debian;
+} else if (strstr(fifth_parent_title, "Fedora") != NULL) {
+ enum Distro fedora = FEDORA;
+ return fedora;
+} else 
+g_print("Failed to get distro line 197 lpih-window\n");
+return 0;
+
+}
+
+gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
+    
+   GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
+   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
+   const gchar *checkbox_label = gtk_check_button_get_label(GTK_CHECK_BUTTON(checkbox));
+   enum Distro distro = get_distro_from_parent_title(checkbox);
+   const gchar * command_string;
+  
+   enum CheckboxNumber checkbox_number = get_number_from_checkbox_label((gchar *)checkbox_label, distro);
+    
+    if(distro == DEBIAN) {
+          
+         switch(checkbox_number)
+         {
+          case 1:
+          command_string = DEBIAN_STEAM;
+          break;
+          case 2:          
+          command_string = DEBIAN_FLATPAK;
+          break;
+          case 3:        
+          command_string = debian_gpu_command;
+          break;
+          case 4:   
+          command_string = DEBIAN_TLP;
+          break;
+          case 5:   
+          command_string = DEBIAN_VLC;
+          break;
+          case 6:
+          command_string = DEBIAN_MULTIMEDIA;
+          break;   
+          case 7:        
+          command_string = debian_microcode_command;
+          break;         
+          case 8:        
+          command_string = DEBIAN_GAMING;
+          break;
+          case 9:
+          command_string = DEBIAN_UFW;
+          break;
+          case 10:
+          command_string = DEBIAN_GH;
+          break;
+          default:
+          g_print("Switch statement failed to read the top_widget_title of the checkbox being clicked.\n");
+          break;
+        }
+  }
+ 
+  else if(distro == FEDORA){
+    
+      switch(checkbox_number)
+         {
+          case 1:
+          command_string = FEDORA_DNF;
+          break;
+          case 2:          
+          command_string = FEDORA_REP;
+          break;
+          case 3:        
+          command_string = fedora_gpu_command;
+          break;
+          case 4:   
+          command_string = FEDORA_TLP;
+          break;
+          case 5:   
+          command_string = FEDORA_VLC;
+          break;
+          case 6:
+          command_string = FEDORA_MULTIMEDIA;
+          break;   
+          case 7:        
+          command_string = FEDORA_CUST;
+          break;         
+          case 8:        
+          command_string = FEDORA_STEAM;
+          break;
+          case 9:
+          command_string = FEDORA_FLATPAK;
+          break;
+          case 10:
+          command_string = FEDORA_GH;
+          break;
+          default:
+          g_print("Switch statement failed to read the top_widget_title of the checkbox being clicked.\n");
+          break;
+         }
+  
+  }
+
+    g_print("Trying to print %s\n", command_string);
+  GtkTextIter iter;
+  if (state) {
+    gtk_text_buffer_get_end_iter(buffer, & iter);
+    gtk_text_buffer_insert(buffer, & iter, command_string, -1);
+  } else {
+    GtkTextIter start, end, match_start, match_end;
+    const gchar * search_string = command_string;
+
+    gtk_text_buffer_get_start_iter(buffer, & start);
+    gtk_text_buffer_get_end_iter(buffer, & end);
+
+    if (gtk_text_iter_forward_search( & start, search_string, 0, & match_start, & match_end, NULL)) {
+      gtk_text_buffer_delete(buffer, & match_start, & match_end);
+    }
+  }
+  return TRUE;
+}
+
 
 GtkWidget * make_main_window(GtkApplication *app){
 
@@ -147,7 +386,6 @@ GtkWidget * make_main_window(GtkApplication *app){
     fed_window_data->distro = FEDORA;
     fed_window_data->window_open_flag = fedora_window_open;
    
-
     GtkWidget * window;
     GtkWidget * grid;
     GtkWidget * deb_button;
@@ -167,16 +405,13 @@ GtkWidget * make_main_window(GtkApplication *app){
     gtk_grid_set_row_spacing(GTK_GRID(grid), 50); // Add spacing between rows
     gtk_grid_set_column_spacing(GTK_GRID(grid), 100); // Add spacing between columns
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
-
     gtk_window_set_child(GTK_WINDOW(window), grid);
-
     deb_button = gtk_button_new_with_label("DEBIAN");
     gtk_widget_add_css_class(deb_button, "deb");
     gtk_widget_set_size_request(deb_button, 128, 64);
     g_signal_connect(deb_button, "clicked", G_CALLBACK(lpih_window), deb_window_data);
 
     gtk_grid_attach(GTK_GRID(grid), deb_button, 0, 0, 1, 1);
-
     fed_button = gtk_button_new_with_label("FEDORA");
     gtk_widget_add_css_class(fed_button, "fed");
     gtk_widget_set_size_request(fed_button, 128, 64);
@@ -184,13 +419,11 @@ GtkWidget * make_main_window(GtkApplication *app){
     g_signal_connect(fed_button, "clicked", G_CALLBACK(lpih_window), fed_window_data);
 
     gtk_grid_attach(GTK_GRID(grid), fed_button, 1, 0, 1, 1);
-
     quit_button = gtk_button_new_with_label("QUIT");
     gtk_widget_add_css_class(quit_button, "quit");
     gtk_widget_set_name(quit_button, "quit");
     gtk_widget_set_size_request(quit_button, 128, 64);
     g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(gtk_window_destroy), window);
-
     gtk_grid_attach(GTK_GRID(grid), quit_button, 0, 1, 2, 1);
     gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
@@ -200,16 +433,12 @@ GtkWidget * make_main_window(GtkApplication *app){
 
     return GTK_WIDGET(window);
 
-
 }
-
-
 
 // Creates the main Debian or Fedora windows  when clicking the buttons on the main menu.
 void lpih_window(GtkWidget * widget, gpointer data) {
 
 MainWindowData *main_window_data = (MainWindowData *)data;
-
 
   if (widget != NULL) {
     g_print("info_button clicked.  Executing lpih_window function.\n");
@@ -231,22 +460,8 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     GtkWidget * checkbox10;
     GtkWidget * info_button;
 
-    const gchar * checkbox1_text;
-    const gchar * checkbox2_text;
-    const gchar * checkbox3_text;
-    const gchar * checkbox4_text;
-    const gchar * checkbox5_text;
-    const gchar * checkbox6_text;
-    const gchar * checkbox7_text;
-    const gchar * checkbox8_text;
-    const gchar * checkbox9_text;
-    const gchar * checkbox10_text;
-    
-    
-
-
       LpihWindowData * window_data = g_malloc(sizeof(LpihWindowData));
-// FOR DEBIAN TYPE WINDOW // // //
+
     if (main_window_data->distro == DEBIAN) {
       g_print("Chose Debian window.\n");
 
@@ -267,19 +482,6 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     window_data -> checkbox8_title = checkbox8_title_debian;
     window_data -> checkbox9_title = checkbox9_title_debian;
     window_data -> checkbox10_title = checkbox10_title_debian;
-
-      checkbox1_text = DEBIAN_STEAM;
-      checkbox2_text = DEBIAN_FLATPAK;
-      checkbox3_text = debian_gpu_command;
-      checkbox4_text = DEBIAN_TLP;
-      checkbox5_text = DEBIAN_VLC;
-      checkbox6_text = DEBIAN_MULTIMEDIA;
-      checkbox7_text = debian_microcode_command;
-      checkbox8_text = DEBIAN_GAMING;
-      checkbox9_text = DEBIAN_UFW;
-      checkbox10_text = DEBIAN_GH;
-
-// FOR FEDORA TYPE WINDOW // // //
 
     } else if (main_window_data->distro == FEDORA) {
       g_print("Chose Fedora window.  Initializing...");
@@ -302,31 +504,8 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     window_data -> checkbox9_title = checkbox9_title_fedora;
     window_data -> checkbox10_title = checkbox10_title_fedora;
     
-      checkbox1_text = FEDORA_DNF;
-      checkbox2_text = FEDORA_REP;
-      checkbox3_text = fedora_gpu_command;
-      checkbox4_text = FEDORA_TLP;
-      checkbox5_text = FEDORA_VLC;
-      checkbox6_text = FEDORA_MULTIMEDIA;
-      checkbox7_text = FEDORA_CUST;
-      checkbox8_text = FEDORA_STEAM;
-      checkbox9_text = FEDORA_FLATPAK;
-      checkbox10_text = FEDORA_GH;
-
     } else {
       g_print("\nCOULDN'T INITIALIZE CHECKBOXES\n");
-      checkbox1_text = NULL;
-      checkbox2_text = NULL;
-      checkbox3_text = NULL;
-      checkbox4_text = NULL;
-      checkbox5_text = NULL;
-      checkbox6_text = NULL;
-      checkbox7_text = NULL;
-      checkbox8_text = NULL;
-      checkbox9_text = NULL;
-      checkbox10_text = NULL;
-      //info_window_data = g_malloc(sizeof(InfoWindowData));
-      // g_free(info_window_data);
 
     }
 
@@ -391,69 +570,36 @@ MainWindowData *main_window_data = (MainWindowData *)data;
     gtk_widget_add_css_class(info_button, window_data -> info_button_css_class);
     gtk_box_append(GTK_BOX(info_button_box), info_button);
 
-
-//TODO: Create the checkbox data in the checkbox function, then destroy it when no longer needed.
-    // CHECKBOXES //////////
+    // INITIALIZE THE WINDOW'S CHECKBOXES // // // // // // // // // // // // // // // // // // // // 
     checkbox1 = gtk_check_button_new_with_label(window_data -> checkbox1_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox1);
-    CheckboxData * checkbox1_data = g_malloc(sizeof(CheckboxData));
-    checkbox1_data -> shared_buffer = buffer;
-    checkbox1_data -> associated_command = checkbox1_text;
-
+  
     checkbox2 = gtk_check_button_new_with_label(window_data -> checkbox2_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox2);
-    CheckboxData * checkbox2_data = g_malloc(sizeof(CheckboxData));
-    checkbox2_data -> shared_buffer = buffer;
-    checkbox2_data -> associated_command = checkbox2_text;
 
     checkbox3 = gtk_check_button_new_with_label(window_data -> checkbox3_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox3);
-    CheckboxData * checkbox3_data = g_malloc(sizeof(CheckboxData));
-    checkbox3_data -> shared_buffer = buffer;
-    checkbox3_data -> associated_command = checkbox3_text;
-
+  
     checkbox4 = gtk_check_button_new_with_label(window_data -> checkbox4_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox4);
-    CheckboxData * checkbox4_data = g_malloc(sizeof(CheckboxData));
-    checkbox4_data -> shared_buffer = buffer;
-    checkbox4_data -> associated_command = checkbox4_text;
 
     checkbox5 = gtk_check_button_new_with_label(window_data -> checkbox5_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox5);
-    CheckboxData * checkbox5_data = g_malloc(sizeof(CheckboxData));
-    checkbox5_data -> shared_buffer = buffer;
-    checkbox5_data -> associated_command = checkbox5_text;
 
     checkbox6 = gtk_check_button_new_with_label(window_data -> checkbox6_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox6);
-    CheckboxData * checkbox6_data = g_malloc(sizeof(CheckboxData));
-    checkbox6_data -> shared_buffer = buffer;
-    checkbox6_data -> associated_command = checkbox6_text;
 
     checkbox7 = gtk_check_button_new_with_label(window_data -> checkbox7_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox7);
-    CheckboxData * checkbox7_data = g_malloc(sizeof(CheckboxData));
-    checkbox7_data -> shared_buffer = buffer;
-    checkbox7_data -> associated_command = checkbox7_text;
 
     checkbox8 = gtk_check_button_new_with_label(window_data -> checkbox8_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox8);
-    CheckboxData * checkbox8_data = g_malloc(sizeof(CheckboxData));
-    checkbox8_data -> shared_buffer = buffer;
-    checkbox8_data -> associated_command = checkbox8_text;
-
+  
     checkbox9 = gtk_check_button_new_with_label(window_data -> checkbox9_title);
     gtk_box_append(GTK_BOX(checkbox_box), checkbox9);
-    CheckboxData * checkbox9_data = g_malloc(sizeof(CheckboxData));
-    checkbox9_data -> shared_buffer = buffer;
-    checkbox9_data -> associated_command = checkbox9_text;
-    
-     checkbox10 = gtk_check_button_new_with_label(window_data -> checkbox10_title);
-    gtk_box_append(GTK_BOX(checkbox_box), checkbox10);
-    CheckboxData * checkbox10_data = g_malloc(sizeof(CheckboxData));
-    checkbox10_data -> shared_buffer = buffer;
-    checkbox10_data -> associated_command = checkbox10_text;
 
+    checkbox10 = gtk_check_button_new_with_label(window_data -> checkbox10_title);
+    gtk_box_append(GTK_BOX(checkbox_box), checkbox10);
 
     window_data -> checkbox1 = checkbox1;
     window_data -> checkbox2 = checkbox2;
@@ -468,24 +614,24 @@ MainWindowData *main_window_data = (MainWindowData *)data;
 
     // CONNECT WIDGET CLICKS TO CALLBACK FUNCTIONS //
     g_signal_connect(info_button, "clicked", G_CALLBACK(make_info_window), main_window_data);
-
-    g_signal_connect(G_OBJECT(checkbox1), "toggled", G_CALLBACK(check_box_state), checkbox1_data);
-    g_signal_connect(G_OBJECT(checkbox2), "toggled", G_CALLBACK(check_box_state), checkbox2_data);
-    g_signal_connect(G_OBJECT(checkbox3), "toggled", G_CALLBACK(check_box_state), checkbox3_data);
-    g_signal_connect(G_OBJECT(checkbox4), "toggled", G_CALLBACK(check_box_state), checkbox4_data);
-    g_signal_connect(G_OBJECT(checkbox5), "toggled", G_CALLBACK(check_box_state), checkbox5_data);
-    g_signal_connect(G_OBJECT(checkbox6), "toggled", G_CALLBACK(check_box_state), checkbox6_data);
-    g_signal_connect(G_OBJECT(checkbox7), "toggled", G_CALLBACK(check_box_state), checkbox7_data);
-    g_signal_connect(G_OBJECT(checkbox8), "toggled", G_CALLBACK(check_box_state), checkbox8_data);
-    g_signal_connect(G_OBJECT(checkbox9), "toggled", G_CALLBACK(check_box_state), checkbox9_data);
-    g_signal_connect(G_OBJECT(checkbox10), "toggled", G_CALLBACK(check_box_state), checkbox10_data);
+    
+    g_signal_connect(G_OBJECT(checkbox1), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox2), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox3), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox4), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox5), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox6), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox7), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox8), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox9), "toggled", G_CALLBACK(check_box_state), buffer);
+    g_signal_connect(G_OBJECT(checkbox10), "toggled", G_CALLBACK(check_box_state), buffer);
 
     g_signal_connect(window, "destroy", G_CALLBACK(on_lpih_window_destroy), window_data);
 
     gtk_window_present(GTK_WINDOW(window));
     window_data -> window_open_flag = TRUE;
 
-  }// else {      g_print("Window already open: %d\n", window_data->window_open_flag); }
+  } else {  g_print("Window already open!\n");  }
 
 }
 
@@ -506,5 +652,4 @@ gboolean on_lpih_window_destroy(GtkWidget * window, gpointer data) {
     
     return TRUE;
   }
-
 }

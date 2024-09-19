@@ -24,10 +24,6 @@
 
 #include <stdlib.h>
 
-#include <string.h>
-
-#include "utility.h"
-
 #include "lpih-window.h"
 
 #include "info-window.h"
@@ -35,8 +31,6 @@
 ///////////////////////////////////////////
 ///////// INFORMATIONAL WINDOW:  //////////
 ///////////////////////////////////////////
-
-
 
 gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
   if (widget != NULL) {
@@ -124,15 +118,20 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
 
   gchar * tab_text = NULL;
   gsize length = 0;
-  GError * error = NULL;
+  
+  GError * error = g_malloc(sizeof(GError)); 
+  error = g_error_new(G_FILE_ERROR, G_FILE_ERROR_NOENT, "Failed to load the text file.\n" );
 
   if (g_file_get_contents(res_path1, &tab_text, &length, &error)) {
     gtk_text_buffer_set_text(buffer, tab_text, -1);
     g_free(tab_text);
+    g_free(error);
+        
   } else if (g_file_get_contents(res_path2, & tab_text, & length, & error)) {
 
     gtk_text_buffer_set_text(buffer, tab_text, -1);
     g_free(tab_text);
+    g_free(error);
 
   } else {
     g_print("Failed to load info file: %s\n", error -> message);
