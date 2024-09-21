@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version='0.3.0'
+version='0.3.1'
 sources_dir="/home/${USER}/rpmbuild/SOURCES/LPIH-${version}"
 spec_dir="/home/${USER}/rpmbuild/SPECS"
 starting_dir=$(realpath ../)
@@ -19,7 +19,7 @@ echo "*****************************"
 
 # Moves the rpmbuild dir structure from the Linux-Post-install-Helper project root dir to the home dir so it can be used properly.
 
-cp -r ../rpmbuild /home/${USER}/rpmbuild
+cp -R ../rpmbuild /home/${USER}/rpmbuild
 if [ $? != 0 ]; then
 echo "**************"
 echo "Failed to copy rpmbuild directory to home directory."
@@ -56,7 +56,6 @@ echo "**************"
 echo "Failed to create .rpm for LPIH.  Make sure you adjusted the version numbers for the folders in the SOURCES directory in the /home/${USER}/rpmbuild directory."
 else
 echo "Successfully created .rpm for LPIH.  Find it in /home/${USER}/rpmbuild"
-
 
 fi
 

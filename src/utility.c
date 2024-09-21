@@ -34,42 +34,38 @@
 
 // This file contains functions outside of the realm of window generation.  You will find in here the functions to get the checkbox handling function, the functions to identify the CPU and GPU vendors, and the css initializer function.
 
+void set_cpu_vendor(void) {
 
+  gpointer cpu_vendor_name = NULL;
+  gchar vendor[15];
+  get_cpu_vendor(vendor);
+  cpu_vendor_name = g_malloc(15);
 
-void set_cpu_vendor(void){
+  if (strstr(vendor, "AMD") != NULL) {
+    *(enum vendor_name * ) cpu_vendor_name = AMD;
 
-    gpointer cpu_vendor_name = NULL;
-    gchar vendor[15];
-    get_cpu_vendor(vendor);
-    cpu_vendor_name = g_malloc(15);
-    
-    if (strstr(vendor, "AMD") != NULL) {
-      *(enum vendor_name * ) cpu_vendor_name = AMD;
+  } else if (strstr(vendor, "Intel") != NULL) {
+    *(enum vendor_name * ) cpu_vendor_name = Intel;
 
-    } else if (strstr(vendor, "Intel") != NULL) {
-      *(enum vendor_name * ) cpu_vendor_name = Intel;
-
-    } else {
-      g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
-      g_print("*************************************\n\n");
-      *(enum vendor_name * ) cpu_vendor_name = Unknown;
-
-    }
-
-    // Print mfgs
-
-    g_print("The CPU vendor for this machine is %s.\n", vendor);
+  } else {
+    g_print("*****ERROR: The CPU vendor could not be determined for this computer.\n");
     g_print("*************************************\n\n");
+    *(enum vendor_name * ) cpu_vendor_name = Unknown;
 
-    // Determine Debian microcode command
-    if ( * (enum vendor_name * ) cpu_vendor_name == AMD) {
-      debian_microcode_command = "  sudo apt install amd64-microcode;\n";
-    } else if ( * (enum vendor_name * ) cpu_vendor_name == Intel) {
-      debian_microcode_command = "  sudo apt install intel-microcode;\n";
-      g_print("Debian microcode command is: %s", debian_microcode_command);
-    } else {
-      g_print("*****ERROR: Something went wrong trying to get the cpu vendor_name.*****\n");
-    }
+  }
+
+  g_print("The CPU vendor for this machine is %s.\n", vendor);
+  g_print("*************************************\n\n");
+
+  // Determine Debian microcode command
+  if ( * (enum vendor_name * ) cpu_vendor_name == AMD) {
+    debian_microcode_command = "  sudo apt install amd64-microcode;\n";
+  } else if ( * (enum vendor_name * ) cpu_vendor_name == Intel) {
+    debian_microcode_command = "  sudo apt install intel-microcode;\n";
+    g_print("Debian microcode command is: %s", debian_microcode_command);
+  } else {
+    g_print("*****ERROR: Something went wrong trying to get the CPU vendor_name.*****\n");
+  }
 
   g_free(cpu_vendor_name);
 }
@@ -89,36 +85,35 @@ void get_cpu_vendor(gchar * vendor) {
   vendor[13] = '\0';
 }
 
-
 void set_gpu_vendor(void) {
-    
-    const char * gpu_vendor = (const char *)glGetString(GL_VENDOR);      
-    const gchar * deb_nvidia_gpu = "  sudo apt install nvidia-driver nvidia-driver-libs nvidia-driver-libs:i386;\n";
-    const gchar * fed_nvidia_gpu = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
-    const gchar * fed_amd_gpu = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
-    const gchar * deb_amd_gpu = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
-    const gchar * deb_intel_gpu = "  # Intel GPU drivers should already be installed. \n";
+
+  const char * gpu_vendor = (const char * ) glGetString(GL_VENDOR);
+  const gchar * deb_nvidia_gpu = "  sudo apt install nvidia-driver nvidia-driver-libs nvidia-driver-libs:i386;\n";
+  const gchar * fed_nvidia_gpu = "  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda \n";
+  const gchar * fed_amd_gpu = "  sudo dnf install xorg-x11-drv-amdgpu vulkan-tools mesa-vulkan-drivers \n";
+  const gchar * deb_amd_gpu = "  sudo apt install firmware-linux firmware-linux-nonfree libdrm-amdgpu1 xserver-xorg-video-amdgpu;\n";
+  const gchar * deb_intel_gpu = "  # Intel GPU drivers should already be installed. \n";
   //  gchar * fed_intel_gpu = "  # Intel GPU drivers should already be installed. \n";
 
-    if (strstr(gpu_vendor, "NVIDIA") != NULL) {
+  if (strstr(gpu_vendor, "NVIDIA") != NULL) {
 
-      debian_gpu_command = deb_nvidia_gpu;
-      fedora_gpu_command = fed_nvidia_gpu;
-    } else if (strstr(gpu_vendor, "AMD") != NULL) {
+    debian_gpu_command = deb_nvidia_gpu;
+    fedora_gpu_command = fed_nvidia_gpu;
+  } else if (strstr(gpu_vendor, "AMD") != NULL) {
 
-      debian_gpu_command = deb_amd_gpu;
-      fedora_gpu_command = fed_amd_gpu;
-    } else if (strstr(gpu_vendor, "Intel") != NULL) {
+    debian_gpu_command = deb_amd_gpu;
+    fedora_gpu_command = fed_amd_gpu;
+  } else if (strstr(gpu_vendor, "Intel") != NULL) {
 
-      debian_gpu_command = deb_intel_gpu;
-      fedora_gpu_command = debian_gpu_command;
-    } else {
-    
-      debian_gpu_command = deb_intel_gpu;
-      fedora_gpu_command = deb_intel_gpu;
-    
-    }
-    g_print("The GPU vendor for this machine is %s.\n", gpu_vendor);
+    debian_gpu_command = deb_intel_gpu;
+    fedora_gpu_command = debian_gpu_command;
+  } else {
+
+    debian_gpu_command = deb_intel_gpu;
+    fedora_gpu_command = deb_intel_gpu;
+
+  }
+  g_print("The GPU vendor for this machine is %s.\n", gpu_vendor);
 }
 
 gboolean init_css_provider() {
@@ -132,13 +127,13 @@ gboolean init_css_provider() {
   FILE * cssFileForAppInstalled = fopen(cssPathForAppInstalled, "r");
   FILE * cssFileForAppInSrc = fopen(cssPathForAppInSrc, "r");
 
-// Handling CSS file being read from source tarball / project directory:
+  // Handling CSS file being read from source tarball / project directory:
   if (cssFileForAppInSrc) {
     g_print("The CSS file was found beside the executable.\n");
     cssFilePathDecided = cssPathForAppInSrc;
     fclose(cssFileForAppInSrc);
-    
-// Handling CSS file being read from the directory it gets installed to with the .deb and .rpm packages:
+
+    // Handling CSS file being read from the directory it gets installed to with the .deb and .rpm packages:
   } else if (cssPathForAppInstalled) {
     g_print("The CSS file was found in /usr/share/LPIH/css");
     cssFilePathDecided = cssPathForAppInstalled;
@@ -159,7 +154,3 @@ gboolean init_css_provider() {
     return FALSE;
   }
 }
-
-
-
-

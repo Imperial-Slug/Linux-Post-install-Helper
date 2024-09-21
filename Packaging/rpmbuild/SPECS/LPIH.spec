@@ -1,13 +1,13 @@
 Name:		LPIH
-Version:	0.3.0
-Release:	0.2.1%{?dist}
+Version:	0.3.1
+Release:	0.3.1%{?dist}
 Summary:        Linux post-install Helper
 License:	GPL 3.0
 
 ExclusiveArch:  x86_64
 URL:		https://www.github.com/Imperial-Slug/Linux-Post-install-helper
 Source0:	%{name}-%{version}.tar.gz
-BuildRequires:  clang make gtk4 gtk4-devel mesa-libGL-devel pkgconfig
+BuildRequires:  gcc make gtk4 gtk4-devel mesa-libGL-devel pkgconfig
 
 %description
 Linux post install helper.

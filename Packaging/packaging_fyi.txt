@@ -1,24 +1,27 @@
- USE THE PACKAGING AUTOMATION (SIMPLEST OPTION)
+===========================================================
+  USE THE PACKAGING AUTOMATION
  
- Go to Packaging_Automation and run deb_gen.sh or rpm_gen.sh, depending on which distro you are on.
+ Go to Packaging_Automation and run deb_gen.sh or rpm_gen.sh, depending on which distro you are on (Debian or Fedora, respectively).
  
- Manual steps:
+===========================================================
  
-FOR DEBIAN PACKAGES
+  MANUAL PACKAGING STEPS:
+ 
+  FOR DEBIAN PACKAGES
 
 The debian file directory structure for the construction of a .deb package is in the Linux-Post-install-Helper/Packaging/LPIH-0.X directory.  For the deb package, the compiled binary and the resource files need to be copied into the appropriate directory in Packaging/LPIH-0.X.  Automation will continue to be improved for these trivial packaging tasks.
 
-Use the dpkg-deb command to create the .deb once all files are updated.
+ Use the dpkg-deb command to create the .deb once all files are updated.
 
-dpkg-deb LPIH-0.X
+ dpkg-deb LPIH-<version>
 
-To uninstall the .deb:
+ To uninstall the .deb:
  sudo dpkg -r LPIH
  
- 
+============================================================
 FOR FEDORA RPM PACKAGING
 
-Similarly, the rpmbuild directory holds the necessary files and setup to create a new .rpm package.  It needs to be copied to your home directory before you run the final command. Here you will need to replace all new source and resource files in the rpmbuild/SOURCES/LPIH-0.X directory, then compress them into a tar ball (using the one-line shell script in that directory if you like.) 
+Similarly, the rpmbuild directory holds the necessary files and setup to create a new .rpm package.  It needs to be copied to your home directory before you run the rpmbuild command.  Here you will need to replace all new source and resource files in the rpmbuild/SOURCES/LPIH-0.X directory, then compress them into a tar ball (using the one-line shell script in that directory if you like.) 
 
 If files are being added or removed from the configuration, you will need to regenerate the config.ac files and such.  Automation is coming for this to make things simpler.
 
@@ -26,5 +29,3 @@ Once your tar ball has been made, run this from the rpmbuild/SPECS directory to 
 
 rpmbuild -ba lpih.spec
 
-copy rpmbuild dir to your home dir on fedora
-Copy rpmbuild to your homedir while making a new RPM package.
