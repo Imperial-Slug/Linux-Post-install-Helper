@@ -3,7 +3,7 @@
 # -fsanitize=address
 
 CC = gcc
-CFLAGS = -Wall -g -Wextra -Werror -flto -march=native -I../include -Iinclude
+CFLAGS = -Wall -g -Wextra -Werror -flto -O3 -march=native -I../include -Iinclude
 LIBS = -lGL
 TARGET = lpih
 SRC = lpih-main.c lpih-window.c info-window.c utility.c
@@ -17,7 +17,6 @@ all: $(TARGET)
 	ifeq ($(DISTRO),debian)
     	CFLAGS += $(shell pkg-config --cflags gtk4)
     	LIBS += $(shell pkg-config --libs gtk4)
-    	echo $(DISTRO)
    	DEPENDENCIES = libgtk-4-1 libgtk-4-dev
 	else ifeq ($(DISTRO),ubuntu)
     	CFLAGS += $(shell pkg-config --cflags gtk4)

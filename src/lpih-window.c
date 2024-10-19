@@ -49,8 +49,6 @@ enum CheckboxNumber get_number_from_checkbox_label(gchar * checkbox_label, enum 
   if (distro == DEBIAN) {
     enum CheckboxNumber checkbox_number;
 
-    g_print("Line 141 lpih-window: checkbox_label = %s", checkbox_label);
-
     if (strstr(checkbox_label, "Steam") != NULL) {
       checkbox_number = 1;
       g_print("Checkbox1 clicked.\n");
@@ -167,8 +165,6 @@ enum Distro get_distro_from_parent_title(GtkWidget * widget) {
 
   const gchar * fifth_parent_title = get_nth_parent_window_title(widget, 4);
 
-  g_print("The fifth_parent_title of this window is %s \n", fifth_parent_title);
-
   if (strstr(fifth_parent_title, "Debian") != NULL) {
     enum Distro debian = DEBIAN;
     return debian;
@@ -187,7 +183,7 @@ gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
   gboolean state = gtk_check_button_get_active(GTK_CHECK_BUTTON(checkbox));
   const gchar * checkbox_label = gtk_check_button_get_label(GTK_CHECK_BUTTON(checkbox));
   enum Distro distro = get_distro_from_parent_title(checkbox);
-  const gchar * command_string;
+  const gchar * command_string = NULL;
 
   enum CheckboxNumber checkbox_number = get_number_from_checkbox_label((gchar * ) checkbox_label, distro);
 
@@ -267,7 +263,6 @@ gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
     }
   }
 
-  g_print("Trying to print %s\n", command_string);
   GtkTextIter iter;
   if (state) {
     gtk_text_buffer_get_end_iter(buffer, & iter);
@@ -352,9 +347,10 @@ void lpih_window(GtkWidget * widget, gpointer data) {
 
   MainWindowData * main_window_data = (MainWindowData * ) data;
 
+// Needed to avoid 'unused widget' compiler error.
   if (widget != NULL) {
-    g_print("info_button clicked.  Executing lpih_window function.\n");
-  }
+    g_print("Executing lpih_window function.\n");
+  } else { g_print("Couldn't open the distro window.\n"); }
 
   if (main_window_data -> window_open_flag != TRUE) {
 
@@ -418,7 +414,7 @@ void lpih_window(GtkWidget * widget, gpointer data) {
       window_data -> checkbox10_title = checkbox10_title_debian;
 
     } else if (main_window_data -> distro == FEDORA) {
-      g_print("Chose Fedora window.  Initializing...");
+      g_print("Chose Fedora window.  Initializing...\n");
 
       const gchar * FEDORA_OPENER = "  # Check the boxes according to your needs and run the resulting script in your terminal  \n  # to set up the desired functionality on your Fedora system.  \n\n  sudo dnf update;  \n";
 
