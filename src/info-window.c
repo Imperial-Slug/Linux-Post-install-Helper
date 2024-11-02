@@ -40,17 +40,17 @@ gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
     info_window_data -> info_open_flag = FALSE;
 
     if (info_window_data -> info_open_flag == FALSE) {
-      g_print("info_open_flag for %s set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
+      g_print("info_open_flag for %s set to FALSE.  Freeing info_window_data memory...\n", info_window_data -> info_window_name);
       g_free(info_window_data);
       return TRUE;
     } else {
-      g_print("%s info_open_flag: Failed to set to FALSE.  Freeing memory...\n", info_window_data -> info_window_name);
+      g_print("%s info_open_flag: Failed to set to FALSE.  Freeing info_window_data memory...\n", info_window_data -> info_window_name);
       g_free(info_window_data);
       return FALSE;
     }
   } else {
-    g_print("on_info_window_destroy: Widget is NULL. Freeing memory...\n");
-
+    g_print("on_info_window_destroy: Widget is NULL. Freeing info_window_data memory...\n");
+    
     return FALSE;
   }
 }

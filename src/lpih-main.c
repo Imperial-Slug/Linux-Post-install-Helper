@@ -19,7 +19,7 @@
  */
 
 ////////////////////////////////////////
-////        L I B R A R I E S   ////////
+////       L I B R A R I E S    ////////
 ////////////////////////////////////////
 #include <gtk/gtk.h>
 
@@ -38,7 +38,8 @@
 // Static variable for keeping track of single-instance of the application.
 gboolean lpih_instance_running = FALSE;
 
-////// INITIAL WINDOW ////////////////////////////////////////////////////
+////////// INITIAL WINDOW //////////
+
 ///// Creates the initial window where the distro is selected by clicking one of two buttons. //////////
 
 void activate(GtkApplication * app) {

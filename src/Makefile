@@ -3,14 +3,14 @@
 # -fsanitize=address
 
 CC = gcc
-CFLAGS = -Wall -g -Wextra -Werror -flto -O3 -march=native -I../include -Iinclude
+CFLAGS = -Wall -g -Wextra -Werror -flto -O3 -I../include -Iinclude
 LIBS = -lGL
 TARGET = lpih
 SRC = lpih-main.c lpih-window.c info-window.c utility.c
 
 
-
-all: $(TARGET)
+# Destroy the old executable, then determine CFLAGS and libraries. 
+all: clean $(TARGET)
 
      	DISTRO := $(shell grep '^ID=' /etc/os-release | cut -d'=' -f2)
 
@@ -30,6 +30,8 @@ all: $(TARGET)
     	CFLAGS += $(shell pkg-config --cflags gtk4)
     	LIBS += $(shell pkg-config --libs gtk4)
 	endif
+
+# Compile using these generated arguments for CFLAGS and LIBS.
 
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
