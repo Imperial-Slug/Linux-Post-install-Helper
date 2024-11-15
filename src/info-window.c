@@ -32,12 +32,20 @@
 ///////// INFORMATIONAL WINDOW:  //////////
 ///////////////////////////////////////////
 
+ gboolean debian_info_open = FALSE;
+ gboolean fedora_info_open = FALSE;
+
 gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
+  
+      InfoWindowData * info_window_data = (InfoWindowData * ) data;
+  
   if (widget != NULL) {
+    if (info_window_data -> distro_id == DEBIAN) {
+    debian_info_open = FALSE;
+} else if(info_window_data -> distro_id == FEDORA) {
+    fedora_info_open = FALSE;
+}
 
-    InfoWindowData * info_window_data = (InfoWindowData * ) data;
-
-    info_window_data -> info_open_flag = FALSE;
 
     if (info_window_data -> info_open_flag == FALSE) {
       g_print("info_open_flag for %s set to FALSE.  Freeing info_window_data memory...\n", info_window_data -> info_window_name);
@@ -50,7 +58,7 @@ gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
     }
   } else {
     g_print("on_info_window_destroy: Widget is NULL. Freeing info_window_data memory...\n");
-    
+    g_free(info_window_data);
     return FALSE;
   }
 }
@@ -153,16 +161,14 @@ void make_info_window(GtkWidget * widget, gpointer data) {
   if (widget != NULL) {
 
     MainWindowData * main_window_data = (MainWindowData * ) data;
-
     InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
-
-    if (info_window_data != NULL) {
-      g_print("info_window_data memory initalized. \n");
-    } else {
-      g_print("info_window_data failed to initialize.");
-    }
-
+    
+    gboolean ok_create_info_window = FALSE;
     if (main_window_data -> distro == DEBIAN) {
+
+      if (debian_info_open != TRUE) {
+    
+        debian_info_open = TRUE;
 
       gchar * info_window_name_debian = "deb_info_window";
       gchar * info_window_title_debian = "LPIH: Debian Info";
@@ -174,27 +180,32 @@ void make_info_window(GtkWidget * widget, gpointer data) {
       info_window_data -> notebook_css_name = notebook_css_debian;
       info_window_data -> distro_id = info_distro_debian;
       info_window_data -> info_open_flag = debian_info_open;
+      ok_create_info_window = TRUE;
+      
+    }} else if (main_window_data -> distro == FEDORA) {
 
-    } else if (main_window_data -> distro == FEDORA) {
-
+       if (fedora_info_open != TRUE) {
+    
+       fedora_info_open = TRUE;
       gchar * info_window_name = "fed_info_window";
       gchar * info_window_title = "LPIH: Fedora Info";
       gchar * notebook_css = "fed_notebook";
       enum Distro info_distro_fedora = FEDORA;
-
+      ok_create_info_window = TRUE;
       info_window_data -> info_window_name = info_window_name;
       info_window_data -> info_window_title = info_window_title;
       info_window_data -> notebook_css_name = notebook_css;
       info_window_data -> distro_id = info_distro_fedora;
       info_window_data -> info_open_flag = fedora_info_open;
-
-    } else {
+      
+      
+    }} else {
 
       g_print("Couldn't get distro of info window to be created.\n");
 
     }
 
-    if (info_window_data -> info_open_flag != TRUE) {
+if (ok_create_info_window == TRUE){
 
       GtkWidget * info_window;
 
@@ -217,14 +228,20 @@ void make_info_window(GtkWidget * widget, gpointer data) {
       gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
       g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
       gtk_widget_set_visible(info_window, TRUE);
-      info_window_data -> info_open_flag = TRUE;
+      
+      
+     // info_window_data -> info_open_flag = TRUE;
+      
+      
+      
+      
       g_print("Info window created!  \n");
 
-    } else {
-      g_print("This info window is already open.\n");
-
-    }
-  } else {
-    g_print("make_info_window: info_button caller widget is NULL.\n");
-  }
+   }
+    
+  } else { g_print("\nWindow is NULL\n\n"); }
+  
 }
+
+
+

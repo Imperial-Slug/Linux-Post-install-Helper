@@ -40,10 +40,6 @@ gboolean debian_window_open = FALSE;
 gboolean fedora_window_open = FALSE;
 // const gchar* DEBIAN_CONTRIB_NONFREE = "sudo sh -c 'if test -f /etc/apt/sources.list; then echo "contrib non-free" >> /etc/apt/sources.list; fi'"
 
-// Keeping track of whether the Fedora and Debian windows are open.
-gboolean debian_info_open = FALSE;
-gboolean fedora_info_open = FALSE;
-
 enum CheckboxNumber get_number_from_checkbox_label(gchar * checkbox_label, enum Distro distro) {
 
   if (distro == DEBIAN) {
@@ -327,6 +323,7 @@ gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
 
 GtkWidget * make_main_window(GtkApplication * app) {
 
+// These structs are passed in to create a different window depending on which button is pressed in the main window: Debian or Fedora.
   MainWindowData * deb_window_data = g_malloc(sizeof(MainWindowData));
   MainWindowData * fed_window_data = g_malloc(sizeof(MainWindowData));
   /////////////////////////////////////////////////////////////////////////
@@ -391,13 +388,30 @@ void lpih_window(GtkWidget * widget, gpointer data) {
 
   MainWindowData * main_window_data = (MainWindowData * ) data;
 
-// Needed to avoid 'unused widget' compiler error.
+// widget != NULL Needed to avoid 'unused widget' compiler warning.
   if (widget != NULL) {
     g_print("Executing lpih_window function.\n");
   } else { g_print("Couldn't open the distro window.\n"); }
 
-  if (main_window_data -> window_open_flag != TRUE) {
+gboolean window_open = FALSE;
+  if (main_window_data -> distro == DEBIAN) {
+    window_open = debian_window_open;
+} else if(main_window_data ->distro == FEDORA) {
+    window_open = fedora_window_open;
+}
 
+
+  if (window_open != TRUE) {
+
+  if (main_window_data -> distro == DEBIAN) {
+   debian_window_open = TRUE;
+} else if(main_window_data ->distro == FEDORA) {
+    fedora_window_open = TRUE;
+}
+
+
+    main_window_data -> window_open_flag = TRUE;
+    
     GtkWidget * window;
     GtkWidget * box;
     GtkWidget * checkbox1;
@@ -644,6 +658,14 @@ void lpih_window(GtkWidget * widget, gpointer data) {
 
 gboolean on_lpih_window_destroy(GtkWidget * window, gpointer data) {
   LpihWindowData * window_data = (LpihWindowData * ) data;
+  
+    if (window_data -> distro_id == DEBIAN) {
+    debian_window_open = FALSE;
+} else if(window_data -> distro_id == FEDORA) {
+    fedora_window_open = FALSE;
+} else {g_print("Can't find distro.");}
+
+  
   window_data -> window_open_flag = FALSE;
 
   if (gtk_widget_is_visible(window)) {

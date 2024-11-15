@@ -30,44 +30,12 @@ extern
 const gchar * debian_gpu_command;
 extern
 const gchar * DEBIAN_OPENER;
-extern
-const gchar * DEBIAN_STEAM;
-extern
-const gchar * DEBIAN_GAMING;
-extern
-const gchar * DEBIAN_FLATPAK;
-extern
-const gchar * DEBIAN_MULTIMEDIA;
-extern
-const gchar * DEBIAN_UFW;
-extern
-const gchar * DEBIAN_TLP;
-extern
-const gchar * DEBIAN_VLC;
 
  extern 
  const gchar* fedora_gpu_command;
 
  extern
  const gchar* FEDORA_OPENER;
- extern 
- const gchar* FEDORA_REP;
- extern
- const gchar* FEDORA_STEAM;
- extern
- const gchar* FEDORA_DNF;
- extern
- const gchar* FEDORA_FLATPAK;
- extern
- const gchar* FEDORA_CUST;
- extern
- const gchar* FEDORA_MULTIMEDIA;
- extern
- const gchar* FEDORA_TLP;
- extern
- const gchar* FEDORA_VLC;
- extern
- const gchar * FEDORA_GH;
  
  typedef struct {
 
@@ -115,10 +83,8 @@ GtkWidget * checkbox11;
 } LpihWindowData;
 
 extern gboolean debian_window_open;
-extern gboolean debian_info_open;
-
 extern gboolean fedora_window_open;
-extern gboolean fedora_info_open;
+
 
 extern const gchar *debian_microcode_command;
 extern const gchar *debian_gpu_command;
