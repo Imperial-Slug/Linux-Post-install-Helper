@@ -6,7 +6,7 @@ enum vendor_name {
 };
 
  // Function to get the CPU vendor strings. // // // // // // // // // // // // // // //
- void get_cpu_vendor(char * vendor);
+ void get_cpu_vendor(gchar * vendor);
  gboolean init_css_provider();
  const char * getGraphicsCardVendor(void);
  void set_gpu_vendor(void);

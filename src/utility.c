@@ -72,18 +72,27 @@ void set_cpu_vendor(void) {
 
 // Function that uses inline assembly to get the vendor string of the CPU
 // The vendor gchar array is declared at runtime and fed into this function in lpih-main.c.
-void get_cpu_vendor(gchar * vendor) {
-  // Use inline assembly to execute the "cpuid" instruction and get the manufacturer of this machine's CPU.
-  __asm__ volatile(
-    "cpuid" // Execute the cpuid instruction
-    : "=b"(((unsigned int * ) vendor)[0]),
-    "=d"(((unsigned int * ) vendor)[1]),
-    "=c"(((unsigned int * ) vendor)[2]): "a"(0)
-  );
 
-  // NULL terminate vendor string.
-  vendor[13] = '\0';
+void get_cpu_vendor(gchar * vendor) {
+    // Use inline assembly to execute the "cpuid" instruction and get the CPU vendor.
+    unsigned int registers[4] = {0};
+
+    __asm__ volatile(
+        "cpuid"
+        : "=b"(registers[1]), // EBX
+          "=d"(registers[2]), // EDX
+          "=c"(registers[3])  // ECX
+        : "a"(registers[0])   // EAX = 0
+    );
+
+    // Copy results to vendor array and NULL-terminate.
+    memcpy(vendor, &registers[1], 4); // Copy EBX
+    memcpy(vendor + 4, &registers[2], 4); // Copy EDX
+    memcpy(vendor + 8, &registers[3], 4); // Copy ECX
+    vendor[12] = '\0'; // Null-terminate
 }
+
+
 
 void set_gpu_vendor(void) {
 
@@ -139,7 +148,7 @@ gboolean init_css_provider() {
     cssFilePathDecided = cssPathForAppInstalled;
     fclose(cssFileForAppInstalled);
   } else {
-    g_print("*********************\nERROR: Can't find the CSS file!  Please report this to the LPIH maintainer so it can be fixed.\n*********************\n\n");
+    g_print("*********************\nERROR: Can't find the CSS file! \n*********************\n\n");
   }
 
   gtk_css_provider_load_from_path(provider, cssFilePathDecided);

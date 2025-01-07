@@ -35,7 +35,7 @@ all: clean $(TARGET)
 
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
-	echo $(DISTRO)
+	
 clean:
 	rm -f $(TARGET)
 

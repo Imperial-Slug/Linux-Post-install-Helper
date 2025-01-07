@@ -3,9 +3,9 @@
 
 gboolean on_lpih_window_destroy(GtkWidget * widget, gpointer data);
 void lpih_window(GtkWidget * widget, gpointer window_data);
-gboolean on_info_window_destroy(GtkWidget* widget, gpointer data);
+gboolean on_info_window_destroy(GtkWidget * widget, gpointer data);
 
-enum Distro { DEBIAN = 1, FEDORA = 2 };
+enum Distro { DEBIAN = 1, FEDORA = 2, OTHER = 3 };
 void make_info_window(GtkWidget *widget, gpointer data);
 
 enum CheckboxNumber { 
@@ -31,11 +31,11 @@ const gchar * debian_gpu_command;
 extern
 const gchar * DEBIAN_OPENER;
 
- extern 
- const gchar* fedora_gpu_command;
+extern 
+const gchar* fedora_gpu_command;
 
- extern
- const gchar* FEDORA_OPENER;
+extern
+const gchar* FEDORA_OPENER;
  
  typedef struct {
 
@@ -48,12 +48,13 @@ const gchar * DEBIAN_OPENER;
 }
 InfoWindowData;
  
+ // Used to hold Fedora or Debian window's data, respectively.
  typedef struct {
 
 enum Distro distro_id;
 gboolean window_open_flag; 
-gchar * css_label;
-gchar * window_title;
+const gchar * css_label;
+const gchar * window_title;
 gchar * view_css_class;
 const gchar * opener;
 gchar * info_button_css_class;
@@ -98,7 +99,7 @@ enum Distro distro;
 
 } CheckboxData;
 
-
+// Smaller struct used for distinguishing distro and "open" flag of a window.
 typedef struct {
 gboolean window_open_flag;
 enum Distro distro;

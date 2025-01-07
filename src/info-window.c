@@ -36,32 +36,38 @@
  gboolean fedora_info_open = FALSE;
 
 gboolean on_info_window_destroy(GtkWidget * widget, gpointer data) {
-  
-      InfoWindowData * info_window_data = (InfoWindowData * ) data;
-  
-  if (widget != NULL) {
-    if (info_window_data -> distro_id == DEBIAN) {
-    debian_info_open = FALSE;
-} else if(info_window_data -> distro_id == FEDORA) {
-    fedora_info_open = FALSE;
-}
+  // Suppress unused widget warning.
+  (void)widget;
+  InfoWindowData * info_window_data = (InfoWindowData * ) data;
 
 
-    if (info_window_data -> info_open_flag == FALSE) {
-      g_print("info_open_flag for %s set to FALSE.  Freeing info_window_data memory...\n", info_window_data -> info_window_name);
-      g_free(info_window_data);
-      return TRUE;
-    } else {
-      g_print("%s info_open_flag: Failed to set to FALSE.  Freeing info_window_data memory...\n", info_window_data -> info_window_name);
-      g_free(info_window_data);
-      return FALSE;
-    }
-  } else {
-    g_print("on_info_window_destroy: Widget is NULL. Freeing info_window_data memory...\n");
-    g_free(info_window_data);
-    return FALSE;
-  }
+  
+ if(check_distro_from_window_data(info_window_data) == DEBIAN) {
+  debian_info_open = FALSE;
+  return TRUE;
+  } else if(check_distro_from_window_data(info_window_data) == FEDORA) {
+  fedora_info_open = FALSE;
+  return TRUE;
+  } else { return FALSE; }
+
+
 }
+
+enum Distro check_distro_from_window_data(gpointer data) {
+
+InfoWindowData * info_window_data = (InfoWindowData *)data;
+enum Distro info_distro = OTHER;
+
+  if(info_window_data -> distro_id == DEBIAN) {
+  info_distro = DEBIAN;
+  } else if(info_window_data -> distro_id == FEDORA) {
+  info_distro = FEDORA;
+  } else { g_print("Couldn't get distro in function check_distro_from_window_data(gpointer data).  \n"); }
+
+  return info_distro;
+
+}
+
 
 GtkWidget * make_notebook(gpointer data) {
   InfoWindowData * info_window_data = (InfoWindowData * ) data;
@@ -92,10 +98,49 @@ GtkWidget * make_notebook(gpointer data) {
     return notebook;
 
   } else {
-    g_print("Invalid distro number.  Can't determine which distro's text-files to read.  \n");
+    g_print("ERROR DURING gtk_notebook CREATION: Invalid distro number.  Can't determine which distro's text-files to read.  \n");
     return NULL;
   }
 }
+
+gboolean init_info_gui(gpointer data) {
+      InfoWindowData * info_window_data = (InfoWindowData *) data;
+
+      GtkWidget *info_window;
+
+      info_window = gtk_window_new();
+     
+      gtk_widget_add_css_class(info_window, info_window_data -> info_window_name);
+      gtk_window_set_title(GTK_WINDOW(info_window), info_window_data -> info_window_title);
+      gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
+      gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
+      gtk_widget_set_vexpand(info_window, TRUE);
+      gtk_widget_set_hexpand(info_window, TRUE);
+
+      GtkWidget * notebook = make_notebook(info_window_data);
+
+      gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
+      g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
+      gtk_widget_set_visible(info_window, TRUE);
+      
+      ///////////////////////
+      
+       if (gtk_widget_is_visible(info_window)) {
+    g_print("info_window created.  \n");
+
+    return TRUE;
+
+  } else {
+
+    g_print("Failed to create info_window.  \n");
+
+    return FALSE;
+  }
+      
+      //////////////////////
+    
+  } 
+
 
 void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * tab_label, gchar * tab_css_label, gchar * res_path1, gchar * res_path2) {
 
@@ -130,12 +175,12 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
   GError * error = g_malloc(sizeof(GError));
   error = g_error_new(G_FILE_ERROR, G_FILE_ERROR_NOENT, "Failed to load the text file.\n");
 
-  if (g_file_get_contents(res_path1, & tab_text, & length, & error)) {
+  if (g_file_get_contents(res_path1, &tab_text, &length, &error)) {
     gtk_text_buffer_set_text(buffer, tab_text, -1);
     g_free(tab_text);
     g_free(error);
 
-  } else if (g_file_get_contents(res_path2, & tab_text, & length, & error)) {
+  } else if (g_file_get_contents(res_path2, &tab_text, &length, &error)) {
 
     gtk_text_buffer_set_text(buffer, tab_text, -1);
     g_free(tab_text);
@@ -160,13 +205,13 @@ void create_notebook_tab(GtkWidget * notebook, gchar * view_css_label, gchar * t
 void make_info_window(GtkWidget * widget, gpointer data) {
   if (widget != NULL) {
 
-    MainWindowData * main_window_data = (MainWindowData * ) data;
-    InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
+       MainWindowData * main_window_data = (MainWindowData * ) data;
     
-    gboolean ok_create_info_window = FALSE;
     if (main_window_data -> distro == DEBIAN) {
 
       if (debian_info_open != TRUE) {
+    
+     InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
     
         debian_info_open = TRUE;
 
@@ -179,68 +224,46 @@ void make_info_window(GtkWidget * widget, gpointer data) {
       info_window_data -> info_window_title = info_window_title_debian;
       info_window_data -> notebook_css_name = notebook_css_debian;
       info_window_data -> distro_id = info_distro_debian;
+     // g_print("info_window_data -> distro_id: %d\n", info_distro_debian );
       info_window_data -> info_open_flag = debian_info_open;
-      ok_create_info_window = TRUE;
+      init_info_gui(info_window_data);
+    // g_print("info_window_data -> info_open_flag: %d\n", debian_info_open );
       
-    }} else if (main_window_data -> distro == FEDORA) {
+    } else { g_print("Debian info window already open.  \n"); }
+    
+      } else if (main_window_data -> distro == FEDORA) {
 
        if (fedora_info_open != TRUE) {
+          
+          fedora_info_open = TRUE;
+
+      InfoWindowData * info_window_data = g_malloc(sizeof(InfoWindowData));
     
-       fedora_info_open = TRUE;
       gchar * info_window_name = "fed_info_window";
       gchar * info_window_title = "LPIH: Fedora Info";
       gchar * notebook_css = "fed_notebook";
       enum Distro info_distro_fedora = FEDORA;
-      ok_create_info_window = TRUE;
+
       info_window_data -> info_window_name = info_window_name;
       info_window_data -> info_window_title = info_window_title;
       info_window_data -> notebook_css_name = notebook_css;
       info_window_data -> distro_id = info_distro_fedora;
       info_window_data -> info_open_flag = fedora_info_open;
+      init_info_gui(info_window_data);
       
-      
-    }} else {
+    } else {  g_print("Fedora info window already open.  \n"); }
+    
+       } else {
 
       g_print("Couldn't get distro of info window to be created.\n");
 
     }
 
-if (ok_create_info_window == TRUE){
+//--------------------------------------------------------------------------------------------------------------
 
-      GtkWidget * info_window;
+   // --------------------------------------------------------------------------------------------------------------
+ } else { g_print("\nWindow is NULL\n\n"); }
 
-      info_window = gtk_window_new();
-      if (info_window != NULL) {
-        g_print("info_window created \n");
-      } else {
-        g_print("Info window creation failed!\n");
-      }
-
-      gtk_widget_add_css_class(info_window, info_window_data -> info_window_name);
-      gtk_window_set_title(GTK_WINDOW(info_window), info_window_data -> info_window_title);
-      gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
-      gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);
-      gtk_widget_set_vexpand(info_window, TRUE);
-      gtk_widget_set_hexpand(info_window, TRUE);
-
-      GtkWidget * notebook = make_notebook(info_window_data);
-
-      gtk_window_set_child(GTK_WINDOW(info_window), GTK_WIDGET(notebook));
-      g_signal_connect(info_window, "destroy", G_CALLBACK(on_info_window_destroy), info_window_data);
-      gtk_widget_set_visible(info_window, TRUE);
-      
-      
-     // info_window_data -> info_open_flag = TRUE;
-      
-      
-      
-      
-      g_print("Info window created!  \n");
-
-   }
-    
-  } else { g_print("\nWindow is NULL\n\n"); }
-  
 }
 
 
