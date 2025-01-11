@@ -68,7 +68,7 @@ enum Distro info_distro = OTHER;
 
 }
 
-
+// The gtk_notebook comprises the info_window. It has 3 tabs, each leading to a page with their own view.
 GtkWidget * make_notebook(gpointer data) {
   InfoWindowData * info_window_data = (InfoWindowData * ) data;
   GtkWidget * notebook;
@@ -106,11 +106,13 @@ GtkWidget * make_notebook(gpointer data) {
 gboolean init_info_gui(gpointer data) {
       InfoWindowData * info_window_data = (InfoWindowData *) data;
 
-      GtkWidget *info_window;
+      GtkWidget * info_window;
+      const char * css_class;
+      css_class = "deb_info_main";
 
       info_window = gtk_window_new();
      
-      gtk_widget_add_css_class(info_window, info_window_data -> info_window_name);
+      gtk_widget_add_css_class(info_window, css_class);
       gtk_window_set_title(GTK_WINDOW(info_window), info_window_data -> info_window_title);
       gtk_window_set_resizable(GTK_WINDOW(info_window), TRUE);
       gtk_window_set_default_size(GTK_WINDOW(info_window), 700, 700);

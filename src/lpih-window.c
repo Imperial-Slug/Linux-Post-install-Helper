@@ -203,6 +203,7 @@ gboolean check_box_state(GtkWidget * checkbox, gpointer data) {
    //    Debian command string assignment for each checkbox.
   if (distro == DEBIAN) {
 
+//Decide which command_string to pass into the check_box_state function based on the checkbox number.
     switch (checkbox_number) {
     case 1:
       command_string = "  sudo dpkg --add-architecture i386; sudo apt update; \n  sudo apt install steam-devices steam-installer; sudo apt install mesa-vulkan-drivers libvulkan1;\n  sudo apt install vulkan-tools vulkan-validationlayers \n";;
@@ -414,7 +415,6 @@ if (main_window_data -> window_open_flag != TRUE) {
 
     main_window_data -> window_open_flag = TRUE;
 
-    
     GtkWidget * window;
     GtkWidget * box;
     GtkWidget * checkbox1;
