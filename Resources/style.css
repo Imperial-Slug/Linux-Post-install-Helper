@@ -1,30 +1,30 @@
 .deb_tab_view1 {
-     background-image: linear-gradient(180deg, black, #5333C4, navy);
+     background: #020037;
      color: yellow;
      font-family: "Cantarell";
 }
  .deb_tab_view2 {
-     background-image: linear-gradient(180deg, black, #5333C4, darkblue);
+     background: #001625;
      color: yellow;
      font-family: "Cantarell";
 }
  .deb_tab_view3 {
-     background-image: linear-gradient(180deg, black, #5333C4, darkslategray);
+     background: #17002C;
      color: yellow;
      font-family: "Cantarell";
 }
  .fed_tab_view1 {
-     background-image: linear-gradient(180deg, black, #5333C4, navy);
+     background: #020037;
      color: yellow;
      font-family: "Cantarell";
 }
  .fed_tab_view2 {
-     background-image: linear-gradient(180deg, black, #5333C4, darkblue);
+     background: #001625;
      color: yellow;
      font-family: "Cantarell";
 }
  .fed_tab_view3 {
-     background-image: linear-gradient(180deg, black, #5333C4, darkslategray);
+     background: #001625;
      color: yellow;
      font-family: "Cantarell";
 }
